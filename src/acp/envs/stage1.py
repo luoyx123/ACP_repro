@@ -4,6 +4,7 @@ import torch
 from acp.envs.g1 import G1ReferenceEnv
 from acp.training.task import TensorReference,ReferenceBank,yaw,wrap,yaw_local,inverse_rotate,update_csi,rewards
 from acp.envs.reference import ReferenceMotion
+from acp.envs.randomization import Randomization
 
 
 class Stage1Task:
@@ -13,7 +14,9 @@ class Stage1Task:
         infos = info if isinstance(info,list) else [info]
         self.infos = infos
         self.assignment = torch.arange(num_envs,device='cuda:0')*len(infos)//num_envs
-        self.env = G1ReferenceEnv(infos[0],robot_cfg,num_envs,
+        physical_cfg = dict(robot_cfg)
+        if config['dynamics_randomization']:physical_cfg['friction'] = config['randomization']['dynamics']['ground_friction']
+        self.env = G1ReferenceEnv(infos[0],physical_cfg,num_envs,
             scenes=[infos[i]['scene'] for i in self.assignment.cpu().tolist()])
         self.device,self.n = self.env.device,num_envs
         self.dt = self.env.dt*self.env.decimation
@@ -34,15 +37,11 @@ class Stage1Task:
         self.age = torch.zeros(num_envs,device=self.device,dtype=torch.long)
         self.actor_history = torch.zeros((num_envs,5,75),device=self.device)
         self.evaluating = False
-        if config['dynamics_randomization']: raise NotImplementedError('Full Table S2 dynamics is not yet implemented; pilot must declare false')
+        self.randomization = Randomization(self.env,config)
         self.reset()
 
     def noisy_proprio(self):
-        p = self.env.proprio().clone()
-        if self.cfg['observation_noise'] and not self.evaluating:
-            scale = torch.tensor([.05]*3+[.0125]*3+[.01]*23+[1.5]*23+[0.]*23,device=self.device)
-            p += (2*torch.rand_like(p)-1)*scale
-        return p
+        return self.randomization.proprio(self.env.proprio(),clean=self.evaluating)
 
     def reset(self, ids=None, phase=None):
         ids = torch.arange(self.n,device=self.device) if ids is None else ids
@@ -55,6 +54,8 @@ class Stage1Task:
         self.env.sim.forward();self.env.robot.update(0.)
         fk_error = float((self.env.body_positions()[ids]-self.env.origins[ids,None]-values['body_landmarks_w']).norm(dim=-1).max())
         if fk_error>.002:raise ValueError(f'Reference and physical robot FK differ by {fk_error}m')
+        # Validate the exact reference reset before deliberately perturbing it.
+        self.randomization.reset(ids,perturb=not self.evaluating)
         self.time[ids] = times;self.start_phase[ids] = fractions;self.age[ids] = 0
         self.previous_action[ids] = self.env.previous_action[ids]
         self.previous_previous_action[ids] = self.previous_action[ids]
@@ -65,23 +66,25 @@ class Stage1Task:
     def observations(self):
         env = self.env;data = env.robot.data
         root = data.root_link_pos_w-env.origins;quat = data.root_link_quat_w
+        observed_root,observed_quat = self.randomization.observed_pose(clean=self.evaluating)
         reference = self.reference.sample(self.time)
-        targets,occupied = self.reference.contacts(self.time,root,quat)
+        targets,occupied = self.reference.contacts(self.time,observed_root,observed_quat)
         lookahead = torch.full_like(self.time,1.) if self.evaluating else .5+torch.rand_like(self.time)
         goal_ref = self.reference.sample(self.time+lookahead)
-        direction = yaw_local(goal_ref['base_position_w'][:,None],root,quat)[:,0,:2]
+        direction = yaw_local(goal_ref['base_position_w'][:,None],observed_root,observed_quat)[:,0,:2]
         direction /= direction.norm(dim=-1,keepdim=True).clamp(min=.3)
-        goal = torch.cat((direction,wrap(yaw(goal_ref['base_quaternion_wxyz'])-yaw(quat))[:,None]),-1)
-        heights = env.height_scan()[1]
+        goal = torch.cat((direction,wrap(yaw(goal_ref['base_quaternion_wxyz'])-yaw(observed_quat))[:,None]),-1)
+        _,heights,tracker_valid = env.height_scan(root=observed_root,quaternion=observed_quat)
         _,planner_height,valid = env.height_scan(planner=True)
-        if not valid.all(): raise ValueError('Reference task height scan missed terrain')
+        if not valid.all() or not tracker_valid.all(): raise ValueError('Reference task height scan missed terrain')
         if self.cfg['observation_noise'] and not self.evaluating:
-            heights = heights+(2*torch.rand_like(heights)-1)*.1
-            targets = torch.where(occupied[...,None],targets+(2*torch.rand_like(targets)-1)*.1,0)
-            angle_noise = (2*torch.rand_like(self.time)-1)*.2
+            noise = self.cfg['randomization']['observation']
+            heights = heights+(2*torch.rand_like(heights)-1)*noise['tracker_height']
+            targets = torch.where(occupied[...,None],targets+(2*torch.rand_like(targets)-1)*noise['contact_position'],0)
+            angle_noise = (2*torch.rand_like(self.time)-1)*noise['goal_angle']
             x,y = goal[:,0].clone(),goal[:,1].clone()
             goal[:,0] = x*angle_noise.cos()-y*angle_noise.sin();goal[:,1] = x*angle_noise.sin()+y*angle_noise.cos()
-            goal[:,2] = wrap(goal[:,2]+(2*torch.rand_like(self.time)-1)*.2)
+            goal[:,2] = wrap(goal[:,2]+(2*torch.rand_like(self.time)-1)*noise['goal_angle'])
         actor = torch.cat((self.actor_history.flatten(1),heights,targets.flatten(1),goal),-1)
         reference_kinematic = torch.cat((inverse_rotate(reference['base_quaternion_wxyz'],reference['base_linear_velocity_w']),
             inverse_rotate(reference['base_quaternion_wxyz'],reference['base_angular_velocity_w']),
@@ -97,6 +100,7 @@ class Stage1Task:
 
     def step(self, action):
         env = self.env;env.step(action);self.age += 1
+        self.randomization.advance()
         self.time = self.reference.start+self.start_phase*self.duration+self.age*self.dt
         self.actor_history = torch.cat((self.actor_history[:,1:],self.noisy_proprio()[:,None]),1)
         d = env.robot.data;j = env.joint_ids

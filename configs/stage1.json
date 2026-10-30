@@ -1,9 +1,17 @@
 {
   "schema_version": 1,
-  "profile": "stage1_two_clip_tracking_baseline",
-  "excluded_datasets": ["php"],
+  "profile": "stage1_two_clip_table_s2_randomized",
+  "excluded_datasets": [
+    "php"
+  ],
   "tasks": {
-    "walk_box": {"members": ["walk", "box"], "selection": "One shared tracker; fixed half walk/half box terrain assignment, no skill ID in actor"},
+    "walk_box": {
+      "members": [
+        "walk",
+        "box"
+      ],
+      "selection": "One shared tracker; fixed half walk/half box terrain assignment, no skill ID in actor"
+    },
     "walk": {
       "run": "lafan_asap23",
       "clip": "walk4_subject1",
@@ -38,8 +46,15 @@
     "normalize_observations": true,
     "value_clipping": true
   },
-  "curriculum": {"initial_phase": 0.9, "phase_adjustment": 0.05, "completion_phase": 0.99},
-  "termination": {"root_position_error_m": 0.75, "orientation_error_rad": 1.5},
+  "curriculum": {
+    "initial_phase": 0.9,
+    "phase_adjustment": 0.05,
+    "completion_phase": 0.99
+  },
+  "termination": {
+    "root_position_error_m": 0.75,
+    "orientation_error_rad": 1.5
+  },
   "reward_weights": {
     "track_base_pos": 3.0,
     "track_base_vel": 1.0,
@@ -50,20 +65,129 @@
     "track_contact_pos_global": 1.0,
     "action_rate": -0.1,
     "action_rate_2nd": -0.05,
-    "joint_torque": -0.00001,
+    "joint_torque": -1e-05,
     "torque_limits": -0.001,
     "dof_pos_limits": -10.0,
     "dof_vel_limits": -1.0,
     "contact_acc": -0.01
   },
-  "observation_noise": false,
-  "dynamics_randomization": false,
+  "observation_noise": true,
+  "dynamics_randomization": true,
   "engineering_choices": {
     "reference_contact_input": "Next onset within 1.5s; world reference body landmark transformed by CURRENT actual base yaw, with actual scan-footprint gating",
     "csi_scope": "per environment; walk_box shares one actor and critic across fixed walk/box tiles",
     "critic_reference_frame": "reference velocities in reference full body frame; reference contact-body positions in CURRENT actual body-yaw frame, retaining tracking offset",
-    "noise_and_dynamics": "Disabled only for initial learning/debug pilot; Table S2 not yet reproduced",
+    "noise_and_dynamics": "Table S2 enabled; ranges and undisclosed implementation conventions recorded in randomization settings and run evidence",
     "evaluation": "Deterministic actions, no noise; separate full-start and curriculum-tail evaluations",
     "termination": "Tracking-error thresholds are engineering choices, not author-disclosed values"
+  },
+  "randomization": {
+    "source": "Paper Table S2; Stage 1",
+    "torso_body": "torso_link",
+    "leg_bodies": [
+      "left_hip_pitch_link",
+      "left_hip_roll_link",
+      "left_hip_yaw_link",
+      "left_knee_link",
+      "left_ankle_pitch_link",
+      "left_ankle_roll_link",
+      "right_hip_pitch_link",
+      "right_hip_roll_link",
+      "right_hip_yaw_link",
+      "right_knee_link",
+      "right_ankle_pitch_link",
+      "right_ankle_roll_link",
+      "left_ankle_intermediate_1_link",
+      "left_ankle_roll_sphere_1_link",
+      "left_ankle_roll_sphere_2_link",
+      "left_ankle_roll_sphere_3_link",
+      "left_ankle_roll_sphere_4_link",
+      "left_ankle_roll_sphere_5_link",
+      "right_ankle_intermediate_1_link",
+      "right_ankle_roll_sphere_1_link",
+      "right_ankle_roll_sphere_2_link",
+      "right_ankle_roll_sphere_3_link",
+      "right_ankle_roll_sphere_4_link",
+      "right_ankle_roll_sphere_5_link"
+    ],
+    "dynamics": {
+      "static_friction": [
+        0.3,
+        1.2
+      ],
+      "dynamic_friction": [
+        0.3,
+        1.2
+      ],
+      "ground_friction": 1.0,
+      "restitution": [
+        0.0,
+        0.5
+      ],
+      "torso_added_mass": [
+        -2.0,
+        4.0
+      ],
+      "leg_mass_scale": [
+        0.85,
+        1.15
+      ],
+      "torso_com_half_range": [
+        0.025,
+        0.05,
+        0.05
+      ],
+      "joint_zero_bias": 0.01,
+      "ankle_zero_bias": 0.03,
+      "armature_scale": [
+        0.9,
+        1.1
+      ],
+      "pd_gain_scale": [
+        0.9,
+        1.1
+      ],
+      "action_delay_seconds": [
+        0.0,
+        0.02
+      ]
+    },
+    "observation": {
+      "angular_velocity": 0.05,
+      "gravity": 0.0125,
+      "joint_position": 0.01,
+      "joint_velocity": 1.5,
+      "contact_position": 0.1,
+      "goal_angle": 0.2,
+      "tracker_height": 0.1,
+      "planner_height_gaussian_std": 0.03,
+      "odometry_delay_seconds": [
+        0.05,
+        0.1
+      ],
+      "odometry_xy_radius": 0.05,
+      "odometry_z": [
+        -0.05,
+        0.05
+      ]
+    },
+    "reset": {
+      "joint_position": [
+        -0.2,
+        0.2
+      ],
+      "base_height": [
+        0.0,
+        0.05
+      ]
+    },
+    "conventions": {
+      "material": "one independently sampled static/dynamic/restitution triplet per environment; dynamic friction is not clamped to static",
+      "mass_inertia": "scale link inertia with its mass ratio; torso denotes torso_link",
+      "zero_bias": "add per-joint bias to PD target, observation q remains relative to nominal default",
+      "odometry": "episode sampled delay and drift; interpolate 50Hz pose history; actor scan and oracle/goal transforms use estimated pose; critic retains true pose/scan",
+      "planner_noise": "17x11 Gaussian noise reserved for Stage 2 planner; Stage 1 privileged critic scan stays clean",
+      "evaluation": "disable actor sensor noise and reset perturbations; retain sampled startup dynamics and action delay; report this explicitly"
+    }
   }
 }

@@ -18,6 +18,7 @@ GROUPS={
  'management':'管理：完整性检查、状态、迁移、架构索引和重构追溯'}
 PURPOSE={
  'stage1':'Stage 1 物理任务：按场景分配环境、468/353 观测、论文奖励及 CSI',
+ 'randomization':'Table S2：固定启动动力学及 PhysX 回读、动作延迟、里程计和观测／重置扰动',
  'task':'GPU 参考库、实际 yaw 下的 oracle 接触、CSI 更新及 Table 3 奖励公式',
  'ppo':'非对称 actor/critic、运行归一化、显式超时 bootstrap 的 GAE 与 PPO',
  'runner':'Stage 1 单卡启动、训练／评估、TensorBoard、checkpoint 与断点续训',

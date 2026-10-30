@@ -9,6 +9,59 @@ except ImportError:
 
 @unittest.skipUnless(torch is not None,'Requires the separate PyTorch training environment')
 class Stage1MathTest(unittest.TestCase):
+    def test_odometry_delay_drift_and_partial_reset(self):
+        from acp.envs.randomization import Randomization
+        from acp.training.task import yaw
+        from types import SimpleNamespace
+        from pathlib import Path
+        import json
+        config=json.loads((Path(__file__).parents[1]/'configs/stage1.json').read_text())
+        config['dynamics_randomization']=False
+        d=SimpleNamespace(root_link_pos_w=torch.zeros((2,3)),root_link_quat_w=torch.tensor([[1.,0,0,0]]).repeat(2,1))
+        env=SimpleNamespace(num_envs=2,device='cpu',dt=.005,decimation=4,origins=torch.zeros((2,3)),robot=SimpleNamespace(data=d))
+        randomization=Randomization(env,config)
+        randomization.reset(torch.arange(2))
+        randomization.odometry_delay[:]=.075
+        randomization.odometry_drift[:]=torch.tensor([.01,-.02,.03])
+        # At 50Hz, a 75ms delay interpolates samples aged 60 and 80ms.
+        randomization.pose_history[:,:,0]=torch.arange(7).float()[None]
+        angles=torch.tensor([0.,0.,0.,3.10,-3.10,0.,0.])
+        randomization.pose_history[:,:,3]=torch.cos(angles/2)
+        randomization.pose_history[:,:,6]=torch.sin(angles/2)
+        root,q=randomization.observed_pose()
+        torch.testing.assert_close(root,torch.tensor([[3.76,-.02,.03]]).repeat(2,1))
+        self.assertTrue((yaw(q).abs()>3.1).all())
+        clean,_=randomization.observed_pose(clean=True)
+        torch.testing.assert_close(clean,torch.zeros((2,3)))
+        # Read operations do not resample an episode's odometry bias/delay.
+        drift=randomization.odometry_drift.clone();delay=randomization.odometry_delay.clone()
+        randomization.observed_pose()
+        torch.testing.assert_close(randomization.odometry_drift,drift)
+        torch.testing.assert_close(randomization.odometry_delay,delay)
+        second=randomization.pose_history[1].clone()
+        randomization.reset(torch.tensor([0]))
+        torch.testing.assert_close(randomization.pose_history[1],second)
+        torch.testing.assert_close(randomization.odometry_drift[1],drift[1])
+        self.assertGreaterEqual(float(randomization.odometry_delay[0]),.05)
+        self.assertLessEqual(float(randomization.odometry_delay[0]),.1)
+
+    def test_actor_noise_bounds_clean_bypass_and_previous_action(self):
+        from acp.envs.randomization import Randomization
+        from types import SimpleNamespace
+        from pathlib import Path
+        import json
+        config=json.loads((Path(__file__).parents[1]/'configs/stage1.json').read_text())
+        config['dynamics_randomization']=False
+        env=SimpleNamespace(num_envs=8192,device='cpu')
+        randomization=Randomization(env,config)
+        value=torch.ones((8192,75));noisy=randomization.proprio(value)
+        difference=noisy-value
+        limits=torch.tensor([.05]*3+[.0125]*3+[.01]*23+[1.5]*23+[0.]*23)
+        self.assertTrue((difference.abs()<=limits+1e-7).all())
+        self.assertGreater(float(difference[:,:52].abs().sum()),0)
+        torch.testing.assert_close(noisy[:,-23:],value[:,-23:])
+        torch.testing.assert_close(randomization.proprio(value,clean=True),value)
+
     def test_timeout_bootstrap_stops_at_reset(self):
         from acp.training.ppo import generalized_advantages
         reward = torch.tensor([[1.],[100.]])

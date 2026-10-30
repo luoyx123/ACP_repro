@@ -166,6 +166,9 @@ class G1ReferenceEnv:
         if not (self.group_matrix.sum(0) > 0).all(): raise ValueError('Missing physical contact body groups')
         self.default = torch.tensor(config['default_joint_positions'], device=self.device)
         self.previous_action = torch.zeros((num_envs, 23), device=self.device)
+        self.joint_zero_bias = torch.zeros_like(self.previous_action)
+        self.action_delay_ticks = torch.zeros(num_envs,device=self.device,dtype=torch.long)
+        self.executed_action = torch.zeros_like(self.previous_action)
         self.history = torch.zeros((num_envs, 5, 75), device=self.device)
         self.force_history = torch.zeros((num_envs, 4, 9, 3), device=self.device)
         self.offsets = torch.tensor(config['landmark_offsets'], device=self.device, dtype=torch.float32)
@@ -211,6 +214,7 @@ class G1ReferenceEnv:
         self.robot.reset(ids);self.sensor.reset(ids)
         self.robot.set_joint_position_target(qp, env_ids=ids)
         self.previous_action[ids] = (q-self.default)/self.cfg['action_scale']
+        self.executed_action[ids] = self.previous_action[ids]
         self.history[ids] = self.proprio()[ids, None, :]
         self.force_history[ids] = 0
         return root, q, qd
@@ -231,27 +235,31 @@ class G1ReferenceEnv:
         if action.shape != (self.num_envs, 23) or not torch.isfinite(action).all(): raise ValueError('Invalid action')
         action = action.clamp(-100, 100)
         targets = torch.zeros_like(self.robot.data.joint_pos)
-        targets[:, self.joint_ids] = self.default+self.cfg['action_scale']*action
-        self.robot.set_joint_position_target(targets)
         for i in range(self.decimation):
+            # Delay acts on the physical command at 200Hz, while observations
+            # and action-rate rewards retain the policy's 50Hz command.
+            delayed = torch.where((i>=self.action_delay_ticks)[:,None],action,self.executed_action)
+            targets[:, self.joint_ids] = self.default+self.joint_zero_bias+self.cfg['action_scale']*delayed
+            self.robot.set_joint_position_target(targets)
             self.robot.write_data_to_sim();self.sim.step(render=False)
             self.robot.update(self.dt);self.sensor.update(self.dt, force_recompute=True);self.probe.update(self.dt)
             self.force_history[:, i] = self.contact_forces()
+        self.executed_action.copy_(action)
         self.previous_action[:] = action
         self.history = torch.cat((self.history[:, 1:], self.proprio()[:, None, :]), dim=1)
         return self.proprio()
 
-    def height_scan(self, planner=False):
+    def height_scan(self, planner=False, root=None, quaternion=None):
         nx, ny = (17, 11) if planner else (9, 7)
         x, y = torch.meshgrid(torch.linspace(-(nx-1)*.05, (nx-1)*.05, nx, device=self.device),
                               torch.linspace(-(ny-1)*.05, (ny-1)*.05, ny, device=self.device), indexing='ij')
         offsets = torch.stack((x.ravel(), y.ravel(), torch.zeros(nx*ny, device=self.device)), -1)
-        q = self.robot.data.root_link_quat_w
+        q = self.robot.data.root_link_quat_w if quaternion is None else quaternion
         yaw = torch.atan2(2*(q[:, 0]*q[:, 3]+q[:, 1]*q[:, 2]), 1-2*(q[:, 2]**2+q[:, 3]**2))
         starts = offsets.expand(self.num_envs, -1, -1).clone()
         starts[:, :, 0] = torch.cos(yaw)[:, None]*x.ravel()-torch.sin(yaw)[:, None]*y.ravel()
         starts[:, :, 1] = torch.sin(yaw)[:, None]*x.ravel()+torch.cos(yaw)[:, None]*y.ravel()
-        root = self.robot.data.root_link_pos_w-self.origins
+        root = self.robot.data.root_link_pos_w-self.origins if root is None else root
         starts += root[:, None];starts[:, :, 2] += 20
         directions = torch.zeros_like(starts);directions[:, :, 2] = -1
         hits = torch.empty_like(starts)

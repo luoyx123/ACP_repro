@@ -4,6 +4,7 @@ from datetime import datetime,timezone
 import hashlib
 import json
 import os
+import signal
 from pathlib import Path
 import subprocess
 import sys
@@ -58,7 +59,10 @@ def evaluate(task,model,folder,iteration):
     atomic_json(folder/'report.json',dict(iteration=iteration,task=task.name,results=results,
         scene=str(task.env.info['scene']),motion=str(task.env.info['motion']),joint_names=task.env.joint_names,
         scenes={name:str(info['scene']) for name,info in zip(task.member_names,task.infos)},
-        note='Deterministic policy evaluation; reference kinematics are withheld from actor.'))
+        observation_noise=False,reset_perturbations=False,
+        randomized_startup_dynamics=task.cfg['dynamics_randomization'],
+        action_delay=task.cfg['dynamics_randomization'],
+        note='Deterministic actions; fixed startup dynamics retained; reference kinematics withheld from actor.'))
     metrics = dict(evaluation_full_success=results[0]['success_rate'],evaluation_tail_success=results[1]['success_rate'],
                 evaluation_root_error_m=results[0]['mean_root_error_m'],evaluation_joint_rmse_rad=results[0]['mean_joint_rmse_rad'])
     for name in task.member_names:
@@ -73,6 +77,9 @@ def worker(args):
     launcher = AppLauncher(headless=True,device='cuda:0',multi_gpu=False,limit_cpu_threads=4,
         kit_args=f'--/renderer/activeGpu={args._worker} --/renderer/multiGpu/autoEnable=false --/renderer/multiGpu/maxGpuCount=1')
     app = launcher.app;task = None
+    stop_requested = [False]
+    def request_stop(_signum,_frame):stop_requested[0] = True
+    signal.signal(signal.SIGTERM,request_stop)
     try:
         import numpy as np
         import torch
@@ -104,15 +111,19 @@ def worker(args):
             task.phase.copy_(checkpoint['curriculum_phase']);task.reset()
             start_iteration = checkpoint['iteration']
         source_files = [*Path(__file__).parent.glob('*.py'),PROJECT/'src/acp/envs/stage1.py',PROJECT/'src/acp/envs/g1.py',
+                        PROJECT/'src/acp/envs/randomization.py',
                         args.training_config,PROJECT/'configs/m2.json',task.env.urdf,
                         *[item[key] for item in infos for key in ('motion','scene')]]
         provenance = dict(task=args.task,task_config=selected,config=config,robot_config=robot_cfg,
+            effective_robot_config=task.env.cfg,
             seed=args.seed,num_envs=args.num_envs,torch=torch.__version__,
             actor_input=468,critic_input=353,actor_reference_kinematics=False,
             original_assets=[dict(clip=item['clip'],status=item.get('status'),reasons=item.get('reasons')) for item in infos],
             gpu_uuid=os.environ.get('CUDA_VISIBLE_DEVICES'),resume=str(args.resume) if args.resume else None,
             files={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in source_files})
         atomic_json(args.output/'provenance.json',provenance)
+        atomic_json(args.output/'randomization.json',task.randomization.report)
+        torch.save(task.randomization.samples,args.output/'randomization_samples.pt')
         actor,critic = task.observations()
         if actor.shape[1]!=468 or critic.shape[1]!=353: raise ValueError('Invalid actor/critic dimensions')
         # Integration check: privileged reference joint streams must influence
@@ -129,6 +140,7 @@ def worker(args):
         atomic_json(args.output/'observation_contract.json',dict(actor_dimension=468,critic_dimension=353,
             actor_unchanged_when_reference_joints_perturbed=True,critic_changed_when_reference_joints_perturbed=True))
         evaluation = evaluate(task,model,args.output/'evaluation',start_iteration)
+        atomic_json(args.output/'randomization_reset_invariance.json',task.randomization.verify_dynamics())
         print(json.dumps(dict(iteration=start_iteration,baseline=True,**evaluation)),flush=True)
         total_steps = 0;recent_success = [];recent_start = []
         started = time.monotonic();last_evaluation = evaluation
@@ -169,7 +181,7 @@ def worker(args):
                     reward_terms={key:v/steps for key,v in term_sums.items()},**optimization)
                 if iteration%args.eval_interval==0 or iteration==start_iteration+args.iterations:
                     last_evaluation = evaluate(task,model,args.output/'evaluation',iteration);row.update(last_evaluation)
-                if iteration%args.save_interval==0 or iteration==start_iteration+args.iterations:
+                if iteration%args.save_interval==0 or iteration==start_iteration+args.iterations or stop_requested[0]:
                     checkpoint = dict(iteration=iteration,model=model.state_dict(),optimizer=optimizer.optimizer.state_dict(),
                         curriculum_phase=task.phase.clone(),config=config,task_config=selected,robot_config=robot_cfg,
                         provenance=provenance,last_evaluation=last_evaluation)
@@ -185,10 +197,14 @@ def worker(args):
                 if iteration%10==0 or iteration==start_iteration+args.iterations:
                     print(json.dumps({k:v for k,v in row.items() if k!='reward_terms'}),flush=True)
                 atomic_json(args.output/'progress.json',row)
+                if stop_requested[0]:break
         writer.close()
+        atomic_json(args.output/'randomization_reset_invariance.json',task.randomization.verify_dynamics())
         atomic_json(args.output/'worker_result.json',dict(passed=True,task=args.task,iterations=args.iterations,
-            final_iteration=start_iteration+args.iterations,environment_steps=total_steps,last_evaluation=last_evaluation,
-            checkpoint=str(args.output/'latest.pt'),note='Completed training run; convergence is judged separately from process success.'))
+            completed=not stop_requested[0],interrupted=stop_requested[0],
+            final_iteration=iteration,environment_steps=total_steps,last_evaluation=last_evaluation,
+            checkpoint=str(args.output/'latest.pt'),
+            note='Stopped after checkpoint' if stop_requested[0] else 'Completed training run; convergence is judged separately from process success.'))
     except Exception as exc:
         import traceback
         traceback.print_exc();atomic_json(args.output/'worker_result.json',dict(passed=False,error=str(exc)))
