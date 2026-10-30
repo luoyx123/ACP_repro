@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "profile": "stage1_two_clip_tracking_baseline",
+  "excluded_datasets": ["php"],
+  "tasks": {
+    "walk_box": {"members": ["walk", "box"], "selection": "One shared tracker; fixed half walk/half box terrain assignment, no skill ID in actor"},
+    "walk": {
+      "run": "lafan_asap23",
+      "clip": "walk4_subject1",
+      "start_seconds": 22.0,
+      "end_seconds": 28.0,
+      "experimental_data_override": true,
+      "selection": "6s walking window with low floor penetration among existing LAFAN walk clips; original quality status retained"
+    },
+    "box": {
+      "run": "omni_asap23_arm_repair_smooth",
+      "clip": "climb_00_z_scale_0.9",
+      "start_seconds": 0.0,
+      "end_seconds": 20.1,
+      "experimental_data_override": true,
+      "selection": "Existing local arm-contact repair, same source terrain; original quality status retained"
+    }
+  },
+  "ppo": {
+    "implementation": "acp.training.ppo native PyTorch v1",
+    "rollout_steps": 24,
+    "epochs": 5,
+    "minibatches": 8,
+    "learning_rate": 0.0001,
+    "target_kl": 0.02,
+    "entropy_coefficient": 0.006,
+    "clip": 0.2,
+    "value_coefficient": 1.0,
+    "max_grad_norm": 1.0,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "initial_std": 0.5,
+    "normalize_observations": true,
+    "value_clipping": true
+  },
+  "curriculum": {"initial_phase": 0.9, "phase_adjustment": 0.05, "completion_phase": 0.99},
+  "termination": {"root_position_error_m": 0.75, "orientation_error_rad": 1.5},
+  "reward_weights": {
+    "track_base_pos": 3.0,
+    "track_base_vel": 1.0,
+    "track_joint_pos": 2.5,
+    "track_joint_vel": 0.5,
+    "track_contact_label": 5.0,
+    "track_contact_pos_base": 2.0,
+    "track_contact_pos_global": 1.0,
+    "action_rate": -0.1,
+    "action_rate_2nd": -0.05,
+    "joint_torque": -0.00001,
+    "torque_limits": -0.001,
+    "dof_pos_limits": -10.0,
+    "dof_vel_limits": -1.0,
+    "contact_acc": -0.01
+  },
+  "observation_noise": false,
+  "dynamics_randomization": false,
+  "engineering_choices": {
+    "reference_contact_input": "Next onset within 1.5s; world reference body landmark transformed by CURRENT actual base yaw, with actual scan-footprint gating",
+    "csi_scope": "per environment; walk_box shares one actor and critic across fixed walk/box tiles",
+    "critic_reference_frame": "reference velocities in reference full body frame; reference contact-body positions in CURRENT actual body-yaw frame, retaining tracking offset",
+    "noise_and_dynamics": "Disabled only for initial learning/debug pilot; Table S2 not yet reproduced",
+    "evaluation": "Deterministic actions, no noise; separate full-start and curriculum-tail evaluations",
+    "termination": "Tracking-error thresholds are engineering choices, not author-disclosed values"
+  }
+}

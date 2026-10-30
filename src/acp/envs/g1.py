@@ -5,6 +5,7 @@ is implemented here; all reset/step tensors use the canonical data joint order.
 """
 import hashlib
 import json
+import math
 from pathlib import Path
 import numpy as np
 import torch
@@ -35,7 +36,7 @@ def mesh_prim(stage, path, vertices, faces, collision=True):
 
 
 class G1ReferenceEnv:
-    def __init__(self, info, config, num_envs, *, terrain=True):
+    def __init__(self, info, config, num_envs, *, terrain=True, scenes=None):
         import mujoco
         import trimesh
         self.cfg, self.info, self.num_envs = config, info, num_envs
@@ -57,20 +58,28 @@ class G1ReferenceEnv:
             physics_material=sim_utils.RigidBodyMaterialCfg(static_friction=config['friction'],
                 dynamic_friction=config['friction'], restitution=0.0)))
         self.stage = self.sim.stage
-        self.origins = torch.tensor([[16*(i%8), 16*(i//8), 0] for i in range(num_envs)],
+        columns = math.ceil(math.sqrt(num_envs))
+        self.origins = torch.tensor([[16*(i%columns), 16*(i//columns), 0] for i in range(num_envs)],
                                     device=self.device, dtype=torch.float32)
         for i, origin in enumerate(self.origins.cpu().numpy()):
             x = UsdGeom.Xform.Define(self.stage, f'/World/envs/env_{i}')
             x.AddTranslateOp().Set(Gf.Vec3d(*map(float, origin)))
-        floor = trimesh.creation.box(extents=(1000, 1000, 0.1))
+        floor_span = max(1000,32*(columns+1))
+        floor = trimesh.creation.box(extents=(floor_span, floor_span, 0.1))
         floor.apply_translation((0, 0, -0.05))
         mesh_prim(self.stage, '/World/Ground', floor.vertices, floor.faces)
-        parts = terrain_triangles(info['scene']) if terrain else []
-        if parts:
-            v, f = combine_meshes(parts)
-            for i in range(num_envs): mesh_prim(self.stage, f'/World/envs/env_{i}/Terrain', v, f)
-        vertices, faces = combine_meshes([(floor.vertices, floor.faces), *parts])
-        self.scan_mesh = convert_to_warp_mesh(vertices, faces, self.device)
+        scene_paths = scenes if scenes is not None else [info['scene']]*num_envs
+        if len(scene_paths)!=num_envs: raise ValueError('One static scene required per environment')
+        self.scan_groups = []
+        for scene in dict.fromkeys(scene_paths):
+            ids = [i for i,p in enumerate(scene_paths) if p==scene]
+            parts = terrain_triangles(scene) if terrain else []
+            if parts:
+                v,f = combine_meshes(parts)
+                for i in ids: mesh_prim(self.stage,f'/World/envs/env_{i}/Terrain',v,f)
+            vertices,faces = combine_meshes([(floor.vertices,floor.faces),*parts])
+            self.scan_groups.append((torch.tensor(ids,device=self.device),convert_to_warp_mesh(vertices,faces,self.device)))
+        self.scan_mesh = self.scan_groups[0][1]
         # Physical limits/gains are explicit and independent of URDF importer defaults.
         by_name = lambda values: dict(zip(self.joint_names, values))
         cfg = ArticulationCfg(
@@ -164,7 +173,7 @@ class G1ReferenceEnv:
         state[:, :3] = self.origins+torch.tensor([0, 0, -10], device=self.device)
         self.probe.write_root_pose_to_sim(state[:, :7]);self.probe.write_root_velocity_to_sim(state[:, 7:])
 
-    def reset(self, reference_times=None, env_ids=None):
+    def reset(self, reference_times=None, env_ids=None, reference_values=None):
         ids = torch.arange(self.num_envs, device=self.device) if env_ids is None else torch.as_tensor(env_ids, device=self.device)
         n = len(ids)
         root = torch.zeros((n, 13), device=self.device);root[:, 3] = 1
@@ -173,7 +182,7 @@ class G1ReferenceEnv:
             root[:, 2] = 0.80
             q = self.default.expand(n, -1);qd = torch.zeros_like(q)
         else:
-            values = self.reference.sample(reference_times)
+            values = reference_values if reference_values is not None else self.reference.sample(reference_times)
             if len(values['joint_positions']) != n: raise ValueError('Reset times and environment count differ')
             root = torch.tensor(np.c_[values['base_position_w'], values['base_quaternion_wxyz'],
                     values['base_linear_velocity_w'], values['base_angular_velocity_w']], device=self.device, dtype=torch.float32)
@@ -231,7 +240,9 @@ class G1ReferenceEnv:
         root = self.robot.data.root_link_pos_w-self.origins
         starts += root[:, None];starts[:, :, 2] += 20
         directions = torch.zeros_like(starts);directions[:, :, 2] = -1
-        hits = raycast_mesh(starts.contiguous(), directions, self.scan_mesh, max_dist=100)[0]
+        hits = torch.empty_like(starts)
+        for ids,mesh in self.scan_groups:
+            hits[ids] = raycast_mesh(starts[ids].contiguous(),directions[ids].contiguous(),mesh,max_dist=100)[0]
         valid = torch.isfinite(hits).all(-1)
         # Coordinates are in each tile's reference world; heights are root-relative.
         return hits, hits[:, :, 2]-root[:, None, 2], valid

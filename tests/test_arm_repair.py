@@ -8,7 +8,8 @@ import numpy as np
 
 PROJECT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT / "src"))
-SCENE = PROJECT / "outputs/omni_asap23/clips/climb_03_z_scale_1.0/scene.xml"
+from acp.data.assets import run_path
+SCENE = run_path('omni_asap23') / 'clips/climb_03_z_scale_1.0/scene.xml'
 try:
     import mujoco
 except ModuleNotFoundError:
