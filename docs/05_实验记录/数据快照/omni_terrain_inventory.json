@@ -1,0 +1,1900 @@
+[
+  {
+    "clip": "climb_00_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_00_z_scale_0.8.npz",
+    "source_sha256": "a732f966450fc61be5e7aba1dec4b80c412281cd9198a2b1339ced786709f121",
+    "source_frames": 604,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      604,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_00_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_00_z_scale_0.9.npz",
+    "source_sha256": "c5f2af25c176cc85357d011aac100d1832485e3410da46491d67ef7ab25dbea9",
+    "source_frames": 604,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      604,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_00_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_00_z_scale_1.0.npz",
+    "source_sha256": "a358aed0c21c0dd0d63e93737dccac052c839bbdf7cd933458bd465a30e60eab",
+    "source_frames": 604,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_00_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_00_z_scale_1.1.npz",
+    "source_sha256": "48f6a2782aaaa019f26e877a20c24710031b31eaa262ef825a292348baa76cfb",
+    "source_frames": 604,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_00_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_00_z_scale_1.2.npz",
+    "source_sha256": "98704c51f15cd62f17697241df8011a889435d836f6f6fe813abf3cef825e251",
+    "source_frames": 604,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_01_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_01_z_scale_0.8.npz",
+    "source_sha256": "edb0addf5d6551e54c55cd99ebd5a9cf9c8c36dc18b22d3ffcf2bf0afbb22340",
+    "source_frames": 523,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      523,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_01_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_01_z_scale_0.9.npz",
+    "source_sha256": "86fa1aaf7d678e1630d8fb3f79271fe85234df0c00860cc1ac7a81ad78c23862",
+    "source_frames": 523,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      523,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_01_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_01_z_scale_1.0.npz",
+    "source_sha256": "9310a21422f2cae3a23e8954cdcfdc6c49f766f312268469c5bddb4ef068d43f",
+    "source_frames": 523,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_01_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_01_z_scale_1.1.npz",
+    "source_sha256": "0b483eba90b04473094c2e1b30ca331577a05fcda0c155dfcf45871bbf385357",
+    "source_frames": 523,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_01_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_01_z_scale_1.2.npz",
+    "source_sha256": "1ea1f6eb95ba6551caa3d393241c4ca6915f7b94ca10b0d6ee65e395b562a109",
+    "source_frames": 523,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_02_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_02_z_scale_0.8.npz",
+    "source_sha256": "6839d8576ec18dcf436b965a3102deed77ca91d23ba2c36d6f4703bce4aabd0b",
+    "source_frames": 701,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      701,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_02_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_02_z_scale_0.9.npz",
+    "source_sha256": "d22d573ebf82ec06b810719e64682432bdb1f1517b2c7f4025a47e557d530a92",
+    "source_frames": 701,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      701,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_02_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_02_z_scale_1.0.npz",
+    "source_sha256": "1c77acc21b63de68d617d345e5247b5ff0adc1247b4b21b854d59c3e59355a08",
+    "source_frames": 701,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_02_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_02_z_scale_1.1.npz",
+    "source_sha256": "523972088ab0bd3c4972a0da9d50e2bcf28593fed696f32400084fdf2f92f2af",
+    "source_frames": 701,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      701,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_02_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_02_z_scale_1.2.npz",
+    "source_sha256": "0dd1d13f2a0a273ceebf18907f50d6ef3d2f1303a171b9cedbf11acee68efc3b",
+    "source_frames": 701,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      701,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_03_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_03_z_scale_0.8.npz",
+    "source_sha256": "5297b8fdc1a89ad0a0321fc0ca3f5546c7eff177cf41a72e499a5d087d8de1d2",
+    "source_frames": 606,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      606,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_03_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_03_z_scale_0.9.npz",
+    "source_sha256": "c990a87f0a013ccd793208e7385b837710878aa62391f586c7582b360a8bd1a4",
+    "source_frames": 606,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      606,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_03_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_03_z_scale_1.0.npz",
+    "source_sha256": "c6a103f500a2ce19c77241bf5710ae11153ca42943e54eb1a44f8f5ca61b57e2",
+    "source_frames": 606,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_03_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_03_z_scale_1.1.npz",
+    "source_sha256": "f427aa5049d75066cafed58e625d54e186cc56144d66a5ad3df5f4f9871e662a",
+    "source_frames": 606,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      606,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_03_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_03_z_scale_1.2.npz",
+    "source_sha256": "9520383a47419b3f5050113989efecada5c8547825705aa82671172c8b00dc97",
+    "source_frames": 606,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      606,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_04_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_04_z_scale_0.8.npz",
+    "source_sha256": "d7bb0dc074a8265ee2bee595fdffbd88e32d587ec0695ec5730e8bd3930976ee",
+    "source_frames": 753,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      753,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_04_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_04_z_scale_0.9.npz",
+    "source_sha256": "dd710c15e394d1fb8032412b97ac36316a74e307cbcfbbac5c45be89773ea83b",
+    "source_frames": 753,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      753,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_04_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_04_z_scale_1.0.npz",
+    "source_sha256": "3fce73fb714bf5230fcfbc17a697a805ce40d38b2dd10ffb7af8ad3fb70df8d0",
+    "source_frames": 753,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_04_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_04_z_scale_1.1.npz",
+    "source_sha256": "a07440d9eb04ae5fbefdd9a00173727428fe13c4cbb552f24212c6ece1b2a070",
+    "source_frames": 753,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      753,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_04_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_04_z_scale_1.2.npz",
+    "source_sha256": "665fc10929d0324ec4ff2fe11a2c94a7ad83554fa456bf7ed26ffef41ddb7431",
+    "source_frames": 753,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      753,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_05_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_05_z_scale_0.8.npz",
+    "source_sha256": "5a2106d85c19304d234f955857cd793b8ceed1218b18b27ae24342bf9a677c1f",
+    "source_frames": 601,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      601,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_05_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_05_z_scale_0.9.npz",
+    "source_sha256": "b8e9b7d875004c970f77a989f01d2862d8c740d7c8121b963f74d86e6146bfb7",
+    "source_frames": 601,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      601,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_05_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_05_z_scale_1.0.npz",
+    "source_sha256": "ea66efe70698537429570c550b7c70ee88b4524ec4a4e2d052731b8532f35ba1",
+    "source_frames": 601,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_05_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_05_z_scale_1.1.npz",
+    "source_sha256": "e1248cfde0b8ba1bc4bd3226f72682d5a84cd3e08c6dc45e1b1442df99985bb3",
+    "source_frames": 601,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      601,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_05_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_05_z_scale_1.2.npz",
+    "source_sha256": "a345fae3f126ea8193f372ac6703c0fc0570e67f347ef2b5bd1d7c2e9d9ffe3a",
+    "source_frames": 601,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      601,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_06_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_06_z_scale_0.8.npz",
+    "source_sha256": "1f8dbbb7e8a3d248897570dc10f93bf76841f20c89f9168edbd5bdd8ee5ffdc7",
+    "source_frames": 362,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      362,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_06_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_06_z_scale_0.9.npz",
+    "source_sha256": "3d00760af6128fd724b5fa4f71067778daa8b9f03de1d2c9c8fc4de6889edc58",
+    "source_frames": 362,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      362,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_06_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_06_z_scale_1.0.npz",
+    "source_sha256": "aa536ae0b5a949e97a631ef5f95e939b170bba14ba8f934705e002a4298aebbe",
+    "source_frames": 362,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_06_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_06_z_scale_1.1.npz",
+    "source_sha256": "760e58b09f3e428d48dce471007aedffa07aaae5e957abf900d738f9393de135",
+    "source_frames": 362,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      362,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_06_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_06_z_scale_1.2.npz",
+    "source_sha256": "6cd5824ee12fc3a604920d4ac74e23f437d424be0125ee355c7460d585975363",
+    "source_frames": 362,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      362,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_07_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_07_z_scale_0.8.npz",
+    "source_sha256": "fbf50213b7db545eb952230f187d3e5dde74a28dcffbe4ba2c0e632280abf206",
+    "source_frames": 295,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      295,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_07_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_07_z_scale_0.9.npz",
+    "source_sha256": "cc99bb664b425c19a9a2e81db1354d16e283e0594218acb4799211ff354d2c35",
+    "source_frames": 295,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      295,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_07_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_07_z_scale_1.0.npz",
+    "source_sha256": "63aaf98603b69d1e230f7119f113c41a629e22973ff9ec6c5692017596d3d0b4",
+    "source_frames": 295,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_07_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_07_z_scale_1.1.npz",
+    "source_sha256": "5c010d127299e052ae237baaed973bcc75bf3a4a27302bcb4ebfb429c05c1827",
+    "source_frames": 295,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      295,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_07_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_07_z_scale_1.2.npz",
+    "source_sha256": "02e4cd536852396ff64aa2061c7da1cd1f2aea7191178c9d450592ade93aee6c",
+    "source_frames": 295,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      295,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_08_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_08_z_scale_0.8.npz",
+    "source_sha256": "b070356526a7333dc52dbd9480a7d4c375854054ef2a3fbe119bceff9bd71501",
+    "source_frames": 344,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      344,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_08_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_08_z_scale_0.9.npz",
+    "source_sha256": "afef9b4dbe24b83f34df30dd5c31039b8036398c1b5261643bc032370fd6ab0d",
+    "source_frames": 344,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      344,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_08_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_08_z_scale_1.0.npz",
+    "source_sha256": "8ad77014c7b9456dafb325dbf7df0191927ccf7269d5a1acb10984ccfd7e4540",
+    "source_frames": 344,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_08_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_08_z_scale_1.1.npz",
+    "source_sha256": "4ba79417f787a9f042441882a51b5fc12fe767a731513a4cb33f68bca2b37293",
+    "source_frames": 344,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      344,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_08_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_08_z_scale_1.2.npz",
+    "source_sha256": "400f959fb068b58fdefdec0449777fe04ecbc0cd0bf85e6a70fb3997e2c7cbf3",
+    "source_frames": 344,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      344,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_09_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_09_z_scale_0.8.npz",
+    "source_sha256": "ad89af4a90d05ec7fce1c5b133c04158d1823f3ad5960f0b3ad115a417221336",
+    "source_frames": 325,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      325,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_09_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_09_z_scale_0.9.npz",
+    "source_sha256": "af541f3c480f2c85786b03be8f9cc06f51f425ac664d92c0a3d8dad92199c5ff",
+    "source_frames": 325,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      325,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_09_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_09_z_scale_1.0.npz",
+    "source_sha256": "804f511b81ac28c5a07198aa6101dd53fae2cecc9030d12ab342f900ce0fcc93",
+    "source_frames": 325,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_09_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_09_z_scale_1.1.npz",
+    "source_sha256": "8a93031222c2c4c53dc07bc1148dbc08b5777746e117830636fadb289d277a60",
+    "source_frames": 325,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      325,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_09_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_09_z_scale_1.2.npz",
+    "source_sha256": "5981f6ac67df8de350ff009251b9996104e4d06f5fd164348392a064ee17a549",
+    "source_frames": 325,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      325,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_10_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_10_z_scale_0.8.npz",
+    "source_sha256": "ccd9e145f457854ce0979303ce7fbd1ad3f49649af36fdc546654fdfbad6725e",
+    "source_frames": 454,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      454,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_10_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_10_z_scale_0.9.npz",
+    "source_sha256": "3f9be3bd4ac1d4e64c7467e77261c0892683de682651aeec1df49bc373c6478c",
+    "source_frames": 454,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      454,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_10_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_10_z_scale_1.0.npz",
+    "source_sha256": "8fbe4b0bff3bc9fbb5a4c45a5c8945b0f6e63ea6fdb23cab8f44ebb50eb3c699",
+    "source_frames": 454,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_10_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_10_z_scale_1.1.npz",
+    "source_sha256": "d282ecf9bd066c383f6949a13d4b008f77eb1d41ff378e2e6207de9d0749a8db",
+    "source_frames": 454,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      454,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_10_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_10_z_scale_1.2.npz",
+    "source_sha256": "2a9e4e981bd2ddef1ff218c8baebce8ab054884d06902a592ae68bfd53f21520",
+    "source_frames": 454,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      454,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_11_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_11_z_scale_0.8.npz",
+    "source_sha256": "670d47f25fb8c544a7cf5357963aaac9b17c61afc379b3eeed1e0da4d1f16b3b",
+    "source_frames": 458,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      458,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_11_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_11_z_scale_0.9.npz",
+    "source_sha256": "10c1e3176c013f4602d67d388de638d14491c70ab82ff1fb05372a8e675b4686",
+    "source_frames": 458,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      458,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_11_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_11_z_scale_1.0.npz",
+    "source_sha256": "be734710beea93450a2058cba486ee83a60fd65eaabec1fe92a3cf59046dcf30",
+    "source_frames": 458,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_11_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_11_z_scale_1.1.npz",
+    "source_sha256": "49b19a11c6222bfb8e983bd2d3fbad7c393f4baceb45424be5144651b09d08f7",
+    "source_frames": 458,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      458,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_11_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_11_z_scale_1.2.npz",
+    "source_sha256": "d9c6666edd5088217325107a7727dbc1ac664a2f954b881d80e7dd4f76ec8d19",
+    "source_frames": 458,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      458,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_12_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_12_z_scale_0.8.npz",
+    "source_sha256": "7b4a621f3e7522b1329556d3e5c9cef3f8a44ced026ff2048c44e74f1a11a425",
+    "source_frames": 576,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      576,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_12_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_12_z_scale_0.9.npz",
+    "source_sha256": "79c084b0ecc2a0c7765131cdcf59a2fa0d8600da04f10cd6d7290330e9bec2f7",
+    "source_frames": 576,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      576,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_12_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_12_z_scale_1.0.npz",
+    "source_sha256": "6b7fc9037da239c07205086624d1c618ca5f2432274aea1afb183532dd884c78",
+    "source_frames": 576,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_12_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_12_z_scale_1.1.npz",
+    "source_sha256": "84dfd70a673885758af34f73635857d80d64c0d62815b663bfe9bb76fbe2e606",
+    "source_frames": 576,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      576,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_12_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_12_z_scale_1.2.npz",
+    "source_sha256": "3d9e8b8e63f66da3f826dd901d06fe3a56d7f20e1e4e92f7e77cbee1c809aacf",
+    "source_frames": 576,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      576,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_13_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_13_z_scale_0.8.npz",
+    "source_sha256": "1e717c4cd377743711ef3854959e18fed173d8b3bd88eae52a483a861d55af35",
+    "source_frames": 659,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      659,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_13_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_13_z_scale_0.9.npz",
+    "source_sha256": "07013165a4b06da9c9096849aeae6450590c8f33961a7798f5570ae75a4bd155",
+    "source_frames": 659,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      659,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_13_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_13_z_scale_1.0.npz",
+    "source_sha256": "c89b070288f42680d32488f6d4c95787ba9e5bc2af30741b611500f02141fccf",
+    "source_frames": 659,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_13_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_13_z_scale_1.1.npz",
+    "source_sha256": "324061bfef09c05b0ca8073c84a470240f9991c4535d2b2a1f7edd66646948f0",
+    "source_frames": 659,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      659,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_13_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_13_z_scale_1.2.npz",
+    "source_sha256": "8dd5686ec61acaf4f7092a5dae54f6f8e7b8b7576ea9021f25dad87294c6e5ff",
+    "source_frames": 659,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      659,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_14_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_14_z_scale_0.8.npz",
+    "source_sha256": "adffe1cc19670c9294d71dd044c765aa7c472748c02d92a3692bb06588dfb271",
+    "source_frames": 273,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      273,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_14_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_14_z_scale_0.9.npz",
+    "source_sha256": "fd95a670f2ae8431fe8d4c0b2d1c9c19c0cdd9461b4caa1d4ca6e99f0d4a48be",
+    "source_frames": 273,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      273,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_14_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_14_z_scale_1.0.npz",
+    "source_sha256": "84fbec6b5f68e7451ba849e259781e6bca76b1ba2c604fe64d39a69e4f6a1535",
+    "source_frames": 273,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_14_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_14_z_scale_1.1.npz",
+    "source_sha256": "b937a6d0ec2078143d79c7499d7f6e1c4eb054b7e69391cd82ebf91b29e3f71f",
+    "source_frames": 273,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      273,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_14_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_14_z_scale_1.2.npz",
+    "source_sha256": "b2ec01cede22a8ac76201b0a57b7a8cf1f4dc566a4645da9f57115779458b607",
+    "source_frames": 273,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      273,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_15_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_15_z_scale_0.8.npz",
+    "source_sha256": "34df9b3a0155d850e7df522781e3ad2d05b0641a90dd13a900fdc3a938104cac",
+    "source_frames": 186,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      186,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_15_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_15_z_scale_0.9.npz",
+    "source_sha256": "c2662297ccbde30506a3066283974d14f8383b9f41905387b3af760e44906f8d",
+    "source_frames": 186,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      186,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_15_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_15_z_scale_1.0.npz",
+    "source_sha256": "c6ce97833df9cb2538bfe05ba641b77ada290c2675b673d21493f635714c3865",
+    "source_frames": 186,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_15_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_15_z_scale_1.1.npz",
+    "source_sha256": "3b878140ec6bf3cfe93b9d3fc73e3c9d9dcfdc72c1c639b3eb358e2fdf0471ff",
+    "source_frames": 186,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      186,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_15_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_15_z_scale_1.2.npz",
+    "source_sha256": "c087cb5112610cbde0f1c9afdeeffd7025e601575ab6d6dcaf17b8164f1f1e6c",
+    "source_frames": 186,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      186,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_16_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_16_z_scale_0.8.npz",
+    "source_sha256": "5b5ef67482bf64c530789d9ea9fcfdf254201d26d38019507a8a4dd2ce0d9ef7",
+    "source_frames": 171,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      171,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_16_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_16_z_scale_0.9.npz",
+    "source_sha256": "e3a14894267877428ba7713a67854b62bb1886b2bd1bf2e5efa46456ae3cb975",
+    "source_frames": 171,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      171,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_16_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_16_z_scale_1.0.npz",
+    "source_sha256": "8214617bd3b435d400341026f575e906da058f388d8eef60da055ff2d92f09d5",
+    "source_frames": 171,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_16_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_16_z_scale_1.1.npz",
+    "source_sha256": "3c22b80573958881f38779dacd6f4d0c10517d3ecb8299008af440caf6f52a74",
+    "source_frames": 171,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      171,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_16_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_16_z_scale_1.2.npz",
+    "source_sha256": "a778ac7059bc86933c6f91267b6e90e0faa3cc52542aa08ea500d5bd06351701",
+    "source_frames": 171,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      171,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_17_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_17_z_scale_0.8.npz",
+    "source_sha256": "7e6cdacd5fc80b19fd896386a1c3bf92c31e8431b4ed98dd4dbb77928e51bee4",
+    "source_frames": 152,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      152,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_17_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_17_z_scale_0.9.npz",
+    "source_sha256": "5d6dbaafd2de77f5bf1b1e0c162f0d3d2b2c554e6f2bb310c97c84e3858c043f",
+    "source_frames": 152,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      152,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_17_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_17_z_scale_1.0.npz",
+    "source_sha256": "ea447f6086f61086e0166173a50e31105b3d2bbf662ff48f38d26ef3f9029c61",
+    "source_frames": 152,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_17_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_17_z_scale_1.1.npz",
+    "source_sha256": "1bfd39281779d831c1cbff0e017d8a909d9ab8ff4ac055cb200bef6c748169bf",
+    "source_frames": 152,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      152,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_17_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_17_z_scale_1.2.npz",
+    "source_sha256": "1cde47c7f0da6fa7a1210bc8c00db9008e193eee5797d5ac843ae32d0a9dfe25",
+    "source_frames": 152,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      152,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_18_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_18_z_scale_0.8.npz",
+    "source_sha256": "5ef68f8308d512ca36a34b9ee42f281cb027a7efdff0bb04b7173a3045226fdb",
+    "source_frames": 169,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      169,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_18_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_18_z_scale_0.9.npz",
+    "source_sha256": "4f96f98e04ca32e2d8f3bb66fde074b0f8664cf8b186b1ea48fc2425697cb4ce",
+    "source_frames": 169,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      169,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_18_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_18_z_scale_1.0.npz",
+    "source_sha256": "2b7c7205d21ff14c21e81135cc5f7cab8887b1d762539cf4c494eafb96c0c497",
+    "source_frames": 169,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_18_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_18_z_scale_1.1.npz",
+    "source_sha256": "9382b7dc4a979db0d1f580fd3e4913633c2e8f0bc888319c1b58ed2b8bf5f3cf",
+    "source_frames": 169,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      169,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_18_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_18_z_scale_1.2.npz",
+    "source_sha256": "b2a4bbd70fadcd47ba8fafd972615ba83fa651f7147edfbab13d8a773ef2f294",
+    "source_frames": 169,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      169,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_19_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_19_z_scale_0.8.npz",
+    "source_sha256": "67d9fb1a9a88104b77944a1766d1ac85e74c1d84c03668683a30d96f0b844733",
+    "source_frames": 235,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      235,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_19_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_19_z_scale_0.9.npz",
+    "source_sha256": "efac6d544c9c26c149256fa99158b5ba6bda372a50c8c7708b35acb785081d33",
+    "source_frames": 235,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      235,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_19_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_19_z_scale_1.0.npz",
+    "source_sha256": "f25c79fbb4404ec53c15a3b1e6d555973d977a73a98a72e28e1ceea46f3a6867",
+    "source_frames": 235,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_19_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_19_z_scale_1.1.npz",
+    "source_sha256": "0dcef02d0c29aca8360a9e4318122d2cac97193c1630f1b2e020799a679bb19a",
+    "source_frames": 235,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      235,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_19_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_19_z_scale_1.2.npz",
+    "source_sha256": "195dbceaf3b2b5e647760c78aca66d950b2bc5cbb6f566de1e0f049d38878c44",
+    "source_frames": 235,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      235,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_20_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_20_z_scale_0.8.npz",
+    "source_sha256": "5532ee6a14643799beaae7abd97706554ea5fb0e7a0011806bad01a097cffe72",
+    "source_frames": 363,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      363,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_20_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_20_z_scale_0.9.npz",
+    "source_sha256": "443863ed085c6b429c48dffb2637e3b3fef9d7c7e115157df1dc91be48459826",
+    "source_frames": 363,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      363,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_20_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_20_z_scale_1.0.npz",
+    "source_sha256": "59d1ceeedbaa774eaba26a3acc43e7425f095a8496bd01924a5f3e46fde5bab7",
+    "source_frames": 363,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_20_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_20_z_scale_1.1.npz",
+    "source_sha256": "b10c2aff90fa48e8ad621debf0143bd23bb3ac59bf92e764d2231779907ff269",
+    "source_frames": 363,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      363,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_20_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_20_z_scale_1.2.npz",
+    "source_sha256": "b319517c8c2251135a467531386c0c837992e581efb44c504c1cda6fba3a6ee2",
+    "source_frames": 363,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      363,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_21_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_21_z_scale_0.8.npz",
+    "source_sha256": "57718f0ea57e85cdc174eea2e9cbccd01c5e68767a24e0d8a2487e2982b3cead",
+    "source_frames": 209,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      209,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_21_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_21_z_scale_0.9.npz",
+    "source_sha256": "71fc19cb055deb130b577e145316966ab7e75bbba8860b92b09e592fd74675e6",
+    "source_frames": 209,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      209,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_21_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_21_z_scale_1.0.npz",
+    "source_sha256": "a67bfadbe6a4a8dfb98fa74608ddbe1a78a5ec5f4b51e46a1f800264f437770f",
+    "source_frames": 209,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_21_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_21_z_scale_1.1.npz",
+    "source_sha256": "39826b8444de325603cf5e97726b510639718eb46438b520a52804d8207400d0",
+    "source_frames": 209,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      209,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_21_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_21_z_scale_1.2.npz",
+    "source_sha256": "6b2b851364938a6b5fc701238ae62d946089f7e5b9acbe82ce084eff83679acd",
+    "source_frames": 209,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      209,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_22_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_22_z_scale_0.8.npz",
+    "source_sha256": "2bf0f4e6debc8da87927294eda813ebb64ecc8d9b67fda5d17741e99b918c5d7",
+    "source_frames": 340,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      340,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_22_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_22_z_scale_0.9.npz",
+    "source_sha256": "f60a6ba0ab455baee89a5a982d79a1316183ccdecb53028a82d69dc45df50364",
+    "source_frames": 340,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      340,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_22_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_22_z_scale_1.0.npz",
+    "source_sha256": "fad2c4fcfaf8a331cfd9f42cb4926595c8fc44beb7b2f0bf7075b3fd2db4f3ee",
+    "source_frames": 340,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_22_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_22_z_scale_1.1.npz",
+    "source_sha256": "6f1ca6225e9f2b9d9c997fb0f8e3ffb6a7a6c74121a856217c4186220941d426",
+    "source_frames": 340,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      340,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_22_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_22_z_scale_1.2.npz",
+    "source_sha256": "699b2b98f77ec2505f5be929f79ba652100a561423ac009afd6180a46e9cbb02",
+    "source_frames": 340,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      340,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_23_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_23_z_scale_0.8.npz",
+    "source_sha256": "3fc7dda5d8e513f6d372f69c1f13890297a180ab913aa1726adcdf619d13314d",
+    "source_frames": 349,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      349,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_23_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_23_z_scale_0.9.npz",
+    "source_sha256": "44b3ff6a256ad961c555d649812d27ba6ce0ea3dfc00fa7081dc758296d0ff8f",
+    "source_frames": 349,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      349,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_23_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_23_z_scale_1.0.npz",
+    "source_sha256": "71ec0815ffec7a6f4c2df9e5a6f37264d59346b45ed718fa63fbaa9e72162ec0",
+    "source_frames": 349,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_23_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_23_z_scale_1.1.npz",
+    "source_sha256": "a27fff92609779ef8f037fe3333729e4cc41cd77929dbb3423b04d551663cf32",
+    "source_frames": 349,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      349,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_23_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_23_z_scale_1.2.npz",
+    "source_sha256": "6053d8c3abf0b4e4be90cd2df6ae9a2454ceb11e1816bfff75466c270bef16d1",
+    "source_frames": 349,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      349,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_24_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_24_z_scale_0.8.npz",
+    "source_sha256": "758be0d3ceda834c3486b1842bb8cbd1eeab538ddc7c3e57803fe58e475a4f04",
+    "source_frames": 314,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      314,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_24_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_24_z_scale_0.9.npz",
+    "source_sha256": "fa3eb68d7881947654a098a0251bc5d98968313fb2bcce80d06be28206c33052",
+    "source_frames": 314,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      314,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_24_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_24_z_scale_1.0.npz",
+    "source_sha256": "c3c901ea9c20cf6b3921007f9bf2382b71893ce211ad64607ce84d4bef9c5741",
+    "source_frames": 314,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_24_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_24_z_scale_1.1.npz",
+    "source_sha256": "88224f361f1275734bc363aa2a4cc41aeffa8591b74919efae495c1a220e1b7c",
+    "source_frames": 314,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      314,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_24_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_24_z_scale_1.2.npz",
+    "source_sha256": "41155ce0c16a8a7055e05dd86b4b6926ac7e52cba159f4079c56394e4db13e61",
+    "source_frames": 314,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      314,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_25_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_25_z_scale_0.8.npz",
+    "source_sha256": "937367d6bbd574dbec05abe6825cc1abeee01818a105f7cf170b3ae42ce9bdf1",
+    "source_frames": 337,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      337,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_25_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_25_z_scale_0.9.npz",
+    "source_sha256": "fefdbdcb5fc9a0c188e362c677e153395262c92827bed872c228a94003bd304b",
+    "source_frames": 337,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      337,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_25_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_25_z_scale_1.0.npz",
+    "source_sha256": "03e8d4552dad30360dab23160ee836104a0f30fb169884972a695009f2238d19",
+    "source_frames": 337,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_25_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_25_z_scale_1.1.npz",
+    "source_sha256": "eaf8d770abe08bf5023b0eeeb129f108873c58b04a8e25edec68b885714bc131",
+    "source_frames": 337,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      337,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_25_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_25_z_scale_1.2.npz",
+    "source_sha256": "4ed439f580fb6fe65a3c7ab23c6dc472f45ced8cbf58c37b5520494b75cb44ca",
+    "source_frames": 337,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      337,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_26_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_26_z_scale_0.8.npz",
+    "source_sha256": "7ea41186e60826b9654522d6f2aeb743bb4dc9d2bc7e5697fb4e85622358fb11",
+    "source_frames": 190,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      190,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_26_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_26_z_scale_0.9.npz",
+    "source_sha256": "02187b5487545ecbe49a73a57fc85cf6c3d59b72a5a2b48dfc77c9f174bc7fb2",
+    "source_frames": 190,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      190,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_26_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_26_z_scale_1.0.npz",
+    "source_sha256": "2e3fbaad403a1987e6e5ee39c42e3e69f7d3722044deef37c1dbc36c91fdc4a1",
+    "source_frames": 190,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_26_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_26_z_scale_1.1.npz",
+    "source_sha256": "15a1e122fb24e289abaaded491c27a805d38390bd6ab2db5982c0fa38401dacb",
+    "source_frames": 190,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      190,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_26_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_26_z_scale_1.2.npz",
+    "source_sha256": "4466829b38c7e9fd9869bf23e3f02f5608475d8c7028a92e7dced3cd248fde2f",
+    "source_frames": 190,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      190,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_27_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_27_z_scale_0.8.npz",
+    "source_sha256": "729a196f0632556e446610ef698fac43e64250cc6a74b05ba3a554e3c872977f",
+    "source_frames": 178,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      178,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_27_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_27_z_scale_0.9.npz",
+    "source_sha256": "20689a4054ea9c53af97fc560ba764b54002eb78aaef765f2fd4868480d9669d",
+    "source_frames": 178,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      178,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_27_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_27_z_scale_1.0.npz",
+    "source_sha256": "e6264770e3a1fc846d11469ab7a32476fe8feb9a1972bd2d28d0308dfe662277",
+    "source_frames": 178,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_27_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_27_z_scale_1.1.npz",
+    "source_sha256": "103ca905048f1694f183f8721c76f1ad4ff77217cf22caf6ba6c817c06e91ea5",
+    "source_frames": 178,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      178,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_27_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_27_z_scale_1.2.npz",
+    "source_sha256": "0dc6559bc4fcb0a5e59f781a51c3dc6a89029f2c5d81b90caf3b2b665f227ad0",
+    "source_frames": 178,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      178,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_28_z_scale_0.8",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_28_z_scale_0.8.npz",
+    "source_sha256": "5e8eb626844b47b6b2d6f19f773e07b6ef50bcbf9ea1e44c9a618aa804cf8502",
+    "source_frames": 221,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      221,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_28_z_scale_0.9",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_28_z_scale_0.9.npz",
+    "source_sha256": "8a46780eab467dd17e5ad1f0bf851e93dc30dc71cf16461250fd38d5360c9ab3",
+    "source_frames": 221,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      221,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_28_z_scale_1.0",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_28_z_scale_1.0.npz",
+    "source_sha256": "2d9efa34bbdbf6db5d93d67725e3f6379a0b0627ba6362ade568d3bfd177f82b",
+    "source_frames": 221,
+    "source_fps": 30.0,
+    "has_human_joints": false,
+    "human_shape": null,
+    "route": "robot29_to_robot23"
+  },
+  {
+    "clip": "climb_28_z_scale_1.1",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_28_z_scale_1.1.npz",
+    "source_sha256": "835cb3a8ccdff3f6628548d6ea4afa01da4a03a432de2bb39b1391cdefc3dd2c",
+    "source_frames": 221,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      221,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  },
+  {
+    "clip": "climb_28_z_scale_1.2",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_28_z_scale_1.2.npz",
+    "source_sha256": "22dbfb44be4370597baf06d0863af5a4edc069d80a63729a89895297788b5e39",
+    "source_frames": 221,
+    "source_fps": 30.0,
+    "has_human_joints": true,
+    "human_shape": [
+      221,
+      53,
+      3
+    ],
+    "route": "human_holosoma"
+  }
+]

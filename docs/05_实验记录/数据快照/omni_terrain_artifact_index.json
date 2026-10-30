@@ -1,0 +1,1893 @@
+[
+  {
+    "clip": "climb_00_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_00_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_00_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_00_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision"
+    ]
+  },
+  {
+    "clip": "climb_00_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_00_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision"
+    ]
+  },
+  {
+    "clip": "climb_00_z_scale_1.1",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_00_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision"
+    ]
+  },
+  {
+    "clip": "climb_00_z_scale_1.2",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_00_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision"
+    ]
+  },
+  {
+    "clip": "climb_01_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_01_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_01_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_01_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_01_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_01_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_01_z_scale_1.1",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_01_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_01_z_scale_1.2",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_01_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_02_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_02_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_02_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_02_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_02_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_02_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_02_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_02_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_02_z_scale_1.2",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_02_z_scale_1.2/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_03_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_03_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_03_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_03_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_03_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_03_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_03_z_scale_1.1",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_03_z_scale_1.1/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_03_z_scale_1.2",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_03_z_scale_1.2/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_04_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_04_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_04_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_04_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision"
+    ]
+  },
+  {
+    "clip": "climb_04_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_04_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision"
+    ]
+  },
+  {
+    "clip": "climb_04_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_04_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_04_z_scale_1.2",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_04_z_scale_1.2/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_05_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_05_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_05_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_05_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_05_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_05_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_05_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_05_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_05_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_05_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_06_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_06_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "joint_velocity_limits",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_06_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_06_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "joint_velocity_limits",
+      "self_collision",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_06_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_06_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_06_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_06_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "joint_velocity_limits",
+      "self_collision",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_06_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_06_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_07_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_07_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_07_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_07_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_07_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_07_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_07_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_07_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_07_z_scale_1.2",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_07_z_scale_1.2/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_08_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_08_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_08_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_08_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_08_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_08_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_08_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_08_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_08_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_08_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_09_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_09_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_09_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_09_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_09_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_09_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_09_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_09_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_09_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_09_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_10_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_10_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_10_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_10_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_10_z_scale_1.0",
+    "route": "robot29_to_robot23_robot_fk_relaxed",
+    "status": "needs_repair",
+    "motion": "clips/climb_10_z_scale_1.0/attempts/robot_fk_relaxed/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_10_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_10_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_10_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_10_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_11_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_11_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_11_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_11_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_11_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_11_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_11_z_scale_1.1",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_11_z_scale_1.1/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_11_z_scale_1.2",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_11_z_scale_1.2/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_12_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_12_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_12_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_12_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_12_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_12_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_12_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_12_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_12_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_12_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_13_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_13_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_13_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_13_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_13_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_13_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_13_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_13_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_13_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_13_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_14_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_14_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_14_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_14_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision"
+    ]
+  },
+  {
+    "clip": "climb_14_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_14_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_14_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_14_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_14_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_14_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_15_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_15_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_15_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_15_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_15_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_15_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_15_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_15_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_15_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_15_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_16_z_scale_0.8",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_16_z_scale_0.8/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_16_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_16_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_16_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_16_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_16_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_16_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_16_z_scale_1.2",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_16_z_scale_1.2/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_17_z_scale_0.8",
+    "route": "robot29_to_robot23_robot_fk_relaxed",
+    "status": "needs_repair",
+    "motion": "clips/climb_17_z_scale_0.8/attempts/robot_fk_relaxed/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_17_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_17_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_17_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_17_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_17_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_17_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_17_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_17_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_18_z_scale_0.8",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_18_z_scale_0.8/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_18_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_18_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_18_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_18_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_18_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_18_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_18_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_18_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_19_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_19_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_19_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_19_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_19_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_19_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_19_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_19_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_19_z_scale_1.2",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_19_z_scale_1.2/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_20_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_20_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_20_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_20_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_20_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_20_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_20_z_scale_1.1",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_20_z_scale_1.1/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_20_z_scale_1.2",
+    "route": "robot29_to_robot23_robot_fk_relaxed",
+    "status": "needs_repair",
+    "motion": "clips/climb_20_z_scale_1.2/attempts/robot_fk_relaxed/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_21_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_21_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_21_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_21_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_21_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_21_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_21_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_21_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_21_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_21_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_22_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_22_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_22_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_22_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision"
+    ]
+  },
+  {
+    "clip": "climb_22_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_22_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_22_z_scale_1.1",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_22_z_scale_1.1/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_22_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_22_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_23_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_23_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_23_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_23_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_23_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_23_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_23_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_23_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_23_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_23_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_24_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_24_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_24_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_24_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_24_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_24_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_24_z_scale_1.1",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_24_z_scale_1.1/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_24_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_24_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_25_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_25_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_25_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_25_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_25_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_25_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_25_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_25_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_25_z_scale_1.2",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_25_z_scale_1.2/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_26_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_26_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_26_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_26_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_26_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_26_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_26_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_26_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "mapped_keypoint_error",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_26_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_26_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "mapped_keypoint_error",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_27_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_27_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_27_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_27_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_27_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_27_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_27_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_27_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_foot_sliding",
+      "right_stance_gap"
+    ]
+  },
+  {
+    "clip": "climb_27_z_scale_1.2",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_27_z_scale_1.2/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_28_z_scale_0.8",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_28_z_scale_0.8/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_28_z_scale_0.9",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_28_z_scale_0.9/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_28_z_scale_1.0",
+    "route": "robot29_to_robot23",
+    "status": "needs_repair",
+    "motion": "clips/climb_28_z_scale_1.0/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_28_z_scale_1.1",
+    "route": "human_holosoma",
+    "status": "needs_repair",
+    "motion": "clips/climb_28_z_scale_1.1/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "joint_velocity_limits",
+      "self_collision",
+      "mapped_keypoint_error",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  },
+  {
+    "clip": "climb_28_z_scale_1.2",
+    "route": "robot29_to_robot23_robot_fk",
+    "status": "needs_repair",
+    "motion": "clips/climb_28_z_scale_1.2/attempts/robot_fk/labeled/motion.npz",
+    "stage1_offline_eligible": false,
+    "reasons": [
+      "environment_penetration",
+      "self_collision",
+      "left_stance_gap",
+      "left_foot_sliding",
+      "right_stance_gap",
+      "right_foot_sliding"
+    ]
+  }
+]

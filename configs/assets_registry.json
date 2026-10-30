@@ -1,0 +1,390 @@
+{
+  "schema_version": 1,
+  "original_project_root": "/home/lyx/train/ACP_repro",
+  "relocations": {
+    "docs/REPRODUCTION.md": "docs/04_论文与复现/复现路线.md",
+    "docs/CONTRACTS.md": "docs/03_方法与规范/接口与数据约定.md",
+    "docs/DATA_PIPELINE.md": "docs/05_实验记录/早期方案/初版数据处理与模型核查.md",
+    "docs/ASAP23_BASELINE.md": "docs/02_数据集/OmniRetarget关节子集基线.md",
+    "docs/ARM_CONTACT_REPAIR.md": "docs/03_方法与规范/肩肘接触局部修正.md",
+    "docs/LAFAN_ASAP23.md": "docs/02_数据集/LAFAN1使用说明.md",
+    "docs/MIXAMO_PIPELINE.md": "docs/02_数据集/Mixamo使用说明.md",
+    "docs/MIXAMO_REPAIR.md": "docs/05_实验记录/Mixamo坐下与爬梯修复.md",
+    "docs/MIXAMO_REVIEW.md": "docs/05_实验记录/早期方案/Mixamo旧批次抽查.md",
+    "docs/HOLOSOMA_RUN.md": "docs/05_实验记录/早期方案/Holosoma单片段实验.md",
+    "docs/OMNI_TERRAIN_BATCH.md": "docs/05_实验记录/早期方案/OmniRetarget全身重拟合实验.md",
+    "docs/VISUALIZATION_AND_REPAIR.md": "docs/01_使用指南/可视化与排错.md",
+    "docs/paper": "docs/04_论文与复现/论文资料",
+    "docs/data": "docs/05_实验记录/数据快照",
+    "outputs/arm_repair_smoke": "outputs/实验归档/omni/arm_repair_smoke",
+    "outputs/holosoma_30hz_interface_check": "outputs/实验归档/holosoma/holosoma_30hz_interface_check",
+    "outputs/holosoma_climb00_50hz_seed0": "outputs/实验归档/holosoma/holosoma_climb00_50hz_seed0",
+    "outputs/holosoma_climb00_50hz_support_current_pose_seed0": "outputs/实验归档/holosoma/holosoma_climb00_50hz_support_current_pose_seed0",
+    "outputs/holosoma_climb00_50hz_support_seed0": "outputs/实验归档/holosoma/holosoma_climb00_50hz_support_seed0",
+    "outputs/holosoma_climb00_50hz_support_tol003_seed0": "outputs/实验归档/holosoma/holosoma_climb00_50hz_support_tol003_seed0",
+    "outputs/holosoma_climb00_full_seed0": "outputs/实验归档/holosoma/holosoma_climb00_full_seed0",
+    "outputs/holosoma_g1_23_climb_00_z_scale_0.9": "outputs/实验归档/holosoma/holosoma_g1_23_climb_00_z_scale_0.9",
+    "outputs/lafan_arm_adapter_smoke": "outputs/实验归档/lafan1/lafan_arm_adapter_smoke",
+    "outputs/lafan_asap23": "outputs/数据集/lafan1/asap23_baseline",
+    "outputs/lafan_walk_normalized": "outputs/实验归档/lafan1/lafan_walk_normalized",
+    "outputs/mesh_cache": "outputs/缓存/mesh",
+    "outputs/mixamo_asap23": "outputs/实验归档/mixamo/mixamo_asap23",
+    "outputs/mixamo_asap23_fixed": "outputs/数据集/mixamo/20261030_asap23_v1",
+    "outputs/mixamo_asap23_priority_flat": "outputs/实验归档/mixamo/mixamo_asap23_priority_flat",
+    "outputs/mixamo_asap23_priority_support": "outputs/实验归档/mixamo/mixamo_asap23_priority_support",
+    "outputs/mixamo_asap23_priority_support_v2": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v2",
+    "outputs/mixamo_asap23_priority_support_v3": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v3",
+    "outputs/mixamo_asap23_priority_support_v4": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v4",
+    "outputs/mixamo_asap23_priority_support_v5": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v5",
+    "outputs/mixamo_asap23_priority_support_v6": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v6",
+    "outputs/mixamo_asap23_priority_support_v7": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v7",
+    "outputs/mixamo_asap23_v2": "outputs/实验归档/mixamo/mixamo_asap23_v2",
+    "outputs/omni_asap23": "outputs/数据集/omni/asap23_baseline",
+    "outputs/omni_asap23_arm_repair": "outputs/实验归档/omni/omni_asap23_arm_repair",
+    "outputs/omni_asap23_arm_repair_smooth": "outputs/数据集/omni/arm_contact_repair",
+    "outputs/omni_climb_full": "outputs/实验归档/omni/omni_climb_full",
+    "outputs/omni_climb_pilot": "outputs/实验归档/omni/omni_climb_pilot",
+    "outputs/omni_climb_verified": "outputs/实验归档/omni/omni_climb_verified",
+    "outputs/omni_robot_terrain_all": "outputs/实验归档/omni/omni_robot_terrain_all",
+    "outputs/omni_robot_transfer_pilot": "outputs/实验归档/omni/omni_robot_transfer_pilot",
+    "outputs/visualization": "outputs/可视化/历史回放",
+    "outputs/mixamo_asap23/extracted": "outputs/缓存/mixamo/fbx_skeletons_v1",
+    "outputs/mixamo_asap23/review/named_sources": "outputs/缓存/mixamo/named_references_v1",
+    "scripts/acp_pipeline.py": "src/acp/pipeline/cli.py",
+    "scripts/view_omni_trajectory.py": "src/acp/visualization/viewer.py",
+    "scripts/batch_asap23.py": "src/acp/pipeline/datasets/omni.py",
+    "scripts/batch_lafan_asap23.py": "src/acp/pipeline/datasets/lafan1.py",
+    "scripts/batch_mixamo.py": "src/acp/pipeline/datasets/mixamo.py",
+    "scripts/batch_php_asap23.py": "src/acp/pipeline/datasets/php.py",
+    "scripts/prepare_asap23.py": "src/acp/robot/model.py",
+    "scripts/run_robot_transfer.py": "src/acp/robot/transfer.py",
+    "scripts/check_holosoma_mujoco.py": "src/acp/quality/native.py",
+    "scripts/compare_asap23.py": "src/acp/quality/compare.py",
+    "scripts/evaluate_omni_terrain.py": "src/acp/quality/evaluate.py",
+    "scripts/repair_asap23_arms.py": "src/acp/quality/repair.py",
+    "scripts/finalize_arm_repair.py": "src/acp/quality/finalize.py",
+    "scripts/mixamo_contact_retargeter.py": "src/acp/pipeline/contact_solver.py",
+    "scripts/extract_mixamo_blender.py": "src/acp/pipeline/blender.py",
+    "scripts/run_mixamo_configured.py": "src/acp/pipeline/mixamo_resources.py",
+    "scripts/prepare_mixamo_test_scenes.py": "src/acp/pipeline/scene_fit.py",
+    "scripts/match_mixamo_names.py": "src/acp/pipeline/names.py",
+    "scripts/check_assets.py": "src/acp/management/check.py",
+    "scripts/organize_assets.py": "src/acp/management/organize.py",
+    "scripts/mixamo_status.py": "src/acp/management/status.py",
+    "scripts/label_python_bounded.sh": "src/acp/pipeline/label_python_bounded.sh",
+    "src/acp/data/holosoma.py": "src/acp/data/adapters/holosoma.py",
+    "src/acp/data/mixamo.py": "src/acp/data/adapters/mixamo.py",
+    "src/acp/data/php.py": "src/acp/data/adapters/php.py",
+    "src/acp/data/prepare_omni.py": "src/acp/data/adapters/prepare_omni.py",
+    "src/acp/data/asap.py": "src/acp/robot/joints.py",
+    "src/acp/data/collision.py": "src/acp/robot/collision.py"
+  },
+  "runs": {
+    "arm_repair_smoke": {
+      "path": "outputs/实验归档/omni/arm_repair_smoke",
+      "dataset": "omni",
+      "role": "archive",
+      "label": "历史实验：arm_repair_smoke",
+      "training_admitted": false
+    },
+    "holosoma_30hz_interface_check": {
+      "path": "outputs/实验归档/holosoma/holosoma_30hz_interface_check",
+      "dataset": "holosoma",
+      "role": "archive",
+      "label": "历史实验：holosoma_30hz_interface_check",
+      "training_admitted": false
+    },
+    "holosoma_climb00_50hz_seed0": {
+      "path": "outputs/实验归档/holosoma/holosoma_climb00_50hz_seed0",
+      "dataset": "holosoma",
+      "role": "archive",
+      "label": "历史实验：holosoma_climb00_50hz_seed0",
+      "training_admitted": false
+    },
+    "holosoma_climb00_50hz_support_current_pose_seed0": {
+      "path": "outputs/实验归档/holosoma/holosoma_climb00_50hz_support_current_pose_seed0",
+      "dataset": "holosoma",
+      "role": "archive",
+      "label": "历史实验：holosoma_climb00_50hz_support_current_pose_seed0",
+      "training_admitted": false
+    },
+    "holosoma_climb00_50hz_support_seed0": {
+      "path": "outputs/实验归档/holosoma/holosoma_climb00_50hz_support_seed0",
+      "dataset": "holosoma",
+      "role": "archive",
+      "label": "历史实验：holosoma_climb00_50hz_support_seed0",
+      "training_admitted": false
+    },
+    "holosoma_climb00_50hz_support_tol003_seed0": {
+      "path": "outputs/实验归档/holosoma/holosoma_climb00_50hz_support_tol003_seed0",
+      "dataset": "holosoma",
+      "role": "archive",
+      "label": "历史实验：holosoma_climb00_50hz_support_tol003_seed0",
+      "training_admitted": false
+    },
+    "holosoma_climb00_full_seed0": {
+      "path": "outputs/实验归档/holosoma/holosoma_climb00_full_seed0",
+      "dataset": "holosoma",
+      "role": "archive",
+      "label": "历史实验：holosoma_climb00_full_seed0",
+      "training_admitted": false
+    },
+    "holosoma_g1_23_climb_00_z_scale_0.9": {
+      "path": "outputs/实验归档/holosoma/holosoma_g1_23_climb_00_z_scale_0.9",
+      "dataset": "holosoma",
+      "role": "archive",
+      "label": "历史实验：holosoma_g1_23_climb_00_z_scale_0.9",
+      "training_admitted": false
+    },
+    "lafan_arm_adapter_smoke": {
+      "path": "outputs/实验归档/lafan1/lafan_arm_adapter_smoke",
+      "dataset": "lafan1",
+      "role": "archive",
+      "label": "历史实验：lafan_arm_adapter_smoke",
+      "training_admitted": false
+    },
+    "lafan_asap23": {
+      "path": "outputs/数据集/lafan1/asap23_baseline",
+      "dataset": "lafan1",
+      "role": "dataset",
+      "label": "LAFAN1 40条关节子集基线",
+      "training_admitted": false
+    },
+    "lafan_walk_normalized": {
+      "path": "outputs/实验归档/lafan1/lafan_walk_normalized",
+      "dataset": "lafan1",
+      "role": "archive",
+      "label": "历史实验：lafan_walk_normalized",
+      "training_admitted": false
+    },
+    "mesh_cache": {
+      "path": "outputs/缓存/mesh",
+      "dataset": "shared",
+      "role": "cache",
+      "label": "Drake几何网格转换缓存",
+      "training_admitted": false
+    },
+    "mixamo_asap23": {
+      "path": "outputs/实验归档/mixamo/mixamo_asap23",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "历史实验：mixamo_asap23",
+      "training_admitted": false
+    },
+    "mixamo_asap23_fixed": {
+      "path": "outputs/数据集/mixamo/20261030_asap23_v1",
+      "dataset": "mixamo",
+      "role": "dataset",
+      "label": "Mixamo 全量修复版（持续处理）",
+      "training_admitted": false
+    },
+    "mixamo_asap23_priority_flat": {
+      "path": "outputs/实验归档/mixamo/mixamo_asap23_priority_flat",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "历史实验：mixamo_asap23_priority_flat",
+      "training_admitted": false
+    },
+    "mixamo_asap23_priority_support": {
+      "path": "outputs/实验归档/mixamo/mixamo_asap23_priority_support",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "历史实验：mixamo_asap23_priority_support",
+      "training_admitted": false
+    },
+    "mixamo_asap23_priority_support_v2": {
+      "path": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v2",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "历史实验：mixamo_asap23_priority_support_v2",
+      "training_admitted": false
+    },
+    "mixamo_asap23_priority_support_v3": {
+      "path": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v3",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "历史实验：mixamo_asap23_priority_support_v3",
+      "training_admitted": false
+    },
+    "mixamo_asap23_priority_support_v4": {
+      "path": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v4",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "历史实验：mixamo_asap23_priority_support_v4",
+      "training_admitted": false
+    },
+    "mixamo_asap23_priority_support_v5": {
+      "path": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v5",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "历史实验：mixamo_asap23_priority_support_v5",
+      "training_admitted": false
+    },
+    "mixamo_asap23_priority_support_v6": {
+      "path": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v6",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "历史实验：mixamo_asap23_priority_support_v6",
+      "training_admitted": false
+    },
+    "mixamo_asap23_priority_support_v7": {
+      "path": "outputs/实验归档/mixamo/mixamo_asap23_priority_support_v7",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "历史实验：mixamo_asap23_priority_support_v7",
+      "training_admitted": false
+    },
+    "mixamo_asap23_v2": {
+      "path": "outputs/实验归档/mixamo/mixamo_asap23_v2",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "历史实验：mixamo_asap23_v2",
+      "training_admitted": false
+    },
+    "omni_asap23": {
+      "path": "outputs/数据集/omni/asap23_baseline",
+      "dataset": "omni",
+      "role": "dataset",
+      "label": "OmniRetarget 145条关节子集基线",
+      "training_admitted": false
+    },
+    "omni_asap23_arm_repair": {
+      "path": "outputs/实验归档/omni/omni_asap23_arm_repair",
+      "dataset": "omni",
+      "role": "archive",
+      "label": "历史实验：omni_asap23_arm_repair",
+      "training_admitted": false
+    },
+    "omni_asap23_arm_repair_smooth": {
+      "path": "outputs/数据集/omni/arm_contact_repair",
+      "dataset": "omni",
+      "role": "dataset",
+      "label": "OmniRetarget 3条完整肩肘修正回归",
+      "training_admitted": false
+    },
+    "omni_climb_full": {
+      "path": "outputs/实验归档/omni/omni_climb_full",
+      "dataset": "omni",
+      "role": "archive",
+      "label": "历史实验：omni_climb_full",
+      "training_admitted": false
+    },
+    "omni_climb_pilot": {
+      "path": "outputs/实验归档/omni/omni_climb_pilot",
+      "dataset": "omni",
+      "role": "archive",
+      "label": "历史实验：omni_climb_pilot",
+      "training_admitted": false
+    },
+    "omni_climb_verified": {
+      "path": "outputs/实验归档/omni/omni_climb_verified",
+      "dataset": "omni",
+      "role": "archive",
+      "label": "历史实验：omni_climb_verified",
+      "training_admitted": false
+    },
+    "omni_robot_terrain_all": {
+      "path": "outputs/实验归档/omni/omni_robot_terrain_all",
+      "dataset": "omni",
+      "role": "archive",
+      "label": "历史实验：omni_robot_terrain_all",
+      "training_admitted": false
+    },
+    "omni_robot_transfer_pilot": {
+      "path": "outputs/实验归档/omni/omni_robot_transfer_pilot",
+      "dataset": "omni",
+      "role": "archive",
+      "label": "历史实验：omni_robot_transfer_pilot",
+      "training_admitted": false
+    },
+    "visualization": {
+      "path": "outputs/可视化/历史回放",
+      "dataset": "shared",
+      "role": "visualization",
+      "label": "既有回放视频与截图",
+      "training_admitted": false
+    },
+    "php_asap23": {
+      "path": "outputs/数据集/php/20261030_asap23_v1",
+      "dataset": "php",
+      "role": "dataset",
+      "label": "PHP 29→23 DoF与真实箱体地形",
+      "training_admitted": false
+    },
+    "php_adapter_pilot": {
+      "path": "outputs/实验归档/php/adapter_pilot",
+      "dataset": "php",
+      "role": "archive",
+      "label": "PHP攀爬与行走两条适配回归",
+      "training_admitted": false
+    },
+    "mixamo_fbx_cache": {
+      "path": "outputs/缓存/mixamo/fbx_skeletons_v1",
+      "dataset": "mixamo",
+      "role": "cache",
+      "label": "Mixamo FBX骨架抽取缓存",
+      "training_admitted": false
+    },
+    "mixamo_named_reference_cache": {
+      "path": "outputs/缓存/mixamo/named_references_v1",
+      "dataset": "mixamo",
+      "role": "cache",
+      "label": "Mixamo候选命名参考缓存",
+      "training_admitted": false
+    },
+    "php_visualization": {
+      "path": "outputs/可视化/php",
+      "dataset": "php",
+      "role": "visualization",
+      "label": "PHP源与目标叠加可视化",
+      "training_admitted": false
+    },
+    "mixamo_configured_launcher_smoke": {
+      "path": "outputs/实验归档/mixamo/configured_launcher_smoke",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "机器资源适配入口端到端验证",
+      "training_admitted": false
+    },
+    "architecture_visualization": {
+      "path": "outputs/可视化/架构重构回归",
+      "dataset": "shared",
+      "role": "visualization",
+      "label": "四类数据回放结构重构回归",
+      "training_admitted": false
+    },
+    "architecture_mixamo_smoke": {
+      "path": "outputs/实验归档/mixamo/architecture_smoke",
+      "dataset": "mixamo",
+      "role": "archive",
+      "label": "结构重构后Mixamo端到端回归",
+      "training_admitted": false
+    }
+  },
+  "datasets": {
+    "omni": {
+      "label": "OmniRetarget robot-terrain",
+      "source_key": "omni_dataset",
+      "run_id": "omni_asap23",
+      "script": "src/acp/pipeline/datasets/omni.py"
+    },
+    "lafan1": {
+      "label": "LAFAN1 G1-29",
+      "source_key": "lafan_dataset",
+      "run_id": "lafan_asap23",
+      "script": "src/acp/pipeline/datasets/lafan1.py"
+    },
+    "mixamo": {
+      "label": "Mixamo FBX",
+      "source_key": "mixamo_dataset",
+      "run_id": "mixamo_asap23_fixed",
+      "script": "src/acp/pipeline/datasets/mixamo.py"
+    },
+    "php": {
+      "label": "PHP跑酷训练包",
+      "source_key": "php_dataset",
+      "run_id": "php_asap23",
+      "script": "src/acp/pipeline/datasets/php.py"
+    }
+  }
+}

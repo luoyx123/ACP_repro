@@ -1,0 +1,225 @@
+[
+  {
+    "clip": "0f3625529b2f2b0f970819e47fb7de1a",
+    "name": "Sitting_6",
+    "frames": 222,
+    "mapped_keypoint_mean_error_m": 0.018144836411443786,
+    "geometry_invalid_frames": 0,
+    "joint_position_invalid_frames": 0,
+    "joint_velocity_invalid_frames": 0,
+    "unexpected_self_collision_frames": 0,
+    "support_metrics": {
+      "kind": "seat",
+      "contact_steps_by_body": {
+        "left_foot": 221,
+        "right_foot": 221,
+        "left_knee": 0,
+        "right_knee": 0,
+        "left_hand": 0,
+        "right_hand": 49,
+        "left_elbow": 0,
+        "right_elbow": 0,
+        "pelvis": 94
+      },
+      "terminal_pelvis_contact_fraction": 1.0
+    },
+    "reasons": [
+      "unconfirmed_support_scene"
+    ]
+  },
+  {
+    "clip": "27b793aeb4838dbb29025352815be1a0",
+    "name": "Climbing_Ladder",
+    "frames": 39,
+    "mapped_keypoint_mean_error_m": 0.02448554901415958,
+    "geometry_invalid_frames": 0,
+    "joint_position_invalid_frames": 0,
+    "joint_velocity_invalid_frames": 0,
+    "unexpected_self_collision_frames": 0,
+    "support_metrics": {
+      "kind": "ladder",
+      "contact_steps_by_body": {
+        "left_foot": 0,
+        "right_foot": 18,
+        "left_knee": 0,
+        "right_knee": 18,
+        "left_hand": 20,
+        "right_hand": 12,
+        "left_elbow": 0,
+        "right_elbow": 0,
+        "pelvis": 0
+      },
+      "expected_source_support_steps": {
+        "left_hand": 20,
+        "right_hand": 12,
+        "left_foot": 0,
+        "right_foot": 0
+      },
+      "source_support_contact_coverage": {
+        "left_hand": 1.0,
+        "right_hand": 1.0,
+        "left_foot": null,
+        "right_foot": null
+      }
+    },
+    "reasons": [
+      "unconfirmed_support_scene"
+    ]
+  },
+  {
+    "clip": "6d6857f80acfb5ef3111f77e86d4eab9",
+    "name": "Climbing_3",
+    "frames": 149,
+    "mapped_keypoint_mean_error_m": 0.03409748919582096,
+    "geometry_invalid_frames": 0,
+    "joint_position_invalid_frames": 0,
+    "joint_velocity_invalid_frames": 0,
+    "unexpected_self_collision_frames": 0,
+    "support_metrics": {
+      "kind": "ladder",
+      "contact_steps_by_body": {
+        "left_foot": 117,
+        "right_foot": 115,
+        "left_knee": 0,
+        "right_knee": 0,
+        "left_hand": 93,
+        "right_hand": 102,
+        "left_elbow": 0,
+        "right_elbow": 0,
+        "pelvis": 0
+      },
+      "expected_source_support_steps": {
+        "left_hand": 93,
+        "right_hand": 102,
+        "left_foot": 95,
+        "right_foot": 97
+      },
+      "source_support_contact_coverage": {
+        "left_hand": 1.0,
+        "right_hand": 1.0,
+        "left_foot": 1.0,
+        "right_foot": 1.0
+      }
+    },
+    "reasons": [
+      "unconfirmed_support_scene"
+    ]
+  },
+  {
+    "clip": "8c56f6ba2d819e69ecf6764f4ec6542e",
+    "name": "Climbing_6",
+    "frames": 78,
+    "mapped_keypoint_mean_error_m": 0.02869807171262193,
+    "geometry_invalid_frames": 0,
+    "joint_position_invalid_frames": 0,
+    "joint_velocity_invalid_frames": 0,
+    "unexpected_self_collision_frames": 0,
+    "support_metrics": {
+      "kind": "ladder",
+      "contact_steps_by_body": {
+        "left_foot": 33,
+        "right_foot": 51,
+        "left_knee": 13,
+        "right_knee": 17,
+        "left_hand": 52,
+        "right_hand": 46,
+        "left_elbow": 0,
+        "right_elbow": 0,
+        "pelvis": 0
+      },
+      "expected_source_support_steps": {
+        "left_hand": 52,
+        "right_hand": 46,
+        "left_foot": 26,
+        "right_foot": 42
+      },
+      "source_support_contact_coverage": {
+        "left_hand": 1.0,
+        "right_hand": 1.0,
+        "left_foot": 1.0,
+        "right_foot": 1.0
+      }
+    },
+    "reasons": [
+      "unconfirmed_support_scene"
+    ]
+  },
+  {
+    "clip": "bfe5d1961033c37b16af565b85dc1dad",
+    "name": "Start_Climbing_Ladder",
+    "frames": 102,
+    "mapped_keypoint_mean_error_m": 0.027536564963617335,
+    "geometry_invalid_frames": 0,
+    "joint_position_invalid_frames": 0,
+    "joint_velocity_invalid_frames": 0,
+    "unexpected_self_collision_frames": 0,
+    "support_metrics": {
+      "kind": "ladder",
+      "contact_steps_by_body": {
+        "left_foot": 50,
+        "right_foot": 52,
+        "left_knee": 0,
+        "right_knee": 16,
+        "left_hand": 46,
+        "right_hand": 14,
+        "left_elbow": 0,
+        "right_elbow": 0,
+        "pelvis": 0
+      },
+      "expected_source_support_steps": {
+        "left_hand": 0,
+        "right_hand": 12,
+        "left_foot": 21,
+        "right_foot": 23
+      },
+      "source_support_contact_coverage": {
+        "left_hand": null,
+        "right_hand": 1.0,
+        "left_foot": 1.0,
+        "right_foot": 1.0
+      }
+    },
+    "reasons": [
+      "unconfirmed_support_scene"
+    ]
+  },
+  {
+    "clip": "de853577df76be590347f5759a8dccde",
+    "name": "Climbing_6",
+    "frames": 78,
+    "mapped_keypoint_mean_error_m": 0.02869807171262193,
+    "geometry_invalid_frames": 0,
+    "joint_position_invalid_frames": 0,
+    "joint_velocity_invalid_frames": 0,
+    "unexpected_self_collision_frames": 0,
+    "support_metrics": {
+      "kind": "ladder",
+      "contact_steps_by_body": {
+        "left_foot": 33,
+        "right_foot": 51,
+        "left_knee": 13,
+        "right_knee": 17,
+        "left_hand": 52,
+        "right_hand": 46,
+        "left_elbow": 0,
+        "right_elbow": 0,
+        "pelvis": 0
+      },
+      "expected_source_support_steps": {
+        "left_hand": 52,
+        "right_hand": 46,
+        "left_foot": 26,
+        "right_foot": 42
+      },
+      "source_support_contact_coverage": {
+        "left_hand": 1.0,
+        "right_hand": 1.0,
+        "left_foot": 1.0,
+        "right_foot": 1.0
+      }
+    },
+    "reasons": [
+      "unconfirmed_support_scene"
+    ]
+  }
+]

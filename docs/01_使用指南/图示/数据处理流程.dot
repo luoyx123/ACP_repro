@@ -1,0 +1,26 @@
+digraph pipeline {
+ graph [rankdir=TB,bgcolor="#f8fafc",pad="0.4",nodesep="0.35",ranksep="0.4",fontname="Noto Sans CJK SC",label="G1-23 动作与接触数据流水线",labelloc=t,fontsize=23];
+ node [shape=box,style="rounded,filled",fillcolor="white",color="#cbd5e1",fontname="Noto Sans CJK SC",fontsize=12,margin="0.22,0.15"];
+ edge [color="#64748b",fontname="Noto Sans CJK SC",fontsize=10];
+ robot [label="已重定向 G1-29\nOmni robot-terrain / LAFAN1 / PHP",fillcolor="#dbeafe"];
+ human [label="原始人体动作\nMixamo FBX",fillcolor="#dbeafe"];
+ audit [label="输入核验与清单\n采样率 / 根位姿 / 关节名称 / 配套地形"];
+ extract [label="Blender 导出人体骨架\n比例与坐标统一 / 来源哈希"];
+ subset [label="ASAP 关节定义：29 → 23\n保留根、腿、腰、肩肘；六腕固定零位"];
+ ik [label="用户 Holosoma / OmniRetarget\n直接拟合 G1-23；足端、支撑、自碰撞约束"];
+ clock [label="统一命名与时间轴\n保留原速率结果；按需重采样到 50 Hz"];
+ scene [label="同一机器人 + 同一碰撞地形\n真实配套地形 / 明确登记的平地或支撑假设"];
+ label [label="Drake 几何接触标签\n9 部位 / 接触段过滤 / 未来 1.5 秒目标",fillcolor="#dcfce7"];
+ check [label="MuJoCo 独立检查 + 成对诊断\n穿透 / 自碰撞 / 限位 / 速度 / 滑脚 / 接触保持"];
+ gate [shape=diamond,label="质量筛查",fillcolor="#fef3c7"];
+ repair [label="定位失败帧与局部修正\n保留基线 / 视频对比 / 修正后重新标注"];
+ candidate [label="Stage 1 离线候选集\n按源动作分组划分训练与验证",fillcolor="#dcfce7"];
+ rollout [label="后续训练：Tracker rollout\n成功轨迹 + 接触力事件 → Stage 2 hindsight",style="rounded,dashed",fillcolor="#f1f5f9"];
+ registry [label="全程资产管理\n稳定批次 ID / manifest / 哈希 / 版本 / 日志",fillcolor="#ede9fe"];
+ robot -> audit -> subset -> clock;
+ human -> extract -> ik -> clock;
+ clock -> scene -> label -> check -> gate;
+ gate -> repair [label="需要修正"]; repair -> clock [style=dashed];
+ gate -> candidate [label="离线合格"]; candidate -> rollout [style=dashed,label="尚未实现的训练阶段"];
+ registry -> audit [style=dotted,arrowhead=none]; registry -> check [style=dotted,arrowhead=none];
+}

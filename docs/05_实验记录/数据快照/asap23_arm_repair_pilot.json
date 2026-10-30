@@ -1,0 +1,173 @@
+[
+  {
+    "clip": "climb_03_z_scale_1.0",
+    "frames": 1009,
+    "fps": 50.0,
+    "passes": 4,
+    "smooth_weight": 3.0,
+    "surface_task_transition_m": [
+      0.015,
+      0.03
+    ],
+    "method": "eight_arm_dofs_slsqp_source_surface_tasks_exact_geometry_acceptance",
+    "signature": {
+      "script_sha256": "98b9f2a4c0cbbf93d8699c758e4187c489d5045d7a7b91537fc7f2f815943b1b",
+      "baseline_motion_sha256": "5741a92606363a71e33b62e1312d5be2f6188ec867bca790ac43524b3d9b43bb",
+      "scene_sha256": "c41644f9614ddeea534df680f89f8a6b850f516d876757d6ca7899de4955b0d1",
+      "source_sha256": "c6a103f500a2ce19c77241bf5710ae11153ca42943e54eb1a44f8f5ca61b57e2"
+    },
+    "baseline_motion": "/home/lyx/train/ACP_repro/outputs/omni_asap23/clips/climb_03_z_scale_1.0/labeled/motion.npz",
+    "scene": "/home/lyx/train/ACP_repro/outputs/omni_asap23/clips/climb_03_z_scale_1.0/scene.xml",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_03_z_scale_1.0.npz",
+    "arm_joint_names": [
+      "left_shoulder_pitch_joint",
+      "left_shoulder_roll_joint",
+      "left_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "right_shoulder_pitch_joint",
+      "right_shoulder_roll_joint",
+      "right_shoulder_yaw_joint",
+      "right_elbow_joint"
+    ],
+    "root_waist_legs_exactly_preserved": true,
+    "source_hand_near_surface_steps": 800,
+    "contact_retention_before": 0.5275,
+    "contact_retention_after": 1.0,
+    "hand_environment_invalid_steps_before": 374,
+    "hand_environment_invalid_steps_after": 0,
+    "hand_center_error_before_mean_m": 0.007064467521308134,
+    "hand_center_error_after_mean_m": 0.001004733330870578,
+    "maximum_arm_correction_rad": 0.10576208861860226,
+    "maximum_arm_velocity_limit_ratio": 0.18781242200913525,
+    "maximum_gradient_arm_velocity_limit_ratio": 0.18781242200913525,
+    "maximum_correction_step_rad": 0.049888803766094836,
+    "rms_correction_velocity_rad_s": 0.06659684815296853,
+    "final_geometry_constraint_failed_frames": 0,
+    "final_geometry_failed_frame_indices": [],
+    "solver_nonconverged_attempts": 0,
+    "rejected_attempts": 0,
+    "elapsed_s": 84.001446931994,
+    "stage1_training_admitted": false,
+    "limitations": [
+      "Source distance contacts are not force labels",
+      "Inherited per-pair penetrations are reported, not globally erased",
+      "Self pairs within two moving joints or the same welded body are excluded; calibrated allowed pairs still pending",
+      "Arm deviation bounded to 0.8 rad; not all source wrist poses are reachable",
+      "No dynamics validation"
+    ]
+  },
+  {
+    "clip": "climb_01_z_scale_0.9",
+    "frames": 871,
+    "fps": 50.0,
+    "passes": 4,
+    "smooth_weight": 3.0,
+    "surface_task_transition_m": [
+      0.015,
+      0.03
+    ],
+    "method": "eight_arm_dofs_slsqp_source_surface_tasks_exact_geometry_acceptance",
+    "signature": {
+      "script_sha256": "98b9f2a4c0cbbf93d8699c758e4187c489d5045d7a7b91537fc7f2f815943b1b",
+      "baseline_motion_sha256": "9799f5413884d85dc1503ff0f874e32ac92bf83df4e6d54252dae620dccc8be7",
+      "scene_sha256": "02d538b8056af4fba016b9e04edcb8d428b130f2648e4c1959a1de4a6cde38ec",
+      "source_sha256": "86fa1aaf7d678e1630d8fb3f79271fe85234df0c00860cc1ac7a81ad78c23862"
+    },
+    "baseline_motion": "/home/lyx/train/ACP_repro/outputs/omni_asap23/clips/climb_01_z_scale_0.9/labeled/motion.npz",
+    "scene": "/home/lyx/train/ACP_repro/outputs/omni_asap23/clips/climb_01_z_scale_0.9/scene.xml",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_01_z_scale_0.9.npz",
+    "arm_joint_names": [
+      "left_shoulder_pitch_joint",
+      "left_shoulder_roll_joint",
+      "left_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "right_shoulder_pitch_joint",
+      "right_shoulder_roll_joint",
+      "right_shoulder_yaw_joint",
+      "right_elbow_joint"
+    ],
+    "root_waist_legs_exactly_preserved": true,
+    "source_hand_near_surface_steps": 572,
+    "contact_retention_before": 0.40734265734265734,
+    "contact_retention_after": 1.0,
+    "hand_environment_invalid_steps_before": 312,
+    "hand_environment_invalid_steps_after": 0,
+    "hand_center_error_before_mean_m": 0.01055088547511982,
+    "hand_center_error_after_mean_m": 0.0011707743810778198,
+    "maximum_arm_correction_rad": 0.09414741189128942,
+    "maximum_arm_velocity_limit_ratio": 0.14097071087560253,
+    "maximum_gradient_arm_velocity_limit_ratio": 0.14097071087560253,
+    "maximum_correction_step_rad": 0.029287807256205056,
+    "rms_correction_velocity_rad_s": 0.08124903485557196,
+    "final_geometry_constraint_failed_frames": 0,
+    "final_geometry_failed_frame_indices": [],
+    "solver_nonconverged_attempts": 0,
+    "rejected_attempts": 0,
+    "elapsed_s": 89.85100880399841,
+    "stage1_training_admitted": false,
+    "limitations": [
+      "Source distance contacts are not force labels",
+      "Inherited per-pair penetrations are reported, not globally erased",
+      "Self pairs within two moving joints or the same welded body are excluded; calibrated allowed pairs still pending",
+      "Arm deviation bounded to 0.8 rad; not all source wrist poses are reachable",
+      "No dynamics validation"
+    ]
+  },
+  {
+    "clip": "climb_00_z_scale_0.9",
+    "frames": 1006,
+    "fps": 50.0,
+    "passes": 4,
+    "smooth_weight": 3.0,
+    "surface_task_transition_m": [
+      0.015,
+      0.03
+    ],
+    "method": "eight_arm_dofs_slsqp_source_surface_tasks_exact_geometry_acceptance",
+    "signature": {
+      "script_sha256": "98b9f2a4c0cbbf93d8699c758e4187c489d5045d7a7b91537fc7f2f815943b1b",
+      "baseline_motion_sha256": "c83e904a90efa04c1a53ce6178c698b98f4126d26fe1cc6f1c2f766b3b91223a",
+      "scene_sha256": "fe91826917770772794f7505eb4452f6f5eb506a45ef4f4f1acd52711b77f0c8",
+      "source_sha256": "c5f2af25c176cc85357d011aac100d1832485e3410da46491d67ef7ab25dbea9"
+    },
+    "baseline_motion": "/home/lyx/train/ACP_repro/outputs/omni_asap23/clips/climb_00_z_scale_0.9/labeled/motion.npz",
+    "scene": "/home/lyx/train/ACP_repro/outputs/omni_asap23/clips/climb_00_z_scale_0.9/scene.xml",
+    "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_00_z_scale_0.9.npz",
+    "arm_joint_names": [
+      "left_shoulder_pitch_joint",
+      "left_shoulder_roll_joint",
+      "left_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "right_shoulder_pitch_joint",
+      "right_shoulder_roll_joint",
+      "right_shoulder_yaw_joint",
+      "right_elbow_joint"
+    ],
+    "root_waist_legs_exactly_preserved": true,
+    "source_hand_near_surface_steps": 439,
+    "contact_retention_before": 0.8177676537585421,
+    "contact_retention_after": 1.0,
+    "hand_environment_invalid_steps_before": 79,
+    "hand_environment_invalid_steps_after": 0,
+    "hand_center_error_before_mean_m": 0.00793551686835702,
+    "hand_center_error_after_mean_m": 0.0007979178129171504,
+    "maximum_arm_correction_rad": 0.10105274934466979,
+    "maximum_arm_velocity_limit_ratio": 0.17074853120527936,
+    "maximum_gradient_arm_velocity_limit_ratio": 0.1673368467872916,
+    "maximum_correction_step_rad": 0.02572532839432573,
+    "rms_correction_velocity_rad_s": 0.0658794379135255,
+    "final_geometry_constraint_failed_frames": 0,
+    "final_geometry_failed_frame_indices": [],
+    "solver_nonconverged_attempts": 0,
+    "rejected_attempts": 0,
+    "elapsed_s": 103.28897352800414,
+    "stage1_training_admitted": false,
+    "limitations": [
+      "Source distance contacts are not force labels",
+      "Inherited per-pair penetrations are reported, not globally erased",
+      "Self pairs within two moving joints or the same welded body are excluded; calibrated allowed pairs still pending",
+      "Arm deviation bounded to 0.8 rad; not all source wrist poses are reachable",
+      "No dynamics validation"
+    ]
+  }
+]

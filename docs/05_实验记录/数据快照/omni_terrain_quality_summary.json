@@ -1,0 +1,74 @@
+{
+  "scope": "robot-terrain only",
+  "expected_inputs": 145,
+  "results": 145,
+  "base_motion_groups": 29,
+  "has_human_joints": 112,
+  "missing_human_joints": 33,
+  "statuses": {
+    "needs_repair": 145
+  },
+  "reason_counts": {
+    "self_collision": 145,
+    "left_foot_sliding": 101,
+    "right_stance_gap": 83,
+    "right_foot_sliding": 73,
+    "left_stance_gap": 69,
+    "environment_penetration": 49,
+    "mapped_keypoint_error": 43,
+    "joint_velocity_limits": 23
+  },
+  "routes": {
+    "human_holosoma": {
+      "inputs": 94,
+      "statuses": {
+        "needs_repair": 94
+      }
+    },
+    "robot29_to_robot23": {
+      "inputs": 32,
+      "statuses": {
+        "needs_repair": 32
+      }
+    },
+    "robot29_to_robot23_robot_fk": {
+      "inputs": 16,
+      "statuses": {
+        "needs_repair": 16
+      }
+    },
+    "robot29_to_robot23_robot_fk_relaxed": {
+      "inputs": 3,
+      "statuses": {
+        "needs_repair": 3
+      }
+    }
+  },
+  "evaluated_frames": 91095,
+  "evaluated_duration_s": 1819.0,
+  "frame_weighted_environment_invalid_fraction": 0.03586365881771777,
+  "frame_weighted_self_collision_fraction": 0.40734398155771445,
+  "clips_with_nonlocal_self_collision": 145,
+  "frame_weighted_nonlocal_self_collision_fraction": 0.33232339864976124,
+  "frame_weighted_joint_velocity_invalid_fraction": 0.00042812448542730116,
+  "stage1_offline_candidates": 0,
+  "stage2_hindsight_admitted": 0,
+  "criteria": {
+    "version": "offline_kinematic_screen_v1",
+    "environment_penetration_tolerance_m": 0.003,
+    "self_penetration_tolerance_m": 0.003,
+    "maximum_invalid_environment_frames": 0,
+    "maximum_invalid_joint_position_frames": 0,
+    "maximum_invalid_joint_velocity_frames": 0,
+    "maximum_self_collision_frames": 0,
+    "minimum_stance_near_surface_fraction_per_foot": 0.9,
+    "maximum_contact_foot_planar_speed_p95_m_s": 0.15,
+    "maximum_mapped_keypoint_mean_error_m": 0.08,
+    "maximum_mapped_keypoint_p95_error_m": 0.15,
+    "minimum_native_drake_raw_flag_agreement": 0.999,
+    "note": "Engineering screening thresholds, not paper-specified acceptance criteria. Passing identifies a Stage-1 offline reference candidate. Successful tracker rollouts and force events are required separately for Stage-2 hindsight, not as a prerequisite for starting Stage-1 training. Stance uses source low foot velocity, and foot speed uses the target semantic sole frame."
+  },
+  "complete_inventory_handled": true,
+  "all_processing_successful": true,
+  "note": "All-input denominator includes failed processing. Acceptance thresholds are engineering choices. Split future train/validation sets by the 29 base-motion groups, not individual scale augmentations."
+}

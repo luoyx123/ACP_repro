@@ -1,0 +1,170 @@
+{
+  "files": {
+    "src/acp/pipeline/datasets/lafan1.py": {
+      "original_path": "scripts/batch_lafan_asap23.py",
+      "original_sha256": "26c0136a363002617a8106c7a7328e164d49a4a89ad64e33f4af1cc545016204",
+      "relocated_sha256": "0c40e57a23feffd8c777f2c71b30086f82c67e5c7d89d4068ce12436ab1825ed"
+    },
+    "src/acp/pipeline/names.py": {
+      "original_path": "scripts/match_mixamo_names.py",
+      "original_sha256": "201c6e378521a389bab2bcca9bf73c68a73bf63a24b389ba60f548a972fa409d",
+      "relocated_sha256": "201c6e378521a389bab2bcca9bf73c68a73bf63a24b389ba60f548a972fa409d"
+    },
+    "src/acp/pipeline/scene_fit.py": {
+      "original_path": "scripts/prepare_mixamo_test_scenes.py",
+      "original_sha256": "cfa3117fe96d0177342f3c2e0803c36c89f43b1bb7e5abacb95e6156bf134d55",
+      "relocated_sha256": "37783366a285628f2bd6f7f70591c65d40ba135b7686dc803b76525de9747778"
+    },
+    "src/acp/pipeline/cli.py": {
+      "original_path": "scripts/acp_pipeline.py",
+      "original_sha256": "c5233d1f358b4734f7a6a2f2c473c3bbac8c224a714c68b4f3efee14ae920d43",
+      "relocated_sha256": "231a9f824d8838d72a617ed59fd3cfa378183ca007e11959316b926da0992562"
+    },
+    "src/acp/robot/model.py": {
+      "original_path": "scripts/prepare_asap23.py",
+      "original_sha256": "1020f9a307fc11bc8755641cc132b1674ff8c03dd189b825fc8a6e8ffe145fd5",
+      "relocated_sha256": "a5afafee5448998a13df622f624ba404c8e6fa9e3fd325c1381f507ddf5fec79"
+    },
+    "src/acp/quality/repair.py": {
+      "original_path": "scripts/repair_asap23_arms.py",
+      "original_sha256": "4d87f4e4178721d9530dc778fb7c9c8d01406381be31ce34f5ecb4b818f47570",
+      "relocated_sha256": "c0fe8eb237bb4d6c0273177ac9cf5ac143a9a1d1299d43597c4744a28f67e0aa"
+    },
+    "src/acp/pipeline/datasets/omni.py": {
+      "original_path": "scripts/batch_asap23.py",
+      "original_sha256": "6f906527a33182c42711b9798963b0483f8175ea8fd985671fdf6b58fe232380",
+      "relocated_sha256": "31a612124640d7ca2efceafd0822f670d3d81dedfd2ce9a24edbd7179c86fc31"
+    },
+    "src/acp/management/check.py": {
+      "original_path": "scripts/check_assets.py",
+      "original_sha256": "a7a858dd931d35b596f152cc456fe0f1df513ea06354ff17faf5c7b21b569308",
+      "relocated_sha256": "917c37f24118d3e9a7e5c015de4537d93d8df8e1c3dcd65c199810aa40a75f42"
+    },
+    "src/acp/pipeline/datasets/mixamo.py": {
+      "original_path": "scripts/batch_mixamo.py",
+      "original_sha256": "410bea1a4b92e32efa7ffea7c3b9637b0fdfa986ce503a2b28e0e51201a986d7",
+      "relocated_sha256": "7a5b2efa9458dea15dff8ca2ba376e1007274ea27894d8c71433bd5f8beb98fa"
+    },
+    "src/acp/quality/compare.py": {
+      "original_path": "scripts/compare_asap23.py",
+      "original_sha256": "c74463ce4282b108e5257b328389c0d0cb892996c2ac286538d13e203b8f4960",
+      "relocated_sha256": "677f3ea3b10180fc08c22304f6ed76264bdf08f9cad0a55a330e19029f2401a6"
+    },
+    "src/acp/quality/finalize.py": {
+      "original_path": "scripts/finalize_arm_repair.py",
+      "original_sha256": "b539bb09977f0acf002b77e33f4aaec2d92aa4d6892f450d2a53e4ea7c17821a",
+      "relocated_sha256": "d1b602e419225c7bcb55c20368af5e6063a19e168bc3b98697601fa8f410fbbd"
+    },
+    "src/acp/pipeline/contact_solver.py": {
+      "original_path": "scripts/mixamo_contact_retargeter.py",
+      "original_sha256": "02e6cebbacab0ada7aa68e0a3c3de1c6ad705c400a942520e8ef83ac67da9dde",
+      "relocated_sha256": "02e6cebbacab0ada7aa68e0a3c3de1c6ad705c400a942520e8ef83ac67da9dde"
+    },
+    "src/acp/quality/evaluate.py": {
+      "original_path": "scripts/evaluate_omni_terrain.py",
+      "original_sha256": "bd34ec6491a9560b94b8e06dae09236e9508957421ee7e6dd46574509543ba13",
+      "relocated_sha256": "efa43543aadb14023cb3dea1a73e02cee96763f519f664c5be755d3d2f8ac7c7"
+    },
+    "src/acp/quality/native.py": {
+      "original_path": "scripts/check_holosoma_mujoco.py",
+      "original_sha256": "33c0bd269cafb8e59c86fa8bbf58031530f5d752771273d5113be955bcf10a63",
+      "relocated_sha256": "33c0bd269cafb8e59c86fa8bbf58031530f5d752771273d5113be955bcf10a63"
+    },
+    "src/acp/pipeline/datasets/php.py": {
+      "original_path": "scripts/batch_php_asap23.py",
+      "original_sha256": "9ec15623062b4a3b32aaf88803a39953a0bde48ec15e541101cb905ed3286b8c",
+      "relocated_sha256": "77330c35d791103a6d680c29562b2a9d68a8e852c0d145539dd50b0fec00823f"
+    },
+    "src/acp/robot/transfer.py": {
+      "original_path": "scripts/run_robot_transfer.py",
+      "original_sha256": "ea9f2759a18bfd0b12056a9c5e37b01baccf166897f47b417915781b21e2c600",
+      "relocated_sha256": "34917261ab19625ce9adb1b473c4890f502b238d54154654145d060ed6617ccc"
+    },
+    "src/acp/management/status.py": {
+      "original_path": "scripts/mixamo_status.py",
+      "original_sha256": "2fbb4ba217d864e0185dfb4b9d089a9a2d8171e874a532d211e59f078d02221a",
+      "relocated_sha256": "eae31cf790e1984681075e9bd6aaaf7d6337c1c382725b63b23b15ffebcfd05e"
+    },
+    "src/acp/visualization/viewer.py": {
+      "original_path": "scripts/view_omni_trajectory.py",
+      "original_sha256": "bd65e58fffbeb62f4667e702a5bd9d4a0edc243a8a8b95c72a606d87588de960",
+      "relocated_sha256": "e76a71266028f5e7eb5cbd31884bdc7ffc227612659cce0bacf6f120c5a88b81"
+    },
+    "src/acp/pipeline/blender.py": {
+      "original_path": "scripts/extract_mixamo_blender.py",
+      "original_sha256": "f4265f55c3b157183f694b73d65a4394b1cbc32e06bd2d9388e1b5c967b8c5d9",
+      "relocated_sha256": "f4265f55c3b157183f694b73d65a4394b1cbc32e06bd2d9388e1b5c967b8c5d9"
+    },
+    "src/acp/management/organize.py": {
+      "original_path": "scripts/organize_assets.py",
+      "original_sha256": "27ebbd0d3c4e0198019d324e6c2742a2b578f753a978e2fbf91e77b3f805c20b",
+      "relocated_sha256": "380e8cd7a7f92b5ac2c608e29cdcd13e157453924f4d5b3bb8a2fd2e0c21e07d"
+    },
+    "src/acp/pipeline/mixamo_resources.py": {
+      "original_path": "scripts/run_mixamo_configured.py",
+      "original_sha256": "4ccb7d3b3c441af9a4823696ba48fdc32d877999c29191fc2cfe95f9910de4d3",
+      "relocated_sha256": "30eed779cddf959370ff89a0caa98b257a2a4dc25c656061b2e9fda1ba8d155c"
+    },
+    "src/acp/__init__.py": {
+      "original_path": "src/acp/__init__.py",
+      "original_sha256": "4b1d3f61604836f72654685c8af8374bb6241b0710cb3e97c32cf2d52c9e41b7",
+      "relocated_sha256": "4b1d3f61604836f72654685c8af8374bb6241b0710cb3e97c32cf2d52c9e41b7"
+    },
+    "src/acp/data/scene.py": {
+      "original_path": "src/acp/data/scene.py",
+      "original_sha256": "918b76288324784907f089358cf316402ebfcd019d0f46194f47692a93cab1c6",
+      "relocated_sha256": "918b76288324784907f089358cf316402ebfcd019d0f46194f47692a93cab1c6"
+    },
+    "src/acp/data/contacts.py": {
+      "original_path": "src/acp/data/contacts.py",
+      "original_sha256": "4ef0bea1ce5b8bf035c3e72b47a25ee316118455ebdb492855140b1b3e672b6e",
+      "relocated_sha256": "4ef0bea1ce5b8bf035c3e72b47a25ee316118455ebdb492855140b1b3e672b6e"
+    },
+    "src/acp/data/motions.py": {
+      "original_path": "src/acp/data/motions.py",
+      "original_sha256": "2f524ade33f77860effec3596f363569c658d8a0c95e5b3f46049df4d44e5f61",
+      "relocated_sha256": "2f524ade33f77860effec3596f363569c658d8a0c95e5b3f46049df4d44e5f61"
+    },
+    "src/acp/data/playback.py": {
+      "original_path": "src/acp/data/playback.py",
+      "original_sha256": "ad7d5a2ae12c62929ca7b405d819a3b2abb83c2d07e61da6a82f1c3af7e60a87",
+      "relocated_sha256": "31118af84974f79f0dfc2d2359c02c4a1f7472bfafc6ca13ec5a8f9706b95e60"
+    },
+    "src/acp/data/adapters/holosoma.py": {
+      "original_path": "src/acp/data/holosoma.py",
+      "original_sha256": "1d1de9751f3d80c591f1e9b72d8b6620ac73fc74e04660bc994497a2e3e8d0ef",
+      "relocated_sha256": "896a3cc2d323340d4974ae8aadca2511807db648c14061f1e30f52adebae1c48"
+    },
+    "src/acp/robot/joints.py": {
+      "original_path": "src/acp/data/asap.py",
+      "original_sha256": "f7193fd9cbbc3b7029afd3db85a1a006d8c45c7bddfc458f955f1a56ed71fa9d",
+      "relocated_sha256": "f7193fd9cbbc3b7029afd3db85a1a006d8c45c7bddfc458f955f1a56ed71fa9d"
+    },
+    "src/acp/data/__init__.py": {
+      "original_path": "src/acp/data/__init__.py",
+      "original_sha256": "a5b3e6d7bd0de2106d9fd4492ef226b74ac692222d761bf2323f1d570b9eeac9",
+      "relocated_sha256": "a5b3e6d7bd0de2106d9fd4492ef226b74ac692222d761bf2323f1d570b9eeac9"
+    },
+    "src/acp/data/assets.py": {
+      "original_path": "src/acp/data/assets.py",
+      "original_sha256": "cc2097c310c7c51f462222f82983ae8245b7ef24f79d1d898fa1f1039e2caf88",
+      "relocated_sha256": "cc2097c310c7c51f462222f82983ae8245b7ef24f79d1d898fa1f1039e2caf88"
+    },
+    "src/acp/robot/collision.py": {
+      "original_path": "src/acp/data/collision.py",
+      "original_sha256": "12e272887a910b023e3873505cabaf9c2f64ee7bf727d3b46536ebc20738fea1",
+      "relocated_sha256": "12e272887a910b023e3873505cabaf9c2f64ee7bf727d3b46536ebc20738fea1"
+    },
+    "src/acp/data/adapters/mixamo.py": {
+      "original_path": "src/acp/data/mixamo.py",
+      "original_sha256": "9bdde0b52ee31fc181d7d8c1ee52c5cafdd3cbb9d1ef16fcdc939c2d6d02283c",
+      "relocated_sha256": "9bdde0b52ee31fc181d7d8c1ee52c5cafdd3cbb9d1ef16fcdc939c2d6d02283c"
+    },
+    "src/acp/data/adapters/php.py": {
+      "original_path": "src/acp/data/php.py",
+      "original_sha256": "550fe8145bedbefc358844ad305c4970c764ea0fda3da340c8632e57eba554dd",
+      "relocated_sha256": "550fe8145bedbefc358844ad305c4970c764ea0fda3da340c8632e57eba554dd"
+    }
+  },
+  "scope": "2026-10-30 structural relocation; only exact reviewed bytes retain old code identity; real data/model hashes unchanged"
+}

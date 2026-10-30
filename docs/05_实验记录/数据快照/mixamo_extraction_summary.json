@@ -1,0 +1,13 @@
+{
+  "scope": "animation only",
+  "animations": 2453,
+  "source_frames": 520661,
+  "source_fps_histogram": {
+    "60.0": 2453
+  },
+  "extraction_statuses": {
+    "extracted": 2453
+  },
+  "pipeline_status": "full_retargeting_in_progress",
+  "note": "Extraction completed, not a claim of complete retargeting or training acceptance"
+}

@@ -1,0 +1,2066 @@
+                                          Research Article                                                                                                               ETH Zurich        1
+
+
+
+
+                                         Humanoid Mobility via Attention-based Contacts
+                                         J UNZHE H E1∗ , K EHAN W EN2∗ , C HONG Z HANG1,4∗ , C LEMENS S CHWARKE1,5 , Z EWEI Z HANG1 , K AIXIAN Q U1 ,
+                                         S IYUAN H U3 , M ATTHIAS M ÜLLER3 , V LADLEN KOLTUN3 , M ARCO H UTTER1
+                                         1 Robotic Systems Lab, ETH Zurich, 8092 Zurich, Switzerland.
+                                         2 Previously at 1 , now at Department of Electrical and Computer Engineering, National University of Singapore, Singapore.
+                                         3 Apple      4 ETH AI Center        5 NVIDIA
+                                         ∗ Equal contribution.
+
+
+
+
+                                               Humanoid mobility over complex terrain requires accurate foot placement and coordinated whole-body motion
+                                               capable of robust adaptation. Reinforcement learning (RL) policies trained without motion references generalize
+arXiv:2610.31608v1 [cs.RO] 22 Oct 2026
+
+
+
+
+                                               well across terrains, yet eliciting effective whole-body coordination through reward design and exploration alone
+                                               remains challenging. In contrast, reference-based methods yield natural motions but struggle to adapt beyond
+                                               the predefined trajectories in their training data. We introduce a learning framework that bridges these two
+                                               approaches by using motion data strictly as a training prior. An explicit, self-supervised, attention-based contact
+                                               planner predicts future body–environment contacts, while a contact-conditioned tracker translates these plans
+                                               into coordinated whole-body motion. Together, they establish contact as an interface between sensory observations
+                                               and control actions. This abstraction allows the policy to internalize the contact-aware structure of locomotion
+                                               rather than directly replicating kinematics. Consequently, a single policy can exploit data-driven motion priors
+                                               for natural whole-body coordination while retaining the flexibility to discover environment-dependent behaviors
+                                               through reinforcement learning. Building on the learned contact planner and tracker, a subsequent fine-tuning
+                                               stage bootstraps their acquired capabilities to explore environment variations beyond those covered by the original
+                                               motion data. Operating entirely from onboard observations without any reference inputs at deployment, this
+                                               framework enables versatile humanoid mobility in challenging environments.
+
+
+
+                                         INTRODUCTION                                                                ful mechanism for robustness, reward signals alone offer insufficient
+                                                                                                                     structure for efficiently discovering complex whole-body behaviors.
+                                         Deploying humanoid robots in human-centric environments requires                An alternative is to provide this structure directly through reference
+                                         capabilities well beyond stable bipedal walking. Traversing cluttered       motions. Motion-imitation methods such as DeepMimic [33] reframe
+                                         and geometrically constrained environments often demands stepping           behavior discovery as a constrained tracking problem, enabling highly
+                                         across sparse footholds, climbing onto obstacles, crawling through          dynamic and coordinated whole-body motions. More recent systems
+                                         confined spaces, or leveraging the upper body for support. These multi-     extend this idea to humanoids using large motion datasets, retargeting,
+                                         contact behaviors fundamentally diverge from conventional locomotion.       and learned motion priors [34–43]. Such approaches naturally produce
+                                         Instead of adhering to a prescribed pattern of foot contacts, the robot     coordinated and human-like behaviors because the reference specifies
+                                         must continuously determine the spatial, temporal, and anatomical           not only the desired task outcome but also how the entire body should
+                                         distribution of its environmental interactions. Achieving this capability   achieve it. Yet a tracking controller can only execute a suitable motion
+                                         while remaining robust to disturbances and generalizing to previously       if an appropriate reference can first be generated for the current envi-
+                                         unseen terrain remains a central challenge for humanoid mobility.           ronment. During deployment in previously unseen environments, this
+                                             Reinforcement learning (RL) has proven highly effective for teach-      shifts the central problem from control to reference generation.
+                                         ing quadrupedal and bipedal robots to swiftly navigate rough [1–7],             One solution is therefore to generate these references online. Model-
+                                         sparse [8–11], and even parkour [12–19] terrains without reference mo-      based approaches can use trajectory planners to provide dynami-
+                                         tions. Similar principles have increasingly been applied to humanoids,      cally feasible motions that are subsequently tracked by a learned
+                                         enabling robust behaviors that adapt well to terrain variations [10, 19–    controller [9, 44], given a user-specified velocity or goal command.
+                                         31]. However, extending this paradigm to whole-body motion control          This decomposition combines explicit reasoning about environmental
+                                         introduces a massive combinatorial space. The robot must simultane-         geometry with the robustness of learned control. Yet it also makes
+                                         ously determine which anatomical parts establish contact, the precise       deployment dependent on a whole-body planner, which can be compu-
+                                         spatial and temporal distribution of those contacts, and the coordinated    tationally expensive and inherits the modeling assumptions and failure
+                                         kinematics of the remaining degrees of freedom. Encoding these com-         modes of the planning system. For highly dynamic locomotion with
+                                         plex interactions indirectly through task objectives requires extensive     intermittent multi-contact interactions, generating accurate full-body
+                                         reward shaping, where minor adjustments can yield drastically different     trajectories in real time remains particularly challenging.
+                                         contact strategies [32]. Consequently, while pure RL provides a power-          Recent work has consequently begun replacing model-based refer-
+ Research Article                                                                                                             ETH Zurich       2
+
+
+  a                                                                        b
+
+
+
+
+                                                                           d
+
+
+
+
+  c
+
+
+
+
+  e                                    f                                   g                                    h
+
+
+
+
+  i                                                                         j
+
+
+
+
+Fig. 1. Agile and robust humanoid mobility in diverse environments. Our holistic controller enables a humanoid robot (the Unitree G1) to
+dynamically traverse diverse and challenging environments, including (a) ladder climbing, (b,j) stage climbing, (c) crawling, (d) vaulting over
+thin walls, (e) stair climbing, (f) standing up from the ground, (g) jumping down, (h) walking over stepping stones, and (i) sitting down, using a
+single generalist policy.
+ Research Article                                                                                                                 ETH Zurich        3
+
+
+ence generation with learned motion generators or planners [45–47].          bining key body trajectories with temporal contact signals, as a shared
+These methods provide a promising route toward more expressive               interface for executing and composing long-horizon humanoid loco-
+whole-body behaviors by learning the distribution of feasible motions        manipulation skills. Together, these works demonstrate that contacts
+from data. Nevertheless, generating complete motion trajectories re-         provide a compact and effective abstraction for specifying complex
+mains a high-dimensional prediction problem. Generalization to en-           robot behaviors.
+vironment configurations not represented in the motion data often                This perspective becomes even more relevant for whole-body mobil-
+requires substantial data augmentation, and small trajectory errors can      ity. When traversing sparse and complex terrain, the critical decisions
+become consequential when steppable or contactable regions are sparse.       extend beyond selecting footholds: the robot must determine which
+In such environments, producing a motion that is kinematically plausi-       parts of the body should interact with the environment and where these
+ble is insufficient: the predicted interaction with the environment must     interactions should occur. Once these contacts are specified, however,
+also be physically accurate.                                                 there may exist many valid whole-body trajectories that realize them.
+    A related line of work attempts to close the gap between reference-      A hand contact on the top of a ledge, for example, constrains an es-
+based training and autonomous deployment by composing, augmenting,           sential interaction with the environment without uniquely determining
+or distilling reference motions into perceptive policies [48–52]. Wu         the trajectories of the arms, torso, and legs. We therefore propose
+et al. [48], for example, use motion matching to compose retargeted          contact as an intermediate representation between terrain perception
+human skills into obstacle-adaptive reference trajectories, train tracking   and whole-body control. Compared with a full-body reference trajec-
+experts, and subsequently distill these behaviors into a vision-based        tory, contacts retain the geometrically critical information required for
+policy. Wang et al. [49] introduce a generalist humanoid locomotion          terrain interaction while leaving the policy freedom to adapt the motion
+framework that trains multiple specialist policies for diverse skills        connecting them.
+and distills their expertise into a single vision-based policy through           This representation also changes the role of motion data. Rather
+case-adaptive specialist selection, enabling unified locomotion control      than using demonstrations as trajectories that the robot must repro-
+without reference motions at deployment. Wang et al. [50, 51] pro-           duce, we use them as training-time guidance for learning which
+pose a hybrid imitation learning framework that combines reference           body–environment interactions are useful. Reference motions provide
+motion tracking with adversarial imitation learning, enabling a unified      examples of effective contacts during training, while reinforcement
+controller to preserve the naturalness of motion data while improving        learning determines how those contacts should be realized under dif-
+skill composition and adaptation to procedurally generated environ-          ferent robot states and terrain configurations. The resulting policy is
+ments. Chen et al. [52] introduce a single perceptive whole-body policy      therefore not required to remain close to a reference trajectory. More
+that autonomously transitions between conventional locomotion and            importantly, the reference is removed entirely at deployment: given
+parkour skills without reference motions or skill labels at deployment,      only the robot state, terrain observation, and a user-specified goal, the
+using terrain-conditioned reference augmentation during training to          policy must autonomously determine appropriate contacts and execute
+acquire diverse whole-body behaviors from a small set of motion seeds.       the corresponding whole-body motion. In this way, demonstrations
+These approaches demonstrate that motion data can provide valuable           provide structure to the otherwise difficult exploration problem of
+priors for highly dynamic humanoid behaviors. However, they require          whole-body locomotion without constraining the policy to the distribu-
+machinery for adapting and composing full-body motions across envi-          tion of full-body trajectories contained in the dataset.
+ronmental variations. As the diversity and required geometric precision          To autonomously infer these contacts from terrain observations,
+of the terrain increase, constructing references that cover the relevant     we build upon attention-based map encoding (AME) [10, 19]. AME
+combinations of obstacle geometry, contact location, and skill transi-       uses robot proprioception to condition attention over a local terrain
+tion becomes increasingly difficult. This raises a fundamental question:     representation, allowing the policy to selectively extract terrain features
+how much of a reference motion does a robot actually need in order to        relevant to its current locomotion state. In previous work, this mech-
+learn generalizable whole-body locomotion?                                   anism was learned implicitly and was shown to focus on steppable
+    We argue that the essential information lies not in the complete         terrain regions associated with future footholds. Here, we exploit an
+kinematic-space trajectory, but in its interaction with the environment.     alternative capability of this architecture: attention provides a natural
+Consider how humans traverse irregular natural terrains. Human lo-           interface for explicit contact planning. Rather than using attention only
+comotion does not rely solely on reacting to the terrain immediately         to encode terrain into a latent representation for control, we use it to
+beneath the feet; instead, visual information is gathered prospectively      identify task-relevant contact locations on the terrain map. Specifi-
+to determine suitable future interactions with the environment. Matthis      cally, our contact planner attends to terrain points conditioned on the
+et al. [53] studied gaze and full-body kinematics during walking over        robot’s proprioception and a user-specified goal and predicts explicit
+natural outdoor terrain and showed that humans adapt their gaze be-          contact locations directly on the map. This formulation tightly couples
+havior according to terrain complexity while maintaining a consistent        when and where the robot should interact with the environment to its
+temporal look-ahead strategy. Their findings reveal a tight coupling         evolving physical state. The planner can therefore shift its attention
+between perception of the upcoming terrain and the subsequent deci-          as the robot moves, selecting different terrain regions for feet, hands,
+sions on contact positions. These observations suggest that successful       and other body contacts according to both local geometry and the cur-
+locomotion over geometrically constrained terrain depends critically on      rent proprioceptive state. This design is particularly suited to sparse
+identifying where future contacts should occur, rather than prescribing      terrain, where a small error in a predicted contact can distinguish a fea-
+the complete body trajectory leading to them.                                sible interaction from a failure. At the same time, predicting contacts
+    The importance of contact has also been recognized in recent             rather than complete whole-body trajectories substantially reduces the
+learning-based control methods. Zhang et al. [23] condition whole-           dimensionality of the planning problem.
+body humanoid control on sequential contact objectives, demonstrating            Based on these insights, we introduce a framework that uses an
+that contact specifications can effectively coordinate diverse whole-        explicit, self-supervised attention-based contact representation as the
+body behaviors. Omar et al. [54] use contact-centric representations         interface between perception and whole-body control. During train-
+to facilitate multi-task robot learning. More recently, Chen et al. [55]     ing, reference motion data guides the discovery of effective body-
+incorporate scene-interaction contacts as prompts for general humanoid       environment interactions. Rather than tracking full reference trajecto-
+whole-body motion tracking. Yu et al. [56] introduce contact flow, com-      ries, the system abstracts the motion data into a task-relevant contact
+ Research Article                                                                                                                                                                             ETH Zurich   4
+
+
+     A. Inference-Time Overview
+
+                                                                                                                                                                   Env
+
+
+
+                                                           50Hz                                                                                   50Hz
+              Map Scans
+              L×W×3                                                                                                                                      23-DoF
+                                                                                                                                                         actions
+
+                                            Contact Planner                Contact Plans 9 × 3        Whole-body controller
+
+
+
+        Proprioception + goal
+               375 + 3
+
+
+     B. Stage1: Whole-body Controller Pre-training
+       Dataset
+                                                                                                  Contacts
+                                                                                                 Map Scans
+
+                                                                                                   Proprio
+
+
+
+
+       Env
+                                          Trajectories
+
+
+
+
+          Initialized backward along the reference                                                           Actions
+
+                 R = Rp + RR + Rv + Rω + RC + Rj,p + Rj,v                                                                                                           Unified RL contact tracking policy
+
+
+
+      C. Stage2: Contact Planner Training & Whole-body Controller Co-training
+                                                                                                                                             Contact plans (9 × 3)
+                     map features                                   map encoding
+                      (L×W) × 96                                       9 × 96
+                                                                                                       Contact prediction head
+
+
+
+
+                           Linear
+                                                            Multi Head Attention
+                                    (L×W) × 64
+                                                                K      V      Q
+                          concat
+                                                                              9 × 96
+              (L×W) × 16         (L×W) × 48                          MLP + FiLM
+
+                  Linear            CNN
+                                                                                                                                 supervise
+
+
+
+
+                                                           MLP
+                                                                                concat
+                                                         max pool
+              (L×W) × 3            L×W×1                                                              Buffer
+                                                                64
+                                 (height only)
+
+                                                                                                                                                                            Rollout
+        Env                                                         Proprio + goal
+                       Map Scans
+                       L×W×3                                           375 + 3                                                                                    ...
+                                                                                                                                                                                   Whole-body controller
+                                                                                                            actions
+
+
+           Supervised learning         Reinforcement learning           Neural network                Whole-body controller                                             Contact Planner
+
+
+
+Fig. 2. Overview, part I. (A) Inference-time pipeline. (B) Stage 1: whole-body controller pretraining. Reference trajectories are sampled from
+the dataset. Training follows a backward curriculum: the robot is initialized at progressively earlier states along the reference trajectory, advanc-
+ing to an earlier state only after the current one has been successfully learned. R P , R R , Rv , Rω , RC , R j,p , and R j,v denote the position, rotation,
+linear velocity, angular velocity, contact, joint position, and joint velocity tracking reward, respectively. (C) Stage 2: attention-based contact
+planner. The planner predicts contact plans by attending to map observations, conditioned on robot proprioception and the goal command. It
+is trained in a supervised manner using ground-truth contact labels from a motion buffer containing rollout trajectories generated by the whole-
+body controller. The tracker is co-trained using the predicted contacts from the planner.
+ Research Article                                                                                                                                 ETH Zurich              5
+
+
+    Stage3: RL fine-tuning
+     Tracking Env                                                                                            Fine-tuning Env
+
+
+                                                            Actions                                Actions
+
+                                                                       Whole-body
+                                                                        controller
+                                                                                    contact plans
+
+
+                                                          Proprio                                   Proprio
+                                                        Map Scans                                   Map Scans
+
+
+                R = Rp + RR + Rv + Rω + RC + Rj,p + Rj,v              Contact Planner                                         R = RC + Rt
+
+
+
+
+                                                                                                                                                                Rollout
+                                                                        supervise
+
+
+                                                                                    supervise
+                                   Tracking buffer                                                   contact planner
+                                                                                                   Fine-tuning       Buffer
+                    proportional                                                                                                                       yes
+                      sampling                                                                                                                               success?
+
+
+
+
+Fig. 3. Overview, part II. Stage 3: RL fine-tuning. Training combines reference tracking on motions sampled from the demonstration dataset
+(left) with goal-reaching rollouts on procedurally generated terrains outside the demonstration distribution (right). In the goal-reaching envi-
+ronment, the contact planner predicts contact plans from map scans, robot proprioception, and the goal command; the whole-body controller
+executes these plans and is fine-tuned with RL using task (Rt ) and contact-tracking (RC ) rewards. Successful rollouts are stored in the fine-
+tuning buffer and subsequently used as additional supervision for the contact planner, forming a bootstrapping loop in which planner-generated
+contacts are executed, validated through successful interaction, and recycled to improve the planner. Reference trajectories are sampled propor-
+tionally from the original dataset during fine-tuning to retain the previously learned tracking behaviors.
+
+
+structure. The policy then leverages RL to physically realize these                             A supervised learning formulation for contact planning, leveraging
+target contacts while optimizing for broader locomotion objectives.                             human motion data to capture rich and diverse contact strategies, and
+This formulation preserves the primary advantage of motion data by                              an attention-based contact planner (ACP) that predicts contact plans
+providing structured guidance for coordinated whole-body behavior                               for nine body parts (hands, elbows, knees, feet, and pelvis) on rough
+without restricting the agent to strict kinematic reproduction.                                 and discontinuous terrain given a user-specified goal. 3) An RL fine-
+    This contact-centric representation has several important proper-                           tuning stage bootstrapping on planner-generated contact plans that
+ties. First, it reduces the dimensionality of the guidance compared to                          bridges data-driven imitation and reward-driven exploration, enabling
+full-body trajectory tracking. Because multiple dynamically feasible                            generalization to unseen terrains. 4) A LiDAR-based neural mapping
+motions can realize the same contact objective, the contact represen-                           framework that accurately captures fine-grained geometry, including
+tation constrains only the task-relevant interactions while leaving the                         small and thin structures such as ladder rungs, for precise whole-body
+policy free to explore and optimize the whole-body motion between                               locomotion.
+contacts. Second, contact locations are expressed directly with respect                             Through three training stages – contact tracking, contact planning,
+to the environment, providing the geometric precision needed when                               and RL fine-tuning – our framework progressively reduces its reliance
+feasible support regions are sparse. Third, training remains simple: in-                        on motion data while preserving the coordinated whole-body behav-
+stead of constructing rewards that separately induce climbing, crawling,                        iors acquired from demonstrations. By isolating task-relevant contact
+stepping, and other behaviors, reference contacts can be incorporated                           structure, this framework yields a unified generalist policy capable of
+through a common contact-tracking objective. Finally, because refer-                            versatile, coordinated whole-body motion control in previously unseen
+ence trajectories are used only as training-time guidance, deployment                           environments using only onboard sensing (Figure 1). Figures 2 and 3
+requires neither motion retrieval nor a model- or learning-based motion                         provide a visual overview of the method.
+generator. Terrain diversity can therefore be explored directly through
+RL rather than covered through exhaustive manual augmentation of
+                                                                                                RESULTS
+reference trajectories.
+    To obtain diverse and physically feasible whole-body references                             A. Agile and generalized whole-body locomotion
+for training, we use a motion-retargeting pipeline [46]. It transfers                           We tested our unified generalist policy on the Unitree G1 humanoid
+human motion data to the target humanoid while accounting for                                   robot through extensive real-world experiments (Figures 1 and 4) across
+kinematic constraints. The resulting trajectories, together with their                          a diverse range of challenging indoor and outdoor terrains. Operating
+body–environment contact labels and positions, provide contact-aware                            without reference motions at deployment, the controller achieves pre-
+references as training-time guidance for learning whole-body locomo-                            cise, coordinated whole-body locomotion by autonomously adapting
+tion.                                                                                           its contact strategy to the perceived terrain. The resulting behaviors
+    In summary, this paper introduces a three-stage training framework                          include stair, ladder, and box climbing, sitting down, standing up from
+that progressively transfers knowledge from motion data to a whole-                             the ground, sparse and composite terrain traversal, and other whole-
+body control policy, with the following contributions: 1) A contact-                            body interactions. Importantly, successful execution requires more
+informed whole-body tracking training pipeline where the policy is                              than recognizing the surrounding geometry: the policy must also select
+conditioned on contact plans instead of whole-body trajectories. 2)                             an appropriate interaction strategy according to user-specified goal.
+  Research Article                                                                                                                  ETH Zurich        6
+
+
+Consequently, the same environment can elicit substantially different           C. Simulation-based Evaluations
+whole-body behaviors depending on the desired goal position and ori-            We use simulation to examine whether contact commands provide
+entation as well as the geometry. For example, as shown in Figure               sufficient guidance for whole-body tracking, how learned contact plans
+5A, when approaching a box, a forward-facing goal behind the robot              transfer beyond the reference terrains, and how goal-reaching RL fine-
+can let the robot sit down (a), whereas a forward-facing goal in front          tuning and attention-based planning contribute to this generalization
+of the robot on top of a low box prompts the robot to step onto it              (Figure 7).
+(b). If the box is too high, the policy instead leverages a whole-body              We distinguish three terrain groups by their usage in different train-
+climbing strategy that uses the hands for additional support (c). When          ing stages. Reference-anchored terrains are associated with reference
+the desired orientation points to the left or right, the policy reorients its   motions used in Stage 1/2, and test retention of demonstrated behaviors.
+body and performs a sideways climbing maneuver (d). When the goal               Goal-reaching terrains are the procedurally generated terrains used for
+is located farther across the top surface, the robot climbs onto the box,       reference-free fine-tuning in Stage 3 and provide a zero-shot transfer
+crawls forward toward the target, and then stands up (e). If the goal           test for Stage-2 policies. Unseen terrains introduce obstacle compo-
+is on the other side of the box, the robot climbs up, crawls forward,           sition, task-irrelevant distractors, and surface roughness to test skill
+then steps down (f). Similarly, different motions can be generated for          transitions, rejection of irrelevant geometry, and traversal of irregular
+getting down from a box given different heights and goal commands               support surfaces, respectively.
+(g-i). These examples demonstrate that our unified generalist policy                The first two groups each contain four categories, defined by support
+does not simply associate a terrain category with a fixed motion primi-         density and the body parts required for support. Dense foot-only
+tive, but jointly interprets environment geometry and goal commands             terrains provide continuous support for walking, such as stairs and
+to synthesize appropriate contact patterns and whole-body motions               slopes; sparse foot-only terrains require precise foot placement, as
+online.                                                                         on stepping stones and narrow beams. Dense whole-body terrains
+    The unified policy further generalizes to unseen and composite              provide broad surfaces for additional hand or knee support, as in box
+terrains, where multiple terrain types and interaction modes are en-            climbing and get-up transitions; sparse whole-body terrains offer only
+countered sequentially, as shown in Figure 5B. In these scenarios, the          discrete contacts for multiple links, as in ladder climbing and vaulting.
+robot must not only execute individual skills but also autonomously             This division distinguishes the placement precision required by sparse
+determine how to connect them as the terrain and goal evolve. The               support from the multi-limb coordination required by whole-body
+policy synthesizes appropriate motion transitions between behaviors             interactions. Training and evaluation terrain definitions are provided
+without manually designed transition motions, explicit skill-switching          in the supplementary training details and supplementary evaluation
+mechanisms, or augmentation of the motion dataset for specific ter-             details, respectively.
+rain compositions. For example, it can transition continuously from                 Category-level comparisons pool 3,000 episodes per method and
+walking to climbing, crawling, standing, or other contact-rich behav-           category across three evaluation seeds. The terrain-specific compar-
+iors as required by the local geometry and the user-specified goal. In          isons in Figure 7E use 1,000 episodes per method and radar axis, with
+Figures 5B-a and 5B-b, only one goal is specified. For the unstructured         the ladder axis pooling four variants. The eight curated composite
+terrains shown in Figures 5B-c and 5B-d, these goals are provided               courses are evaluated separately from the unseen-terrain benchmark.
+as manually specified intermediate waypoints to guide local traversal.          For category-level evaluations, success requires reaching within 0.5 m
+(Global navigation is beyond the scope of this work.) The resulting             of the active goal horizontally; for sitting, standing, and get-up tran-
+policy successfully traverses diverse unseen terrains while maintaining         sitions, the criterion is instead a vertical error below 0.1 m. On the
+its original ability without requiring additional reference motions or          curated courses, success additionally requires reaching the target height
+terrain-specific motion augmentation. This capability allows a single           and passing through the prescribed course without entering the pit or
+policy to compose previously learned interaction strategies into continu-       leaving the traversal lane. Contact placement error measures the Eu-
+ous whole-body locomotion over terrain configurations not represented           clidean distance between commanded and realized contact positions
+in the original motion dataset. Together, these results demonstrate pre-        at contact onset, averaged over valid contact events. We report Wil-
+cise, robust, and goal-conditioned whole-body humanoid locomotion               son 95% confidence intervals for success and episode-cluster-robust
+that generalizes beyond both the motions and terrain configurations             95% intervals for contact error. These quantify evaluation uncertainty
+encountered during training. Detailed simulation-based analysis is              rather than variability across training runs. Episodes with invalid policy
+provided in Section C.                                                          outputs count as failures and are excluded from contact error. Sensor
+                                                                                noise, physics randomization, and action delay are disabled to isolate
+                                                                                terrain-dependent performance.
+B. Failure Recovery
+Our learned policy demonstrates strong robustness and emergent                  C.1. Ablation study on tracker design
+failure-recovery capabilities on the real robot, as shown in Figure 6.          On reference-anchored terrains, we compare the Stage-1 contact-
+Figure 6A shows that, after an unsuccessful stand-up attempt on un-             conditioned tracker with a variant that additionally receives reference
+even terrain, the policy autonomously makes repeated attempts until it          root and joint kinematics. Both receive the same reference contact
+successfully recovers to a standing configuration. Figures 6B and 6C            commands and retain reference-motion guidance during training. Con-
+demonstrate recovery from unexpected falls: when the robot fails to             tacts alone achieve at least 98.5% success in every category, with no
+land a jump-down maneuver or is tipped over because of a perception             consistent improvement from the additional kinematic inputs (Figure 7
+failure, the policy recovers from the ground and resumes locomotion.            A). This demonstrates that contact plans alone suffice to guide the
+Figure 6D further shows recovery during ladder climbing, where the              whole-body skills in our dataset, without requiring high-dimensional
+robot can escape from a stuck configuration and repeatedly attempt to           full-body reference kinematics as policy inputs.
+climb onto the platform. Notably, these recovery trajectories are not
+explicitly represented in the original motion dataset, suggesting that          C.2. Ablation study on planner architecture and generalization
+the policy can synthesize corrective behaviors beyond the provided              We compare our attention-based planner with a multilayer perceptron
+demonstrations to recover from failures encountered during deploy-              (MLP) that predicts per-body contact plans over the flattened height
+ment.                                                                           scan. The two variants have comparable parameter counts and share
+ Research Article                                                                                                           ETH Zurich       7
+
+
+
+
+  a                                                                       b
+
+
+
+
+  c                                                                       d
+
+
+
+
+  e                                                                        f
+
+
+
+
+Fig. 4. Compositional whole-body motion control. (a) Walking - ladder climbing - jumping down. (b) Walking - stairs climbing - jumping
+down. (c) Stairs climbing up - stepping stones - stairs climbing down. (d) Stairs climbing up - stairs climbing down - box climbing up - jumping
+down. (e) Walking - vaulting - box climbing up. (f) Stairs climbing up - beam - jumping down. All motions deployed with a single generalist
+policy.
+ Research Article                                                                                                                 ETH Zurich        8
+
+
+
+
+  A. Diverse motions conditioned on different goal commands on the same type of terrain
+
+  a                                                 b                                                  c
+
+
+
+
+      Sit down if goal and box behind the robot               Step up if box is not too high          Climb up and stand up if box too high to step up
+  d                                                 e                                                  f
+
+
+
+
+  Climb up sideways to satisfy goal orientation    Crawl forward and stand up if goal far on the box Crawl forward and down if goal not on the box
+ g                                                  h                                                  i
+
+
+
+
+          Step down if box is not too high              Jump down if box is too high to step down          Climb down backwards if goal is behind
+
+  B. Generalized to unseen and composite terrains after RL Fine-tuning
+
+ a                                                                            b
+
+
+
+
+         Combination of ladder, stepping stones, and box climbing                               Climb up on irregular shaped rocks
+ c                                                                            d
+
+
+
+
+                  Follow way points on construction debris                                     Follow way points on construction debris
+
+Fig. 5. Simulation results. The red dots indicate contact plans; the sphere and arrow indicate goal position and orientation. (A) The robot
+selects different interaction strategies on the same type of terrain depending on the desired goal position and orientation. (B) The fine-tuned
+policy generalizes to composite terrains and unseen terrains.
+ Research Article                                                                                                             ETH Zurich       9
+
+
+
+
+ A    i                ii                 iii                    iv          v                 vi               vii              viii
+
+
+
+
+                                                                          Failed to get up
+                                                2
+
+
+
+
+ B    i                ii                 iii                    iv          v                 vi               vii              viii
+
+
+
+
+                                                                           Failed to jump and fell down
+
+ C    i                ii                 iii                    iv          v                 vi               vii              viii
+
+
+
+                                                                           Fell down
+
+
+                             Trying to step up due to map artifact
+
+ D    i                ii                 iii                    iv          v                 vi               vii              viii
+
+
+
+
+                                                    Knee stuck
+
+
+
+Fig. 6. Failure recovery. Our generalist controller enabled failure recovery behaviors including but not limited to: (A) re-attempting to stand up
+if failed due to uneven ground, (B) and (C) standing up after falling down, and (D) recovering from failures (e.g., knee stuck, slipped down from
+a rung, etc)
+ Research Article                                                                                                                                                                                            ETH Zurich            10
+
+       A. Tracker conditioning                                                                            B. Planner generalization
+                                         Stage-1 trackers / Reference-anchored terrains                                                            Attention, Stage 2                             MLP, Stage 2
+                                                                                                                                                   Attention, Stage 2 planner                     MLP, Stage 2 planner
+                                                                                                                                                   + Stage 3 tracker                              + Stage 3 tracker
+                                  100
+          ↑
+                                                                                                                                                   Attention, Stage 3                             MLP, Stage 3
+          Success rate [%]
+                                                                                                             ↑
+                                  95
+
+
+
+
+                                                                                                             Mean success [%]
+                                                                                                                                    100
+                                  90                                                                                                75
+                                                                                                                                    50
+                                  85            Contacts (ours)
+                                                Contacts + kinematics                                                               25
+                                  80                                                                                                 0
+                                                Dense            Sparse           Dense        Sparse                                      Reference-anchored              Goal-reaching                    Unseen
+                                                 foot             foot          whole-body   whole-body                                          terrains                    terrains                       terrains
+
+       C. RL fine-tuning                                                                                  D. Network structure
+                                             Reference-anchored           Goal-reaching       Unseen                                           Reference-anchored               Goal-reaching                    Unseen
+          ↑ 100                                                                                              ↑ 100
+          Success rate [%]
+
+
+
+
+                                                                                                             Success rate [%]
+                                  80                                                                                                80
+                                  60                                                                                                60
+                                  40                                                                                                40
+                                                Attention, Stage 2                                                                                  Attention, Stage 3
+                                  20            Attention, Stage 3                                                                  20              MLP, Stage 3
+              ↓                    0                                                                           ↓                     0
+              Contact error [m]
+
+
+
+
+                                                                                                                Contact error [m]
+                                  0.3                                                                                               0.3
+
+                                  0.2                                                                                               0.2
+
+                                  0.1                                                                                               0.1
+
+                                  0.0                                                                                               0.0
+
+
+
+
+                                                                                                                                                                    rs
+                                            t
+
+                                                                  t
+
+                                                                 le
+
+                                                                 le
+
+                                                                  t
+
+                                                                  t
+
+                                                                 le
+
+                                                                 le
+
+
+
+
+                                                                 rs
+                                                                  n
+
+
+
+
+                                                                  s
+
+
+
+
+                                                                                                                                              t
+
+                                                                                                                                                                     t
+
+                                                                                                                                                                    le
+
+                                                                                                                                                                    le
+
+                                                                                                                                                                     t
+
+                                                                                                                                                                   ot
+
+                                                                                                                                                                    le
+
+                                                                                                                                                                    le
+
+                                                                                                                                                                     n
+
+
+
+
+                                                                                                                                                                     s
+                                         oo
+
+                                                               oo
+
+
+
+
+                                                               oo
+
+                                                               oo
+
+
+
+
+                                                                                                                                           oo
+
+                                                                                                                                                                  oo
+
+
+
+
+                                                                                                                                                                  oo
+                                                               es
+
+
+
+
+                                                                                                                                                                  es
+                                                             itio
+
+
+
+
+                                                                                                                                                                itio
+                                                              ho
+
+                                                              ho
+
+
+
+
+                                                              ho
+
+                                                              ho
+
+
+
+
+                                                                                                                                                                 ho
+
+                                                                                                                                                                 ho
+
+
+
+
+                                                                                                                                                                 ho
+
+                                                                                                                                                                 ho
+                                                             cto
+
+
+
+
+                                                                                                                                                                cto
+                                                                                                                                                                  o
+                                                           hn
+
+
+
+
+                                                                                                                                                              hn
+                                        ef
+
+                                                  ef
+
+
+
+
+                                                           ef
+
+                                                           ef
+
+
+
+
+                                                                                                                                          ef
+
+                                                                                                                                                    ef
+
+
+
+
+                                                                                                                                                              ef
+
+                                                                                                                                                              ef
+                                                         ew
+
+                                                         ew
+
+
+
+
+                                                         ew
+
+                                                         ew
+
+
+
+
+                                                                                                                                                            ew
+
+                                                                                                                                                            ew
+
+
+
+
+                                                                                                                                                            ew
+
+                                                                                                                                                            ew
+                                                          os
+
+
+
+
+                                                                                                                                                             os
+                                                         tra
+
+
+
+
+                                                                                                                                                            tra
+                                                        ug
+
+
+
+
+                                                                                                                                                           ug
+                                        ns
+
+                                              ars
+
+
+
+
+                                                        ns
+
+                                                       ars
+
+
+
+
+                                                                                                                                          ns
+
+                                                                                                                                                   ars
+
+
+
+
+                                                                                                                                                           ns
+
+                                                                                                                                                          ars
+                                                      mp
+
+
+
+
+                                                                                                                                                         mp
+                                                     Dis
+
+
+
+
+                                                                                                                                                        Dis
+                                                       ns
+
+                                                     ars
+
+
+
+
+                                                      ns
+
+                                                     ars
+
+
+
+
+                                                                                                                                                         ns
+
+                                                                                                                                                        ars
+
+
+
+
+                                                                                                                                                         ns
+
+                                                                                                                                                        ars
+                                                     Ro
+
+
+
+
+                                                                                                                                                        Ro
+                                   De
+
+
+
+
+                                                    De
+
+
+
+
+                                                                                                                                     De
+
+
+
+
+                                                                                                                                                       De
+                                             Sp
+
+
+
+
+                                                    Sp
+
+
+
+
+                                                                                                                                               Sp
+
+
+
+
+                                                                                                                                                       Sp
+                                                   Co
+
+
+
+
+                                                                                                                                                      Co
+                                                    De
+
+
+
+
+                                                  De
+
+
+
+
+                                                                                                                                                         De
+
+
+
+
+                                                                                                                                                     De
+                                                  Sp
+
+
+
+
+                                                  Sp
+
+
+
+
+                                                                                                                                                     Sp
+
+
+
+
+                                                                                                                                                     Sp
+       E. Comparison with MGMT                                                                                                                                  Ours            MGMT
+
+                                             Reference-anchored           Goal-reaching       Unseen           Goal-reaching: sparse                                                        Compositions
+          ↑ 100                                                                                                       Balance                                                                Box, pallets
+                                                                                                                       beam                                                                   & stakes
+                                                                                                                                                                           Beam &                                  Ladder to
+          Success rate [%]
+
+
+
+
+                                                                                                            Ladders              Gaps                                    two climbs                                stones
+                                  90                                                                                                 100                                                    100
+
+                                  80                                                                                                      50                                                   50
+
+                                  70                                                                      Vault                                0               Pallets Offset climbs
+                                                                                                                                                                           & stakes
+                                                                                                                                                                                                    0              Vault, stakes
+                                                                                                                                                                                                                   & climb
+                                  60
+                                                                  t
+
+                                                                 le
+
+                                                                 le
+
+
+
+
+                                                                 le
+
+
+
+
+                                                                 rs
+                                            t
+
+
+
+
+                                                                  t
+
+                                                                  t
+
+                                                                 le
+
+
+
+
+                                                                  n
+
+
+
+
+                                                                  s
+
+
+
+
+                                                                                                                                                                                                                   Footholds,
+                                         oo
+
+                                                               oo
+
+
+
+
+                                                               oo
+
+                                                               oo
+
+
+
+
+                                                               es
+                                                             itio
+                                                              ho
+
+                                                              ho
+
+
+
+
+                                                              ho
+
+                                                              ho
+
+
+
+
+                                                             cto
+
+
+
+
+                                                                                                             Double                                       Uneven           Pallets to
+                                                           hn
+
+
+
+
+                                                                                                                                                                                                                   climb &
+                                        ef
+
+                                                  ef
+
+
+
+
+                                                           ef
+
+                                                           ef
+                                                         ew
+
+                                                         ew
+
+
+
+
+                                                         ew
+
+                                                         ew
+
+                                                          os
+
+
+
+
+                                                                                                                                                                              ladder
+                                                         tra
+
+
+
+
+                                                                                                              stone                                       bridge
+                                                        ug
+                                        ns
+
+                                              ars
+
+
+
+
+                                                        ns
+
+                                                       ars
+
+
+
+
+                                                                                                                                                                                                                   descent
+                                                      mp
+
+                                                     Dis
+
+
+
+
+                                                                                                                                           Discrete
+                                                       ns
+
+                                                     ars
+
+
+
+
+                                                      ns
+
+                                                     ars
+
+
+
+
+                                                     Ro
+                                   De
+
+
+
+
+                                                    De
+                                             Sp
+
+
+
+
+                                                    Sp
+
+
+
+
+                                                   Co
+
+
+
+
+                                                                                                                                                                                                  Gap to
+                                                    De
+
+
+
+
+                                                  De
+
+
+
+
+                                                                                                                                          platforms
+                                                  Sp
+
+
+
+
+                                                  Sp
+
+
+
+
+                                                                                                                                                                                                  climb
+                                                             Grid stones                                  Stakes                                                                            Ladder
+
+                                                                                                                                                                         Right hand
+
+       Ours
+
+                                                                                                                                                                                Left hand
+
+
+
+                                                                                                                                                                                                           Right hand
+       MGMT
+                                                                                                                                                                                   Left hand
+
+
+
+                                                                                                                                                              MGMT future 0.02 s                             0.46 s
+
+
+
+Fig. 7. Simulation-based evaluations. (A) Stage-1 trackers using contacts alone or contacts plus reference kinematics. (B) Attention and MLP
+systems under three configurations: Stage 2, a frozen Stage-2 planner paired with a Stage-3 tracker, and the fully fine-tuned Stage-3 system. Bars
+show mean success, with terrain categories weighted equally. (C) Attention-based systems before and after RL fine-tuning. (D) Attention versus
+MLP after fine-tuning. In C and D, the upper plots show success rates and the lower plots show contact placement errors; foot and whole denote
+foot-only and whole-body support. (E) Comparison with MGMT [46] across terrain categories, individual sparse terrains, and eight composite
+courses. Each radar axis uses 1,000 episodes per method. The images compare predictions from the same robot state: red markers indicate our
+contact targets, while MGMT’s predicted foot and hand positions progress from green (earlier) to red (later). Whiskers and shaded bands show
+95% confidence intervals.
+ Research Article                                                                                                                        ETH Zurich          11
+
+
+the same contact interface, supervision, and terrain-point decoder; their
+architectures and parameter counts are reported in Table S3.                 Table 1. Qualitative comparison of whole-body locomotion meth-
+                                                                             ods. ✓: demonstrated; N/A: not demonstrated or evaluated.
+    After Stage 3 fine-tuning, attention achieves higher success than
+the MLP across the goal-reaching terrain categories and shows clear          Capability                                        PHP [48] LLP [52]           Ours
+gains on unseen composition and distractors (Figure 7D). Its largest
+advantages occur on sparse whole-body terrain and with distractors,          Sparse footholds                                     N/A           ✓           ✓
+where the planner must identify precise supports or distinguish them         Dense footholds                                      N/A           ✓           ✓
+from irrelevant geometry. The improvement on composition also indi-          Sparse whole-body                                    N/A          N/A          ✓
+cates better transfer of contact selection to new sequences of familiar
+                                                                             Dense whole-body                                      ✓            ✓           ✓
+obstacles.
+                                                                             Terrain composition                                  N/A        limited        ✓
+    To assess whether this architectural advantage persists without
+planner fine-tuning, we pair each frozen Stage-2 planner with its cor-       No manual data augmentation                            ✗            ✗          ✓
+responding Stage-3 tracker (Figure 7B). The attention-based pairing
+                                                                             No manual transition design                            ✗            ✗          ✓
+achieves higher mean success in all three terrain groups. Contact plans
+learned on reference-anchored terrains can guide an adapted tracker          Data length                                        9.4 min†       N/A       13.2 min
+on goal-reaching and unseen terrains without further planner training.       †
+                                                                               Before mirroring and motion-matching augmentation; total duration after augmentation
+Because each planner uses its own adapted tracker, this comparison           is not reported in [48].
+reflects both planner generalization and planner–tracker compatibility.
+
+                                                                             C.5. Qualitative benchmark with other whole-body control methods
+C.3. Ablation study on RL fine-tuning
+                                                                             We qualitatively compare our method with other whole-body humanoid
+Goal-reaching fine-tuning extends skills learned from motion data to         control approaches, including perceptive humanoid parkour (PHP) [48],
+terrains without corresponding reference motions. For the attention-         and light-loco-parkour (LLP) [52], as shown in Table 1. A direct quan-
+based system, the Stage 3 policy retains high success on reference-          titative comparison is challenging because these approaches differ
+anchored terrains while improving success and contact placement ac-          substantially in training data, robot platforms, terrain definitions, per-
+curacy in every goal-reaching and unseen terrain category (Figure 7C).       ception modalities, and training pipelines. Reproducing each method
+The largest gain occurs on sparse whole-body terrain, where success in-      under identical settings and with our training data is therefore impracti-
+creases by 54.8 percentage points, highlighting the benefit of adaptation    cal within a reasonable computational and engineering budget. Instead,
+when coordinated body contacts must fit constrained supports.                we report the capabilities demonstrated in the corresponding papers
+    The gains also extend beyond the terrain conditions used for fine-       and supplementary materials and compare them qualitatively with the
+tuning. The largest improvement on unseen terrains occurs on compo-          behaviors demonstrated by our method. For behaviors or terrain types
+sition, indicating better transitions between familiar interactions in new   that are not demonstrated in the original work, we report the corre-
+obstacle sequences. Improvements with distractors and roughness show         sponding entry as N/A. This label indicates only that the capability
+that fine-tuning also helps the system handle irrelevant geometry and        was not demonstrated or evaluated in the available results; it should
+irregular support surfaces. Contact guidance thus allows demonstrated        not be interpreted as evidence that the method is incapable of perform-
+skills to be adapted through reference-free, goal-reaching experience,       ing the corresponding behavior. LLP is marked as limited in terrain
+without a matching full-body trajectory for each terrain configuration       composition because the paper does not demonstrate compositions of
+or transition.                                                               multiple terrain types without clearly defined transition regions like
+                                                                             climbing a box from pallets, as shown in Figure S1A, climbing a box
+C.4. Quantitative comparison with MGMT                                       over a gap (Figure S1E), or climbing a ladder directly from pallets
+                                                                             (Figure S1F), etc. While this does not imply that the method cannot
+We compare our Stage-3 system across the three terrain groups in             handle such scenarios, its ability to autonomously transition between
+Figure 7E with MGMT [46], the closest prior work, which couples              behaviors on arbitrary terrain compositions remains unclear from the
+diffusion-based motion generation with a tracker conditioned on full         reported results.
+reference kinematics. Our method achieves higher success in all eleven
+terrain categories. Terrain-specific evaluations show particularly large
+                                                                             DISCUSSION
+gains on various sparse terrains where traversal requires accurate place-
+ment on discrete supports. We further evaluate eight curated composite       Our results suggest that contact can serve as a general interface for
+courses combining sparse footholds with whole-body obstacles. The            humanoid mobility, bridging motion data, sensory observation, and
+visualization of the composite terrains can be found in Figure S1 in         whole-body control. Unlike full-body trajectories, contacts only spec-
+the supplementary methods section. Our method achieves higher suc-           ify where, when, and with which body part the robot should interact
+cess on all eight courses, averaging 92.5% compared to 58.8% for             with the environment without prescribing how the entire motion should
+MGMT. These results demonstrate its ability to combine skills learned        be executed. This abstraction allows demonstrations to provide struc-
+on individual terrains and transition between different support and          tured guidance during training while leaving reinforcement learning
+coordination requirements within a single traversal. The qualitative         the flexibility to explore behaviors on new terrain. As a result, a single
+examples compare our predicted contact targets with MGMT’s future            policy can compose and transition between diverse whole-body behav-
+foot and hand positions from the same robot state. Across three scenar-      iors without reference trajectories, skill labels, or manually designed
+ios, our planner selects contact locations on stepping stones and ladder     transitions at deployment.
+rungs, providing explicit, terrain-aligned targets for whole-body con-           The attention-based contact planner plays an important role in
+trol. MGMT’s predicted trajectories include positions in unsupported         terms of the generalization capability of our framework. Building on
+regions. Predicting whole-body motion does not, by itself, precisely         attention-based map encoding [10, 19], the planner selectively attends
+specify which future limb positions should establish support contacts        to terrain regions relevant to future contacts conditioned on proprio-
+or ensure their alignment with the terrain.                                  ception and goal commands. Rather than coupling a particular terrain
+  Research Article                                                                                                              ETH Zurich        12
+
+
+configuration to a specific motion, the policy learns to reason about         sponding reference augmentation. This formulation strictly separates
+the local geometry that supports each interaction. This allows contact        what interactions should occur from how the robot should realize them.
+strategies acquired from demonstrated motions to adapt to new terrain         The contact planner provides geometrically precise, goal-dependent
+geometries and to be recombined on unseen terrain compositions. Goal          interaction targets, while RL synthesizes the robust motion required
+conditioning further enables different contact strategies to emerge on        between contacts. Consequently, reference motions act solely as train-
+the same terrain depending on the desired position and orientation. To-       ing guidance and are entirely eliminated at deployment, enabling a
+gether, selective terrain attention and explicit contact prediction provide   single onboard-sensing policy to autonomously execute and transition
+a structured representation that helps transfer whole-body behaviors          between diverse whole-body behaviors.
+beyond the terrain in the reference data encountered during training.             To support this framework, we developed two enabling pipelines.
+    Several limitations remain. First, our current perception and con-        First, a constrained motion-retargeting tool extracts diverse contact
+tact representations primarily target terrain-centric 2.5-D interactions.     strategies from human data, preserving key environmental interactions
+Although the LiDAR-based mapping pipeline captures fine geometric             while respecting the robot’s kinematic limits. Second, because pre-
+structures such as ladder rungs, more general interactions including          cise contact planning on sparse structures like ladder rungs demands
+overhead contacts, hanging, and manipulation will require richer 3D           high-fidelity perception, we introduce a LiDAR-based neural mapping
+perception and contact representations. Second, the current system also       pipeline that reconstructs detailed local geometry to provide the planner
+addresses only local goal-conditioned locomotion rather than global           with a consistent terrain representation. Together, these components
+navigation. Additionally, the current pipeline cannot handle aerial mo-       provide diverse contact-rich training data and sufficiently detailed ter-
+tions that do not have distinguishable contact sequences. For example,        rain observations for precise whole-body contact planning in real-world
+the contact sequences of a backflip and a vertical jump are essentially       environments.
+the same, despite their substantially different whole-body motions, and
+therefore cannot be distinguished by our current contact representation.      Contact-Informed Whole-Body Tracker
+    Future work could extend the contact interface to vision-based            To provide whole-body reference motions for training, we utilize
+and general 3D scene representations, allowing contacts with arbi-            contact-aware motion retargeting [46]. It transfers recorded human be-
+trary surrounding structures rather than predominantly terrain surfaces.      haviors to the target humanoid while accounting for differences in mor-
+Combining such representations with semantic or global planners could         phology, kinematic constraints, and, importantly, body–environment
+enable humanoids to autonomously select goals and interaction strate-         interactions. Direct joint-angle mapping is generally infeasible be-
+gies over larger environments. Semantic task inputs could also com-           cause human motion data and the robot differ substantially in their
+plement the contact representation in cases where different behaviors         kinematic structures and body proportions, often resulting in joint-limit
+share indistinguishable contact sequences, providing additional infor-        violations, ground penetration, and physically inconsistent contacts.
+mation to specify the intended motion. Ultimately, walking, climbing,         Such artifacts are particularly problematic for contact-rich behaviors
+crawling, recovery, and manipulation can all be viewed as different           such as climbing, crawling, vaulting, etc where the semantics of the
+sequences of body-environment interactions. Contact therefore offers a        motion are largely determined by which body part establishes contact,
+common physical abstraction through which humanoids may compose               when the contact occurs, and where it occurs in the environment. We
+known interaction strategies into new behaviors in previously unseen          therefore explicitly extract the contact sequence together with the robot
+environments.                                                                 kinematics from the dataset.
+                                                                                  This retargeting tool first converts human motions from different
+MATERIALS AND METHODS                                                         sources into a unified floating-base and Cartesian landmark represen-
+                                                                              tation, followed by spatial rescaling and temporal normalization. For
+Motivation                                                                    each frame, it solves a nonlinear IK problem over the robot base pose
+Developing generalizable whole-body motion control exposes a funda-           and joint configuration. Position objectives track corresponding body
+mental tradeoff. Pure RL excels at robust, foot-dominant locomotion,          landmarks, including the hips, knees, ankles, toes, shoulders, elbows,
+but scaling it to whole-body interactions requires complex reward             hands, chest, and head, while orientation objectives align individual
+engineering. Conversely, reference-tracking methods provide strong            robot limb segments with the corresponding directions in the human
+kinematic priors but bind the policy to the source data, necessitating        skeleton. The optimization additionally constrains the robot within
+online trajectory generation during deployment. This dependency cre-          its joint limits and enforces unilateral ground constraints on the feet
+ates a bottleneck on sparse or unstructured terrains, where precise           to prevent penetration. For motions involving richer environmental
+environmental interactions must rapidly adapt to unseen geometric             interactions, minimum-distance constraints against the robot and en-
+constraints.                                                                  vironment geometry further prevent physically invalid intersections
+    Bridging these approaches does not require transferring complete          with obstacles such as boxes, stairs, and ladder rungs. Temporal reg-
+reference trajectories. Inspired by biological studies showing that hu-       ularization toward the previous solution suppresses frame-to-frame
+man visual attention prospectively targets future foot placements [53],       discontinuities, producing smooth trajectories while maintaining con-
+we propose that the essential information lies strictly in the spatial,       sistent contact configurations over time.
+temporal, and anatomical distribution of environmental interactions.              In parallel with kinematic retargeting, we explicitly detect and
+Contact thus serves as a compact intermediate representation. It re-          record body–environment contacts at every frame, involving the pelvis,
+tains the geometrically critical structure of demonstrated motions while      knees, feet, elbows, and hands, which are identified from the simulated
+leaving the high-dimensional kinematics underconstrained, allowing a          contact geometry and associated with the corresponding environmental
+single contact sequence to specify highly complex behaviors.                  objects. We record both the active contact sequence and contact loca-
+    Motivated by this, we use future whole-body contacts as the inter-        tions in the world frame, preserving the temporal contact schedule and
+face between perception, planning, and control (Figure 2A). During            spatial relationship between the robot and the environment.
+training, motion data exposes the robot to coordinated interaction strate-        Some motions in the training dataset were already retargeted to the
+gies, which an attention-based contact planner learns to predict directly     Unitree G1 robot. For these motions, we only generate contact labels
+from terrain geometry, robot proprioception, and goal commands. Sub-          using this tool. Table S1 summarizes the data sources and indicates,
+sequent RL fine-tuning randomizes the terrain without requiring corre-        for each motion type, whether the data were retargeted and whether
+  Research Article                                                                                                                   ETH Zurich       13
+
+
+contact labels were generated using this retargeting tool.                    rollout data collected from the whole-body tracking policy. The result-
+    After the motion dataset is prepared, we train a tracker to track         ing contact plans demonstrate precise and versatile contact prediction
+the recorded contacts. The tracker is a three-layer multilayer percep-        across diverse terrains, without explicit skill labels. At each control
+tron with hidden dimensions {512, 256, 128} and ELU activations;              step, the planner predicts the next contact location for each of nine
+the network architectures are summarized in Table S3. The tracker             body parts within a 1.5 s horizon. If no contact is predicted for a given
+receives a five-step proprioceptive history, a 9 × 7 local height scan,       body part within this horizon, the corresponding output is set to zero.
+nine contact targets, and the goal command. Invalid contact targets           The planner autonomously identifies appropriate contact locations and
+are encoded as zero vectors. The policy outputs 23 joint-position off-        body parts for different terrain geometries, producing distinct contact
+sets at 50 Hz; these are scaled by 0.25 and added to the default joint        strategies for behaviors such as climbing, vaulting, and sparse-terrain
+configuration to obtain targets for joint-level PD control at 200 Hz.         traversal. Importantly, contact planning is conditioned on the goal
+An overview of the tracker design is shown in Figure 2B. Figure 7A            command, allowing the planner to generate different contact sequences
+shows that contact commands provide sufficient guidance for execut-           for the same terrain according to the desired position and orientation.
+ing the demonstrated whole-body skills without additional reference           For example, as shown in Figure 5A, the policy generates completely
+kinematics as tracker inputs. As a result, the same tracker enables           different behaviors on the same type of terrain given different local
+a broad range of behaviors, including sitting, ladder climbing, stair         terrain geometries and different goal commands. Details are discussed
+traversal, locomotion over sparse footholds, box climbing, vaulting,          in RESULTS A.
+etc. Moreover, the contact-tracking framework captures fine-grained
+variations of motion on the same terrain by conditioning on different         Three-Stage Training Pipeline
+contact sequences, as discussed in RESULTS A.                                 The framework is trained in three sequential stages, each lifting a
+                                                                              different reliance on supervision. The first stage trains the tracker
+Attention-based Whole-Body Contact Planner                                    alone on a curated reference-motion dataset covering climbing, stair
+At every control step, the planner outputs a contact plan for the nine        traversal, walking on rough ground, and stepping-stone gaits, with the
+contact-active bodies of the humanoid: the two feet, two knees, two           simulation terrain spatially aligned to each reference clip. The tracker
+hands, two elbows, and the pelvis, so that the plan can describe genuine      receives ground-truth contact positions read directly from the clips in
+multi-contact behavior rather than footstep sequences alone. For each         place of planner output, and episodes are initialized via Curriculum
+body the plan gives a target contact position, expressed in a gravity-        State Initialization (CSI; see Terrains and Curriculum). Supplying
+aligned frame centered at the robot base and rotated with its yaw so          contacts as an oracle lets the tracker learn to execute them before
+that it is invariant to the robot’s world position and heading, together      any planner exists, yielding a tracker that has absorbed whole-body
+with a binary occupancy flag indicating whether that body is expected         coordination priors — including the non-trivial multi-limb sequencing
+to establish a new contact within the planning horizon.                       that hand-crafted reward engineering struggles to elicit.
+    As illustrated in Figure 2C, the planner reads two streams. The               The second stage introduces the contact planner and trains it jointly
+first is a proprioceptive state vector including base angular velocity,       with the tracker on the same reference-motion terrains. The planner
+projected gravity, joint positions, joint velocities, and previous actions,   is supervised on contact targets drawn from a replay buffer of suc-
+and a goal command encoded as a bounded horizontal direction vector           cessful rollouts and labeled by the hindsight procedure described in
+and a relative heading. The second is an exteroceptive height scan, a         the next subsection. For each body b with a valid upcoming contact
+17 × 11 grid of three-dimensional terrain points sampled around the           p∗b (indicated by the hindsight occupancy flag c∗b ), we convert the
+base in the body-yaw frame. Both tasks use the same three-dimensional         target into a soft distribution over the LW = 187 height-scan points
+goal-command format: a bounded horizontal direction vector and a              (L = 17, W = 11) by placing an isotropic three-dimensional Gaussian
+relative heading. Reference-following derives this command from a             of bandwidth σa at p∗b and normalizing:
+future reference state, whereas goal-reaching derives it from the active
+terrain goal. The direction vector decreases in magnitude near the                                         exp −∥hi − p∗b ∥22 / 2σa2
+                                                                                                                                       
+target.                                                                                      p∗b,i   =                                      .         (1)
+    The central design choice is that the planner selects contacts                                       ∑ LW                ∗ 2      2
+                                                                                                           j=1 exp −∥ h j − pb ∥2 / 2σa
+from the perceived surface rather than regressing them in free three-
+                                                                              The planner outputs an affordance distribution αb,i over the same points
+dimensional space. A two-layer convolutional encoder with 5 × 5
+                                                                              and a per-body occupancy probability ĉb , trained against this target
+kernels and zero padding extracts local terrain features, which are
+                                                                              with a masked cross-entropy plus a binary cross-entropy:
+combined with per-point linear features to form the attention keys and
+values. The five-step proprioceptive history, goal command, and a
+                                                                                                ∑nN=1 ∑9b=1 c∗n,b ∑iLW   ∗
+                                                                                                                     =1 pn,b,i log αn,b,i
+64-dimensional pooled terrain feature are encoded into a shared 96-           Lplanner = −                                      
+dimensional feature vector. A learned embedding for each contact body                                max 1, ∑nN=1 ∑9b=1 c∗n,b
+generates channel-wise scale and bias parameters through feature-wise
+                                                                                                1 N 9 h ∗                                                 i
+linear modulation (FiLM), transforming this shared vector into nine
+body-specific attention queries. A multi-head attention module (atten-
+                                                                                            −       ∑   ∑
+                                                                                               9N n=1 b=1
+                                                                                                             cn,b log ĉn,b + (1 − c∗n,b ) log(1 − ĉn,b ) .
+
+tion dimension d = 96, h = 32 heads) computes, for each body, a                                                                                         (2)
+distribution of affordance weights over the height-scan points. The de-       For a batch of N samples, the affordance loss is averaged over valid
+coder combines the top-k points using normalized, temperature-scaled          upcoming contacts, while the occupancy loss is averaged over all nine
+weights. In the quantitative evaluations, we use k = 1, so each retained      bodies in every sample. A soft three-dimensional target, rather than a
+contact target coincides with an observed terrain point. A classification     one-hot cell, is essential on thin supports such as ladder rungs, where
+head combines the body’s attention output with pooled terrain con-            the nearest cell in the horizontal plane can miss the structure entirely.
+text to predict contact occupancy. Network dimensions and decoding            We set σa = 0.1 m.
+settings are listed in Tables S3 and S5.                                          We gradually transfer contact guidance from the reference motion
+    Figure 5 visualizes the contact plans (shown as red dots) generated       to the planner using separate input and reward schedules. At each con-
+by the contact planner, which is trained in a supervised manner using         trol step, each environment independently receives planner-predicted
+  Research Article                                                                                                              ETH Zurich       14
+
+
+contacts with probability ηobs and reference contacts otherwise. A later-     quality metric favors lower positive mechanical work per unit initial
+starting schedule, ηrew , reduces the reference-contact reward weights        horizontal goal distance. Following planner initialization, optimization
+and increases the planner-contact reward weight, as specified in Table 3.     is decoupled from the on-policy loop: we draw from the replay buffer
+This transition trains the tracker to follow the planner’s terrain-adapted    for ten planner optimizer updates per PPO iteration. The labeling
+contacts while retaining the remaining reference-motion guidance.             thresholds, replay-sampling settings, and optimizer parameters are
+Both schedules are defined in Eq. (3).                                        listed in Table S5.
+    The third stage, as illustrated in Figure 3, takes the system beyond
+the demonstration distribution through a bootstrapping loop between           LiDAR-based Neural Mapping
+the contact planner and the whole-body controller, similar to [45, 46].       To provide the controller with accurate height map observations, we
+We augment training with procedurally generated goal-reaching fine-           design a LiDAR-based neural mapping pipeline, illustrated in Figure 8.
+tuning terrains for which no reference motions are available, including       The pipeline builds on the depth-based neural mapping method of
+platforms with randomized orientation, stepping stones, gaps, and pal-        Zhang et al. [19], adapted to the sensing characteristics of LiDAR to
+lets of varying width, balance beams, climbable obstacles, and ladders        handle perception noise. We convert each frame’s point cloud into
+of varying rung spacing, etc. On these goal-reaching terrains, the con-       local grids and use a neural network to predict local elevations with
+tact planner first proposes contact plans conditioned on the local map,       associated uncertainty. The predictions are fused into a global map,
+robot proprioception, and goal command. The whole-body controller             which the locomotion controller queries during deployment.
+then executes these plans and is fine-tuned with a contact-tracking re-
+ward that encourages it to realize the planner-predicted contacts while       Network design.      The main difference from Zhang et al. [19] lies in
+the task reward (Table 3) drives the robot toward a goal sampled on a         the network design. Unlike depth cameras, which provide a roughly
+reachable terrain patch. Episodes have a maximum duration of 15 s and         fixed region of interest, our head-mounted MID-360 [57] LiDAR pro-
+may terminate earlier under the configured failure conditions. Success-       vides a panoramic view with sparse hits. Rather than directly predicting
+ful rollouts are added to the planner’s hindsight buffer, which in turn       a dense reconstruction, we have the network select one of three modes
+provides new supervision for the contact planner. The planner is there-       for each grid: keep the exact measured height, use the average of the
+fore refined using contact strategies that were successfully realized by      neighborhood, or discard the value and leave the grid empty. This
+the controller on terrains not covered by the original demonstrations,        allows the model to generalize to arbitrary scan sparsity. Moreover,
+and its improved predictions generate progressively better training           the disagreement among the mode logits, interpreted as probabilities
+targets for subsequent controller rollouts. Through this mechanism,           for sampling modes, serves as an uncertainty estimate that accounts
+the learned contact strategies generalize to terrains outside the original    for sensing noise. Only non-empty predictions are processed during
+motion dataset. In parallel, reference-trajectory training is retained        fusion.
+through proportional sampling from the original dataset to preserve           Fusion prior for overhanging structures.     Since the mapping must
+previously learned tracking behaviors. To account for the different re-       handle overhanging structures such as ladders, we introduce a heuristic
+ward scales, we use separate value networks and normalize advantages          prior in the global fusion. When a new prediction falls in the same
+separately for reference-following and goal-reaching environments             grid as an existing confident prediction (uncertainty < 0.15 m) and
+within each PPO update.                                                       lies more than 0.15 m below it, the new point is discarded unless its
+    Figure 5B demonstrates the fine-tuned policy on a selection of ter-       elevation angle is above −40◦ . This ensures that if an earlier scan
+rains unseen during training, including novel compositions of training        observes an overhanging ladder rung while a later close-by scan only
+terrain primitives and scanned meshes that are absent from the original       observes the floor beneath it, the rung is not erased from the global
+tracking dataset used in the preceding training stages. Starting from the     map. Despite this ladder-targeted prior, the mapping module stays
+learned contact planner and whole-body contact tracker, we fine-tune          effective for all tested terrains.
+the policy on procedurally altered variants of the original terrains, with
+randomized obstacle poses, geometries, and configurations. Through            Training and implementation.     We train on the same meshes as Zhang
+this process, the policy learns to adapt both its contact strategy and        et al. [19], augmented with random overhanging bars and random
+whole-body motion to terrain variations while retaining the behaviors         ladders leaning against boxes to ensure performance on sparse over-
+acquired from the original motion data.                                       hanging structures. We also simulate per-point positional noise and
+                                                                              ray-divergence noise [58] according to the LiDAR specifications. Since
+Hindsight Contact Labeling                                                    training is formulated as mode classification, we derive labels from the
+The planner’s targets come from the policy’s own successful experience        ground truth and the generated noisy grids, and train the CNN with a
+rather than from the motion dataset, so that it learns contacts the           cross-entropy loss. Local grids cover [−3, 3] m in x and [−1.5, 1.5] m
+tracker can actually realize. After each completed episode we scan            in y in the gravity-aligned LiDAR frame, with a grid resolution of 3 cm.
+its recorded trajectory backward to identify the next contact onset for       The pipeline runs onboard on the Jetson Orin NX CPU, updating within
+each body part. We identify contact onset from the vertical contact           30 ms per 10-Hz LiDAR scan (20000 points). It is also worth noting
+force after discarding contact segments shorter than ten consecutive          that, since the LiDAR is head-mounted, occlusion is considerably less
+control steps, thereby filtering out brief or intermittent contacts. For      severe than on the platforms used by Zhang et al. [19]. This allows us
+each timestep, the next contact position within the 1.5 s horizon is          to obtain a high-quality map observation directly by inpainting high-
+transformed into that timestep’s body-yaw frame and retained as a             uncertainty regions with the neighborhood minimum followed by a
+target if it lies within the local scan footprint. Only successful episodes   median filter.
+enter the replay buffer (as shown in Figure 3): for reference-following
+environments, those initialized within the first 10% of the reference         Observation Space
+motion and progressing to at least 90% of its duration; for goal-reaching     We use an asymmetric actor–critic design for tracker training: the actor
+environments, those that at some point bring the robot within 0.5 m           observes only quantities available on the real robot, while the critics
+of the goal horizontally while within 0.1 m of it vertically. For goal-       may use privileged simulation state. Across all three stages, the actor
+reaching terrains, the buffer is partitioned by terrain tile, with quality-   receives a five-step proprioceptive history, a 9 × 7 local height scan,
+based eviction and balanced sampling across terrain types and tiles. The      contact targets for nine bodies, and the goal command g. Stage 1
+ Research Article                                                                                                             ETH Zurich      15
+
+
+   A. LiDAR Neural Mapping Pipeline                             B. Neural Network Design
+
+                    LiDAR Pointcloud                                Local Grids (Top-Down View)                         Mode Selection
+                                                                                                                         with Softmax
+
+
+
+
+                               Projection
+
+                       Local Grids
+
+
+
+
+                                                                                                                    Max Mode as Elevation
+
+
+
+
+                                                                                                                 Disagreement as Uncertainty
+
+
+                               Neural Network
+
+        Local Elevation & Uncertainty Prediction
+
+
+                                                                C. Diverse Training Scenes
+
+
+
+
+                               Fusion with Odometry
+
+                       Global Map
+
+
+
+
+Fig. 8. Overview of the LiDAR-based neural mapping pipeline for height map observations. (A) At each frame, LiDAR points are projected
+into x-y grid cells and the highest point per cell is retained, producing a 2D local grid map. A neural network then predicts local elevations with
+associated uncertainty, and the predictions are fused into the global map using odometry. (B) The network uses CNNs to predict per-grid logits
+over three fill modes: the exact measured value, the neighborhood average, or leaving the grid empty. The mode with the highest logit determines
+the grid’s elevation prediction, while the disagreement among modes and logits yields the uncertainty estimate. (C) The network is trained on
+synthetic data generated from diverse scene meshes.
+ Research Article                                                                                                                                  ETH Zurich        16
+
+
+uses reference-derived contact targets. Stage 2 gradually replaces                             with all goal-reaching terms inactive. In Stage 2, the reference-contact
+these targets with planner predictions through stochastic selection per                        reward weights are multiplied by 1 − ηrew and the planner-contact
+environment, and Stage 3 uses planner predictions throughout training.                         reward weight by ηrew , following Eq. (3); all other weights remain
+Predicted targets are retained when their occupancy probability exceeds                        unchanged. Stage 3 masks the mimic tracking terms to the reference-
+0.5 and are otherwise set to zero. The scan spacing, spatial coverage,                         motion environments and activates, on goal-reaching environments, the
+and goal-command parameters are listed in Table S4.                                            goal-progress and stand-at-goal rewards together with goal-reaching-
+    Two separate value networks, Vm and Vfs , value the reference-                             specific style terms (marked † ).
+following and goal-reaching regimes; both see privileged information
+withheld from the actor. The reference-following critic Vm , used in                           Training
+Stages 1–2 and on reference-anchored terrains in Stage 3, receives
+the current proprioceptive state without added observation noise or                            We train all policies in Isaac Lab [59]. The contact tracker is trained us-
+temporal stacking, the full 17 × 11 height scan, and the base linear                           ing a customized Proximal Policy Optimization (PPO) algorithm [60],
+velocity. To support value estimation during reference-following, it ad-                       while the contact planner is trained with supervised learning on rollout
+ditionally receives three privileged streams from the reference motion,                        data collected from the tracker. The training pipeline consists of three
+none exposed to the actor: a 52-dimensional reference kinematic vector                         stages. Stage 1 requires approximately 1 day using 3 NVIDIA RTX
+containing base linear and angular velocities, joint positions, and joint                      4090 GPUs. Stage 2 requires approximately 1 day and 21 hours using
+velocities, the 27-dimensional reference contact-body positions pref                           2 RTX 4090 GPUs, and Stage 3 requires approximately 2 days and
+                                                                      b ,                      6 hours using 4 RTX 4090 GPUs. Planner optimization settings are
+and the 9-dimensional reference contact flags cref b .
+                                                                                               listed in Table S5, and PPO settings are listed in Table S6.
+    Stage 3 introduces the goal-reaching critic Vfs , where no reference
+motion exists. It keeps the current proprioceptive state, base linear ve-                      Domain Randomization         At simulation startup we sample, indepen-
+locity, and full height scan, but replaces the reference streams with the                      dently per environment, the friction and restitution coefficients, torso
+goal command g, horizontal distance to the goal d g , vertical displace-                       mass and center-of-mass offset, joint stiffness and damping scales, and
+ment to the target base height ∆z = zgoal − zbase , elapsed episode                            per-joint default-position offsets, from uniform ranges listed in the
+time normalized by the episode horizon, and the planner’s predicted                            supplementary methods; each environment retains its sampled values
+contacts p̂b . A dispatcher routes each environment to Vm or Vfs by its                        throughout training. At every control step, uniform noise is added to
+type. Table 2 summarizes the notation.                                                         all non-privileged (actor) observations; the height scan additionally
+                                                                                               receives Gaussian noise per step and a per-episode elevation offset
+                                                                                               to emulate elevation-mapping drift. These randomizations are active
+Table 2. Nomenclature. Reward kernel bandwidths σ(·) and other                                 across all three training stages. Details are summarized in Table S2.
+hyperparameter values are introduced inline where used.
+ rb , vb , ωb   base position, linear and angular velocity                                     Terrains and Curriculum        Stages 1 and 2 use reference-anchored ter-
+      θe        angular difference between actual and reference base orientations              rains spatially aligned with the motion-capture clips (stairs of varying
+   q j , q̇ j   joint position and velocity (0 : default)                                      step height, gaps, stepping stones, climbing obstacles, balance beams).
+      τj        joint torque
+                                                                                               In Stage 1 the tracker is initialized by Curriculum State Initialization
+                                                                                               (CSI): each episode begins at a curriculum-set phase of the reference
+      at        action at control step t
+                                                                                               motion, starting near the end of each clip (initial phase 0.9) and widen-
+    (·)∗        supervision target, defined by context
+                                                                                               ing backward toward the start as tracking improves — so the tracker
+   p̂b , ĉb    planner-predicted contact position and occupancy probability
+                                                                                               first learns to finish each clip before being asked to execute it from the
+   p∗b , c∗b    hindsight contact target and occupancy flag                                    beginning. Stage 2 disables this phase curriculum and samples initial
+ pref  ref
+  b , cb        instantaneous reference contact-body positions and contact flags               phases uniformly over each clip. Stage 3 adds goal-reaching terrains
+   pexec
+    b           executed (actual) contact-body position                                        from a procedurally generated suite (platforms, stepping stones, gaps,
+   cmeas
+    b           measured contact flag, defined in Table 3                                      balance beams, ladders, pallets), each paired with reachable target
+     αb,i       affordance weight on height-scan point i for body b                            patches sampled at reset. These terrains span ten difficulty levels set
+    ηobs        probability of using planner-predicted contact inputs during Stage 2           by step height, gap width, or stone spacing; following the curriculum
+    ηrew        transition coefficient for Stage 2 contact rewards
+                                                                                               of [4], an environment is promoted a level when it reaches within 0.5 m
+                                                                                               horizontally of its goal at the required height and completes the episode
+      hi        i-th height-scan point in body-yaw frame
+                                                                                               without early termination (gated by an exponentially smoothed per-
+      g         bounded horizontal goal direction and relative heading in the body-yaw frame
+                                                                                               environment success rate) and demoted when its minimum qualifying
+   d g , ∆z     horizontal distance and signed vertical offset to goal                         goal distance during the episode exceeds 1.0 m. The initialization and
+ Ff , vf , cf   contact force, velocity, and binary state of contact link f                    curriculum-update parameters are summarized in Table S4.
+  Vm , Vfs      mimic and goal-reaching critic value functions
+
+                                                                                               Deployment
+                                                                                               We deploy the trained generalist policy on the Unitree G1 using its
+Reward Functions                                                                               onboard NVIDIA Jetson Orin, with all perception, state estimation,
+The per-step reward is a weighted sum of task, regularization, and style                       mapping, and policy inference running entirely onboard. The G1’s
+terms (Table 3). Task terms drive imitation of the reference motion                            Livox LiDAR provides point-cloud measurements to DLIO [61], which
+and, in Stage 3, goal reaching on procedural terrains; regularization                          estimates the robot root state and produces a deskewed point cloud. The
+terms penalize unphysical or unsafe joint motion; style terms shape                            deskewed point cloud is subsequently processed by our neural mapping
+the spatial and temporal regularity of the motion. The active subset                           pipeline to generate the local height scan used as terrain observation by
+and its weights vary by stage. Stage 1 supervises the tracker with                             the policy. The neural mapping module, DLIO, and the learned policy
+ground-truth contact and reference-proprioception targets from the                             run concurrently on the Jetson Orin, enabling fully onboard perception
+motion-capture corpus, alongside the full set of regularization terms,                         and control without external computation or sensing.
+     Research Article                                                                                                                    ETH Zurich         17
+
+
+REFERENCES                                                                          25. H. Wang, Z. Wang, J. Ren, Q. Ben, T. Huang, W. Zhang, J. Pang,
+                                                                                        Beamdojo: Learning agile humanoid locomotion on sparse footholds,
+1.      J. Lee, J. Hwangbo, L. Wellhausen, V. Koltun, M. Hutter, Learning               Robotics: Science and Systems (RSS) (2025).
+        quadrupedal locomotion over challenging terrain, Science Robotics p.        26. W. Xie, C. Bai, J. Shi, J. Yang, Y. Ge, W. Zhang, X. Li, Humanoid
+        eabc5986 (2020).                                                                whole-body locomotion on narrow terrain via dynamic balance and
+2.      C. Yang, K. Yuan, Q. Zhu, W. Yu, Z. Li, Multi-expert learning of adaptive       reinforcement learning (2025).
+        legged locomotion, Science Robotics p. eabb2174 (2020).                     27. W. Sun, B. Cao, L. Chen, Y. Su, Y. Liu, Z. Xie, H. Liu, Learning percep-
+3.      A. Kumar, Z. Fu, D. Pathak, J. Malik, Rma: Rapid motor adaptation for           tive humanoid locomotion over challenging terrain (2025).
+        legged robots (2021).                                                       28. S. Zhu, Z. Zhuang, M. Zhao, K.-Y. Lee, H. Zhao, Hiking in the wild: A
+4.      N. Rudin, D. Hoeller, P. Reist, M. Hutter, Learning to walk in minutes          scalable perceptive parkour framework for humanoids (2026).
+        using massively parallel deep reinforcement learning, Proceedings of        29. Y. Zhang, Y. Seo, J. Chen, Y. Yuan, K. Sreenath, P. Abbeel, C. Sferrazza,
+        the 5th Conference on Robot Learning, A. Faust, D. Hsu, G. Neumann,             K. Liu, R. Duan, G. Shi, Rpl: Learning robust humanoid perceptive
+        eds., 91–100 (PMLR, 2022).                                                      locomotion on challenging terrains, arXiv preprint arXiv:2602.03002
+5.      T. Miki, J. Lee, J. Hwangbo, L. Wellhausen, V. Koltun, M. Hutter, Learn-        (2026).
+        ing robust perceptive locomotion for quadrupedal robots in the wild,        30. P. Li, H. Li, M. Fan, F. Xu, S. Liao, Y. Ma, Z. Zeng, Z. Wang, Y. Jin,
+        Science Robotics p. eabk2822 (2022).                                            Y. Cao, H. Wang, G. Sartoretti, Taga: Terrain-aware active gaze learn-
+6.      A. Agarwal, A. Kumar, J. Malik, D. Pathak, Legged locomotion in                 ing for generalizable agile humanoid locomotion (2026).
+        challenging terrains using egocentric vision, Proceedings of The 6th        31. S. Fu, Y. Zhang, Z. Cao, L. Yan, Y. Chen, Y. Yin, Y. Gao, Global-local
+        Conference on Robot Learning, K. Liu, D. Kulic, J. Ichnowski, eds.,             attention decomposition for terrain encoding in humanoid perceptive
+        403–415 (PMLR, 2023).                                                           locomotion (2026).
+7.      S. Choi, G. Ji, J. Park, H. Kim, J. Mun, J. H. Lee, J. Hwangbo, Learning    32. Y. Wang, T. Leng, C. Lin, S. Liu, S. Simon, B. Chen, J. Francis, D. Zhao,
+        quadrupedal locomotion on deformable terrain, Science Robotics p.               Apex: Learning adaptive high-platform traversal for humanoid robots
+        eade2256 (2023).                                                                (2026).
+8.      V. Tsounis, M. Alge, J. Lee, F. Farshidian, M. Hutter, Deepgait: Planning   33. X. B. Peng, P. Abbeel, S. Levine, M. van de Panne, Deepmimic:
+        and control of quadrupedal gaits using deep reinforcement learning,             Example-guided deep reinforcement learning of physics-based charac-
+        IEEE Robotics and Automation Letters 3699–3706 (2020).                          ter skills, ACM Transactions on Graphics 37 (2018).
+9.      F. Jenelten, J. He, F. Farshidian, M. Hutter, Dtc: Deep tracking control,   34. Z. Fu, Q. Zhao, Q. Wu, G. Wetzstein, C. Finn, Humanplus: Humanoid
+        Science Robotics p. eadh5401 (2024).                                            shadowing and imitation from humans (2024).
+10.     J. He, C. Zhang, F. Jenelten, R. Grandia, M. Bächer, M. Hutter,             35. T. He, Z. Luo, W. Xiao, C. Zhang, K. Kitani, C. Liu, G. Shi, Learning
+        Attention-based map encoding for learning generalized legged locomo-            human-to-humanoid real-time whole-body teleoperation, arXiv preprint
+        tion, Science Robotics p. eadv3604 (2025).                                      arXiv:2403.04436 (2024).
+11.     R. Yu, Q. Wang, H. Li, Z. Jun, Z. Wang, J. Wu, Q. Zhu, Start: Traversing    36. W. Xie, J. Han, J. Zheng, H. Li, X. Liu, J. Shi, W. Zhang, C. Bai, X. Li,
+        sparse footholds with terrain reconstruction (2025).                            Kungfubot: Physics-based humanoid whole-body control for learning
+12.     Z. Zhuang, Z. Fu, J. Wang, C. Atkeson, S. Schwertfeger, C. Finn,                highly-dynamic skills, The Thirty-ninth Annual Conference on Neural
+        H. Zhao, Robot parkour learning, Conference on Robot Learning (CoRL)            Information Processing Systems (2025).
+        (2023).                                                                     37. Y. Ze, Z. Chen, J. P. Araújo, Z. ang Cao, X. B. Peng, J. Wu, C. K.
+13.     D. Hoeller, N. Rudin, D. Sako, M. Hutter, Anymal parkour: Learning              Liu, Twist: Teleoperated whole-body imitation system, arXiv preprint
+        agile navigation for quadrupedal robots, Science Robotics p. eadi7566           arXiv:2505.02833 (2025).
+        (2024).                                                                     38. Y. Li, Y. Lin, J. Cui, T. Liu, W. Liang, Y. Zhu, S. Huang, Clone: Closed-
+14.     X. Cheng, K. Shi, A. Agarwal, D. Pathak, Extreme parkour with legged            loop whole-body humanoid teleoperation for long-horizon tasks (2025).
+        robots, 2024 IEEE International Conference on Robotics and Automation       39. A. Allshire, H. Choi, J. Zhang, D. McAllister, A. Zhang, C. M. Kim,
+        (ICRA), 11443–11450 (IEEE, 2024).                                               T. Darrell, P. Abbeel, J. Malik, A. Kanazawa, Visual imitation enables
+15.     S. Luo, S. Li, R. Yu, Z. Wang, J. Wu, Q. Zhu, Pie: Parkour with implicit-       contextual humanoid control, Proceedings of the Conference on Robot
+        explicit learning framework for legged robots (2024).                           Learning (CoRL) (2025).
+16.     N. Rudin, J. He, J. Aurand, M. Hutter, Parkour in the wild: Learning a      40. Q. Liao, T. E. Truong, X. Huang, Y. Gao, G. Tevet, K. Sreenath, C. K.
+        general and extensible agile locomotion policy using multi-expert distil-       Liu, Beyondmimic: From motion tracking to versatile humanoid control
+        lation and rl fine-tuning, The International Journal of Robotics Research       via guided diffusion (2025).
+        p. 02783649261455067 (2026).                                                41. L. Yang, X. Huang, Z. Wu, A. Kanazawa, P. Abbeel, C. Sferrazza,
+17.     H. Kim, H. Oh, J. Park, Y. Kim, D. Youm, M. Jung, M. Lee, J. Hwangbo,           C. K. Liu, R. Duan, G. Shi, Omniretarget: Interaction-preserving data
+        High-speed control and navigation for quadrupedal robots on complex             generation for humanoid whole-body loco-manipulation and scene
+        and discrete terrain, Science Robotics p. eads6192 (2025).                      interaction (2026).
+18.     J.-G. Kang, J. Park, T.-G. Song, J.-H. Kim, S. Hong, H.-W. Park, Agile      42. J. P. Sleiman, H. Li, A. Adu-Bredu, R. Deits, A. Kumar, K. Bergamin,
+        perceptive multiskill locomotion for quadrupedal robots in the wild,            M. Bhardwaj, S. Biddlestone, N. Burger, M. A. Estrada, F. Iacobelli,
+        Science Robotics p. eadz7397 (2026).                                            T. Koolen, A. Lambert, E. Lin, M. E. Mungai, Z. Nobles, S. Rozen-
+19.     C. Zhang, V. Klemm, F. Yang, M. Hutter, Ame-2: Agile and generalized            Levy, Y. Shi, J. Wang, J. Welner, F. Yu, M. Zhang, A. Rizzi, J. Hodgins,
+        legged locomotion via attention-based neural map encoding (2026).               S. Bertrand, Y. Abe, S. Kuindersma, F. Farshidian, Zest: Zero-shot
+20.     I. Radosavovic, T. Xiao, B. Zhang, T. Darrell, J. Malik, K. Sreenath,           embodied skill transfer for athletic robot control, Science Robotics p.
+        Real-world humanoid locomotion with reinforcement learning, Science             eaec7695 (2026).
+        Robotics p. eadi9579 (2024).                                                43. Z. Luo, Y. Yuan, T. Wang, C. Li, F. Castañeda, S. Chen, Z.-A. Cao, J. Li,
+21.     X. Gu, Y.-J. Wang, X. Zhu, C. Shi, Y. Guo, Y. Liu, J. Chen, Advancing           D. Minor, Q. Ben, J. Park, D. Sami, Z. Wang, X. Da, R. Ding, C. Hogg,
+        humanoid locomotion: Mastering challenging terrains with denoising              L. Song, E. Lim, E. Jeong, T. He, H. Xue, W. Xiao, S. Yuen, J. Kautz,
+        world model learning (2024).                                                    Y. Chang, U. Iqbal, L. J. Fan, Y. Zhu, Sonic: Supersizing motion tracking
+22.     Z. Zhuang, S. Yao, H. Zhao, Humanoid parkour learning, 8th Annual               for natural humanoid whole-body control, Science Robotics p. eaed4592
+        Conference on Robot Learning (2024).                                            (2026).
+23.     C. Zhang, W. Xiao, T. He, G. Shi, Wococo: Learning whole-body               44. H. J. Lee, S. Hong, S. Kim, Integrating model-based footstep planning
+        humanoid control with sequential contacts, 8th Annual Conference on             with model-free reinforcement learning for dynamic legged locomotion
+        Robot Learning (2024).                                                          (2024).
+24.     J. Long, J. Ren, M. Shi, Z. Wang, T. Huang, P. Luo, J. Pang, Learning       45. M. Xu, Y. Shi, K. Yin, X. B. Peng, Parc: Physics-based augmentation
+        humanoid locomotion with perceptive internal model (2024).
+ Research Article                                                                                                                  ETH Zurich       18
+
+
+      with reinforcement learning for character controllers, Proceedings of the   Bray and Changan Chen for mocap data collection, and Unitree for
+      Special Interest Group on Computer Graphics and Interactive Techniques      providing support on hardware. Funding: This work was funded in
+      Conference Conference Papers, SIGGRAPH Conference Papers ’25                part by the NCCR Automation, ETH RobotX, EU Project 101121321,
+      (Association for Computing Machinery, New York, NY, USA, 2025).             the ETH Mobility Initiative, Armasuisse W&T, ETH AI Center, Fourier
+46.   Z. Zhang, K. Wen, M. Xu, J. He, C. Li, T. Miki, C. Schwarke, C. Zhang,
+                                                                                  Intelligence, and Apple Inc. Any views, opinions, findings, and conclu-
+      X. B. Peng, M. Hutter, Learning whole-body humanoid locomotion via
+                                                                                  sions or recommendations expressed in this material are those of the
+      motion generation and motion tracking (2026).
+47.   Y.-J. Wang, J. Li, S. Chen, T. E. Truong, P. Xu, P. Abbeel, R. Duan,
+                                                                                  authors and should not be interpreted as reflecting the views, policies
+      K. Sreenath, A. Kanazawa, C. Sferrazza, G. Shi, K. Liu, Vlk: Learn-         or position, either expressed or implied, of Apple Inc. Author con-
+      ing humanoid loco-manipulation from synthetic interactions in recon-        tributions: J. H., K. W. and C. Z. formulated the main ideas, trained
+      structed scenes (2026).                                                     the controllers, and conducted most of the experiments. Z. Z., C. S.,
+48.   Z. Wu, X. Huang, L. Yang, Y. Zhang, X. Chen, P. Abbeel, R. Duan,            and K. Q. helped with experiments and provided insights into system
+      A. Kanazawa, C. Sferrazza, G. Shi, K. Liu, Perceptive humanoid park-        development. V. K. and M. H. acquired the funding for the project. All
+      our: Chaining dynamic human skills via motion matching, 2nd Workshop        authors helped to write, improve, and refine the paper.
+      on Agents in Interactions, from Humans to Robots (2026).
+49.   D. Wang, X. Wang, C. Zhang, J. Shi, Y. Zhao, C. Bai, X. Li, X-loco:
+      Towards generalist humanoid locomotion control via synergetic policy
+      distillation (2026).
+50.   J. Wang, Y. Jiang, H. Zhang, C. Tessler, D. Rempe, J. Hodgins, X. B.
+      Peng, Hil: Hybrid imitation learning for dynamic athletic control, ACM
+      Trans. Graph. (2026). Just Accepted.
+51.   J. Wang, M. E. Mungai, H. Li, J. P. Sleiman, J. Hodgins, F. Farshidian,
+      Generalizing from references using a multi-task reference and goal-
+      driven rl framework (2026).
+52.   H. Chen, Z. Li, H. Wang, J. Hu, Z. Li, P. Liu, Q. Zhao, X. Liu, L. Pan,
+      X. Lyu, Y. Ma, T. Fan, Light-loco-parkour: Versatile perceptive whole-
+      body locomotion via multi-skill distillation (2026).
+53.   J. S. Matthis, J. L. Yates, M. M. Hayhoe, Gaze and the control of foot
+      placement when walking in natural terrain, Current biology 2018 (2018).
+54.   S. Omar, M. Khadiv, Learning to act through contact: A unified view of
+      multi-task robot learning (2026).
+55.   S. Chen, S. Zhao, Z. Wu, J. Li, G. Shi, C. K. Liu, Scenebot: Contact-
+      prompted general humanoid whole body tracking with scene-interaction
+      (2026).
+56.   R. Yu, X. Lin, J. Ma, Y. Wang, K. Luo, J. Ji, H. Wang, W. Wang,
+      R. Zhang, P. Tan, T. Wu, R. Dai, Q. Chen, L. Han, Omnicontact:
+      Chaining meta-skills via contact flow for generalizable humanoid loco-
+      manipulation (2026).
+57.   Livox Technology Co., Ltd., Livox Mid-360, https://www.livoxtech.com/
+      mid-360 (2026).
+58.   E. Ongan, C. Zhang, B. Sun, A. Cramariuc, C. Cadena, M. Hutter,
+      Learning agile perceptive traversal of sparse 3d structures for hu-
+      manoids (2026).
+59.   M. Mittal, P. Roth, J. Tigue, A. Richard, O. Zhang, P. Du, A. Serrano-
+      Munoz, X. Yao, R. Zurbrügg, N. Rudin, others, Isaac lab: A gpu-
+      accelerated simulation framework for multi-modal robot learning, arXiv
+      preprint arXiv:2511.04831 (2025).
+60.   J. Schulman, F. Wolski, P. Dhariwal, A. Radford, O. Klimov, Proximal
+      policy optimization algorithms (2017).
+61.   K. Chen, R. Nemiroff, B. T. Lopez, Direct lidar-inertial odometry:
+      Lightweight lio with continuous-time motion correction, 2023 IEEE In-
+      ternational Conference on Robotics and Automation (ICRA) 3983–3989
+      (2023).
+62.   Mixamo, https://www.mixamo.com/#/.
+63.   F. G. Harvey, M. Yurick, D. Nowrouzezahrai, C. Pal, Robust motion
+      in-betweening 39 (2020).
+64.   D. Rempe, M. Petrovich, Y. Yuan, H. Zhang, X. B. Peng, Y. Jiang,
+      T. Wang, U. Iqbal, D. Minor, M. de Ruyter, others, Kimodo: Scaling
+      controllable human motion generation, arXiv preprint arXiv:2603.15546
+      (2026).
+
+
+ACKNOWLEDGMENTS
+We thank Ryan Batke, Ioannis Dadiotis, Emre Elbir, Yuni Fuchioka,
+Elena Krasnova, Chenhao Li, Adria Lopez, Roman Peneder, Iuri
+Pereira Barros, and Thiago Henrique Segreto Silva for their support
+with infrastructure, video recording, and hardware testing, Shengcheng
+Fu for providing locomotion policies for data collection, Francesca
+ Research Article                                                                                                                           ETH Zurich        19
+
+
+
+
+Table 3. Definition of reward terms across training stages. The per-step reward is ∆t ∑i wi ri , where ∆t is the control timestep and wi are the
+weights listed below. Grey cells denote inactive terms. Reference-tracking terms apply only to reference-anchored environments; terms marked
+† apply only to goal-reaching environments. The Stage 2 contact weights use η
+                                                                                     rew = ηrew ( u ), the reward-annealing coefficient defined in
+Eq. (3). The index b runs over the nine contact bodies, j over the 23 controlled joints, and f over monitored contact-sensor links. Superscripts
+ref denote instantaneous reference quantities; B and W denote body-yaw and world coordinates. Actual and reference body-yaw positions use
+their respective base poses. θe is the angular difference between actual and reference base orientations, χmov = 1[∥v∗b ∥ > 0.1], and mb indicates
+a nonzero, occupancy-gated planner target. cmeasb     indicates a vertical contact-force magnitude exceeding 1 N within the sensor-history window.
+wrapπ wraps angular differences to [−π, π ). The kernel scales are σp = 0.5, σr = 1, σv = 1, σω = 3, σq = 2, σq̇ = 10, and σc = 1, in the
+corresponding SI units. For goal rewards, gxy = 1[d g < 0.5], gh = 1[|∆z| < 0.2], gψ = 1[|∆ψ| < 0.5], and gv = 1[v→ g > 0.1]1[∥vW             b,xy ∥ ≤
+vmax ]. Here, d g is the horizontal goal distance, ∆z is the target base height minus the current base height, ∆ψ is the target-heading error, and
+v→ g is the horizontal velocity projected toward the goal. The speed cap is 0.8 m s−1 on the configured stair terrains and 2.0 m s−1 elsewhere.
+For get-up terrains, gz = 1[vW  b,z sign( ∆z ) > 0.1 ∨ | ∆z | < 0.2]; otherwise, gz = 1. dfoot is the fraction of feet without measured contact,
+                                                                                      1
+dtilt = 1 − ( gzbase )2 uses the vertical component of projected gravity, and dq = 23   ∑ j |q j − q0,j |. Ti denotes the terrain mask for style term i.
+Ff ,xy and Ff ,z are the maximum horizontal force magnitude and vertical force over the sensor-history window; tcontact
+   max      max
+                                                                                                                         f      is the continuous contact
+duration. gtorso is gravity projected into the torso frame. Computed and applied torques are taken before and after actuator limiting, respectively.
+[ x ]+ = max( x, 0), and joint bounds are the configured soft limits. All thresholds use SI units.
+      Category        Term                                           Functional Form                                 Stage 1      Stage 2          Stage 3
+                                                                                                           
+                      track_base_pos                    exp −χmov ∥rb − r∗b ∥2 /σp2 − θe2 /σr2                         3.0          3.0              3.0
+                                                     exp −∥vb − v∗b ∥2 /σv2 − ∥ωb − ω∗b ∥2 /σω
+                                                                                             2
+                                                                                                                
+                      track_base_vel                                                                                   1.0          1.0              1.0
+                                                                                         
+                      track_joint_pos                    exp −∥ wrapπ (q j − q∗j )∥2 /σq2                              2.5          2.5              2.5
+                                                                                               
+                      track_joint_vel                            exp −∥q̇ j − q̇∗j ∥2 /σq̇2                            0.5          0.5              0.5
+        Task
+                                                             1     meas (2cref − 1)
+                      track_contact_label                    9 ∑b cb
+                                                                          b                
+                                                                                                                       5.0     5.0(1 − ηrew )
+                      track_contact_pos_base            exp − ∑b ∥pexec,B
+                                                                    b     −  p ref,B 2
+                                                                               b     ∥ /σ 2
+                                                                                          c                            2.0     2.0(1 − ηrew )
+                                                                                               
+                      track_contact_pos_global       exp −χmov ∑b ∥pexec,W
+                                                                      b      −   pref,W
+                                                                                   b    ∥2 /σc2                        1.0     1.0(1 − ηrew )
+                                                                                  exec,B
+                                                                                                    
+                                                                           ∑b mb ∥pb      −p̂b ∥2
+                      track_planned_contact                     exp −       σc2 max(1,∑b mb )
+                                                                                                                                  1.5ηrew            1.5
+
+                      move2goal                                    (1 − gxy ) gv + gxy gz                                                                40
+        Task†                                                                                               
+                      standatgoal                       gxy gh gψ exp −(dfoot + dtilt + dq )/3                                                           20
+                      action_rate                                        ∥ a t − a t −1   ∥2                          −0.1         −0.1             −0.1
+                      action_rate_2nd                             ∥at − 2at−1 + at−2           ∥2                   −5×10−2     −5×10−2           −5×10−2
+                                                                               applied 2
+                      joint_torque                                       ∑ j (τj          )                         −1×10−5     −1×10−5           −1×10−5
+   Regularization
+                                                                    computed     applied
+                      torque_limits                          ∑ j |τj          − τj       |                          −1×10−3     −1×10−3           −1×10−3
+                                                                                                   
+                      dof_pos_limits                 min 30, ∑ j ([q j − q j ]+ + [q j − qmax
+                                                                    min
+                                                                                           j  ] + )                   −10          −10               −10
+                                                                                                       
+                      dof_vel_limits                        ∑ j min 1, [|q̇ j | − 0.9q̇max
+                                                                                       j   ]+                         −1            −1               −1
+                                                                                          
+                                                                                  exec,W
+        Style         contact_acc                              min 104 , ∑b ∥p̈b         ∥                           −0.01        −0.01             −0.01
+                      flat_orientation                                Tori ∥gtorso,xy ∥2                                                             −10
+                      stumbling                            Tst ∑ f 1[ Fmax          max
+                                                                       f ,xy > 1.1F f ,z + 1]                                                        −10
+       Style†
+                      slippage                        Tsl ∑ f 1[tcontact
+                                                                 f        > 0.026] 1[∥v f ∥ > 0.5]                                                   −10
+                      ang_vel_xy                                      Tω ∥ωW
+                                                                           torso,xy ∥
+                                                                                      2                                                             −0.1
+ Research Article                                                                                                                 ETH Zurich       20
+
+
+                                                                                       – Rough ground and slopes
+Table S1. Source of the motion data. Retargeted: retargeted using
+our method; Contact labeled: contact labeled with our method.                     • Sparse foot
+                        Data origin             Retargeted   Contact labeled           – Gaps
+ Box climbing           Omniretarget [41]       No           Yes                       – Balance beams - narrow walking surfaces spanning gaps
+                                                                                       – Pallets - separated narrow slats
+ Stairs climbing        Mixamo [62]             Yes          Yes
+                                                                                       – Double stones - paired stepping-stone supports
+ Ladder climbing        Mixamo [62]             Yes          Yes
+                                                                                       – Discrete platforms - separated platforms with varying
+ Sit down               Mixamo [62]             Yes          Yes                         heights
+ Walk                   LAFAN [63]              Yes          Yes                  • Dense whole-body
+ Get up                 LAFAN [63]              Yes          Yes                       – Box ascent and descent
+ Vault                  Kimodo [64]             No           Yes                       – Getting up from face-up and face-down positions
+ Sparse terrains        AME policy [31]         No           No                        – Uneven climbing terrain - climbing obstacles with irregular
+                                                                                         surfaces
+                                                                                  • Sparse whole-body
+SUPPLEMENTARY METHODS
+                                                                                       – Ladders with varied inclinations (50◦ - 65◦ ) and rung con-
+Training Details                                                                         figurations (20-30cm rung distance range and 1-2m length
+Data source                                                                              range)
+Source of the motion data is listed in Table S1.                                       – Varied vaults (1.2-2m width range; 0.16-0.22m thickness
+Domain Randomizations                                                                    range; 0.47-0.53m height range; 5◦ max roll; 3◦ max pitch;
+                                                                                         10◦ max yaw)- crossing obstacles with hand support
+Details of domain randomizations are summarized in Table S2.
+                                                                               Network architectures
+Terrains
+                                                                               The tracker and both value networks use three hidden layers with 512,
+Reference-anchored terrains :
+                                                                               256, and 128 units and ELU activations. The contact-conditioned
+   • Dense foot                                                                tracker receives 468 features: 375 proprioceptive-history features, 63
+                                                                               height samples, 27 contact-target coordinates, and a three-dimensional
+           – Walking and turning                                               goal command. The kinematics-conditioned variant adds 52 refer-
+           – Stair ascent and descent                                          ence features. Both trackers output commands for 23 joints. The
+                                                                               reference-following and goal-reaching critics receive 353 and 298
+   • Sparse foot                                                               features, respectively.
+                                                                                   Table S3 specifies the planner architectures. The attention planner
+           – Beams - narrow, uninterrupted walking surfaces                    uses ELU activations in its terrain encoder and ReLU activations in
+           – Grid and paired stepping stones - small, separated footholds      its context, FiLM, and occupancy MLPs. The MLP baseline uses two
+             arranged in grids or pairs                                        285-unit hidden layers with ELU activations, followed by separate
+                                                                               terrain-weight and occupancy heads. Terrain weights are normalized
+           – Pallets - separated narrow slats
+                                                                               separately for each body, and occupancy outputs are passed through a
+           – Stakes - small pillar-shaped supports                             sigmoid. The attention and MLP planners contain 786,993 and 833,322
+                                                                               parameters, respectively.
+   • Dense whole-body
+                                                                               Observation encoding and curricula
+           – Box ascent and descent                                            The policy height scans use a spacing of 0.1 m, with the spatial cover-
+           – Sitting and standing transitions                                  age listed in Table S4. These policy observation grids are distinct from
+           – Getting up from face-up and face-down positions                   the 0.03 m reconstruction grid used by the neural mapping module.
+                                                                                   For nonzero goal commands, the horizontal component is
+   • Sparse whole-body                                                         d xy / max(∥d xy ∥, r ), where d xy is the horizontal target displacement
+                                                                               in the body-yaw frame. We use r = 0.3 m for reference-following
+           – Ladders (50◦ and 60◦ inclinations; 25cm ladder rung dis-          and r = 0.5 m for goal-reaching. The heading component is a relative
+             tance; 1m ladder rung length)                                     angle wrapped to [−π, π ). During reference-following, the target is
+           – Vaults (2m width; 0.2m thickness; 0.5m height) - crossing         sampled uniformly 0.5–1.5 s ahead, capped at the end of the reference
+             obstacles with hand support                                       clip.
+                                                                                   In Stage 1, the initialization phase decreases by 0.05 after an
+Goal-reaching terrains:                                                        episode reaches phase 0.99 and increases by 0.05 otherwise, with
+                                                                               the result clipped to [0, 0.99]. Stage 2 uses uniformly sampled ini-
+   • Dense foot
+                                                                               tialization phases. For the Stage-3 goal-reaching curriculum, the
+           – Stair ascent and descent                                          per-environment success estimate is updated after each episode as
+                                                                               s ← 0.8s + 0.2Isuccess . Promotion requires a successful episode and
+           – Walled stairs - stairs bounded by side walls                      s > 0.5. An episode is successful for promotion if it reaches the goal
+           – Walk-up platforms                                                 at the required height and completes without early termination.
+ Research Article                                                                                                          ETH Zurich      21
+
+
+
+
+Table S2. Domain randomization settings. U ( a, b) denotes a uniform distribution over [ a, b]. Multiplicative factors are applied to nominal
+values. Dynamics parameters are sampled once per environment at simulation start.
+ Parameter                                                   Value
+ Dynamics
+ Contact friction (static/dynamic)                           U (0.3, 1.2) / U (0.3, 1.2); ground friction = 1.0
+ Restitution                                                 U (0.0, 0.5)
+ Torso added mass                                            U (−2.0, 4.0) kg
+ Leg link mass                                               ×U (0.85, 1.15)
+ Torso CoM offset                                            x : ±0.025 m, y, z : ±0.05 m
+ Joint zero-position bias (non-ankle)                        U (−0.01, 0.01) rad
+ Joint zero-position bias (ankle)                            U (−0.03, 0.03) rad
+ Joint armature                                              ×U (0.9, 1.1)
+ PD gains (k p , k d )                                       ×U (0.9, 1.1)
+ Delay                                                       U (0, 20) ms
+ Proprioception observations
+ Base angular velocity                                       U (−0.05, 0.05) rad/s
+ Projected gravity                                           U (−0.0125, 0.0125)
+ Joint positions                                             U (−0.01, 0.01) rad
+ Joint velocities                                            U (−1.5, 1.5) rad/s
+ Goal contact positions                                      U (−0.1, 0.1) m
+ Goal direction / yaw                                        U (−0.2, 0.2) rad
+ Exteroception
+ Planner height scan (17 × 11)                               N (0, 0.032 ) m
+ Tracker height scan (9 × 7)                                 U (−0.1, 0.1) m
+ Odometry delay                                              U (50, 100) ms
+ Odometry XY drift                                           Uniform within a 0.05 m radius disk
+ Odometry Z drift                                            U (−0.05, 0.05) m
+ Initial states
+ Reset joint position                                        U (−0.2, 0.2) rad around reference/default pose
+ Reset base height                                           +U (0, 0.05) m
+ Reset yaw (goal-reaching)                                   U (−0.4, 0.4) rad
+ Initial phase (reference-following)                         Stage 1: curriculum; Stage 2: U (0, 0.98); Stage 3: 0
+ Research Article                                                                                                                 ETH Zurich     22
+
+
+
+Table S3. Contact-planner architectures. Both planners receive a five-step proprioceptive history, a three-dimensional goal command, and 187
+terrain points. Arrows indicate layer widths; height-map encoder widths denote channels.
+Component                                           Dimensions                                            Details
+Attention planner (786,993 parameters)
+Terrain-point embedding                             3 → 16                                                Linear projection; ELU
+Height-map encoder                                  1 → 16 → 48                                           5 × 5 kernels; padding 2; ELU
+Terrain-feature projection                          64 → 96                                               Linear projection
+Terrain-context encoder                             96 → 64 → 64                                          Pointwise MLP; max pooling
+Proprioception–goal–context encoder                 442 → 128 → 128 → 96                                  MLP; ReLU
+Body embeddings                                     9 × 96                                                Nine learned body embeddings
+FiLM parameter generator                            96 → 64 → 192                                         MLP; scale and shift outputs
+Cross-attention                                     96                                                    1 layer; 32 heads; no dropout
+Contact-occupancy head                              160 → 512 → 512 → 512 → 1                             MLP; sigmoid output
+MLP planner (833,322 parameters)
+Shared backbone                                     939 → 285 → 285                                       MLP; ELU
+Terrain-weight head                                 285 → 1683                                            Reshape to 9 × 187; softmax
+Contact-occupancy head                              285 → 9                                               Linear projection; sigmoid output
+
+
+                                                                          Planner optimization and hindsight replay
+                                                                          We optimize the planner loss in Eq. (2) with Adam, using unit coef-
+Table S4. Observation and curriculum settings. Reference phases           ficients for the affordance and contact-occupancy losses. Following
+are fractions of the motion-clip duration. Horizontal curriculum          planner initialization, each PPO iteration includes ten planner optimizer
+distances are measured only when the vertical goal error is below         updates. Each update samples 4,096 replay entries and accumulates gra-
+0.1 m.                                                                    dients over eight sub-batches before taking one optimizer step. Updates
+                                                                          begin once at least 1,000 replay entries are available; in distributed
+ Parameter                                          Value
+                                                                          training, every worker must satisfy this condition.
+ Observation encoding                                                         When reference-following and goal-reaching replay buffers are both
+                                                                          nonempty, their contributions to a planner batch are proportional to
+ Proprioceptive history                             5 control steps
+                                                                          their stored sample counts. Within each partitioned buffer, sampling
+ Height-scan spacing                                0.1 m                 is uniform over terrain types, then over tiles of the selected type, and
+                                                                          finally over stored timesteps within the selected tile.
+ Planner scan coverage                              1.6 × 1.0 m
+                                                                              The trajectory recorder stores at most 500 control steps per episode.
+ Tracker scan coverage                              0.8 × 0.6 m           For admitted goal-reaching episodes, the recorded segment is further
+                                                                          truncated at the first step within 0.2 m of the goal horizontally, when
+ Reference-goal lookahead                           0.5–1.5 s
+                                                                          such a step exists. This truncation removes the near-goal tail from
+ Goal scaling radius, reference-following           0.3 m                 planner supervision; the 0.5 m horizontal and 0.1 m vertical thresholds
+                                                                          determine admission to the replay buffer. For quality-based eviction,
+ Goal scaling radius, goal-reaching                 0.5 m
+                                                                          positive mechanical work is normalized by the initial horizontal goal
+ Stage-1 initialization curriculum                                        distance, with the denominator clamped below at 0.5 m.
+ Initial reference phase                            0.9                   Contact and reward annealing
+ Completion threshold                               0.99                  During Stage 2, contact-input selection and contact-reward weighting
+                                                                          follow separate linear schedules:
+ Phase adjustment                                   0.05
+                                                                                         
+ Allowed initialization phase                       [0, 0.99]                             0,             u ≤ uξ ,
+                                                                                         u − u
+                                                                                         
+                                                                                                  ξ
+ Stage-3 terrain curriculum                                                 ηξ ( u ) =                ,   uξ < u < uξ + Nann ,      ξ ∈ {obs, rew}.
+                                                                                            N
+                                                                                          ann
+                                                                                         
+                                                                                         
+ Difficulty levels                                  10                                     1,             u ≥ uξ + Nann ,
+                                                                                                                                                 (3)
+ Success-EMA update weight                          0.2                   Here, u is the PPO iteration counter, uobs and urew are the respective
+ Success-EMA promotion threshold                    0.5                   transition start iterations, and Nann is their shared transition duration.
+                                                                          The reward transition starts later, with urew > uobs .
+ Horizontal promotion threshold                     0.5 m                     The input schedule selects the complete reference or predicted
+ Horizontal demotion threshold                      1.0 m                 contact command independently for each environment at each control
+                                                                          step; contact coordinates are not interpolated. The reward schedule
+ Vertical goal tolerance                            0.1 m                 multiplies the three reference-contact terms in Table 3 by 1 − ηrew and
+ Maximum goal-reaching episode duration             15 s                  the planner-contact term by ηrew . Their resulting weights are 5.0(1 −
+                                                                          ηrew ), 2.0(1 − ηrew ), 1.0(1 − ηrew ), and 1.5ηrew , respectively. All
+                                                                          other Stage 2 reward weights remain unchanged. Stage 3 uses predicted
+ Research Article                                                                                                           ETH Zurich      23
+
+
+                                                                         contacts throughout, disables the reference-contact terms, and retains
+                                                                         the planner-contact weight of 1.5.
+                                                                         PPO parameters
+                                                                         Table S6 lists the PPO optimization settings. Each iteration collects
+                                                                         24 control steps per environment and performs five epochs with eight
+                                                                         minibatches per epoch. Advantages are normalized across the col-
+                                                                         lected rollout; with the Stage-3 dual critic, normalization is performed
+                                                                         separately for reference-following and goal-reaching samples.
+Table S5. Planner optimization and hindsight-labeling settings.              The goal-reaching critic uses a fixed learning rate of 10−3 . During
+Contact duration and trajectory length are measured in 50 Hz control     its first 500 PPO iterations, goal-reaching samples train the new critic
+steps. The trajectory-storage limit is separate from the environment’s   but are excluded from the actor’s PPO surrogate loss. Value-loss
+episode timeout.                                                         clipping is disabled for this critic during warmup. The tracker and
+                                                                         reference-following critic use the KL-adaptive learning rate.
+ Parameter                              Value
+ Optimization and decoding                                               Evaluation Details
+                                                                         Terrains
+ Optimizer                              Adam
+                                                                         Reference-anchored terrains:
+ Planner learning rate                  10−4
+                                                                            • The same 123 reference configurations used for training
+ Adam ( β 1 , β 2 )                     (0.9, 0.999)
+                                                                         Goal-reaching terrains:
+ Adam ϵ                                 10−8
+                                                                            • The same 32 terrain configurations used in Stage 3 training, with
+ Weight decay                           0                                     difficulty level even sampled from the training range.
+ Affordance / occupancy loss coeffi-    1.0 / 1.0                        Unseen terrains
+ cients
+                                                                            • Compositions
+ Gaussian target bandwidth              0.1 m
+                                                                                    – Two randomly sampled goal-reaching terrains arranged se-
+ Planner updates per PPO iteration      10
+                                                                                      quentially.
+ Replay samples per optimizer up-       4,096
+ date                                                                       • Distractors
+
+ Gradient-accumulation sub-batches      8                                           – Goal-reaching terrains with additional obstacles around the
+                                                                                      intended support area
+ Minimum replay entries before up-      1,000
+ dating                                                                     • Roughness
+ Contact-occupancy threshold            0.5
+                                                                                    – Goal-reaching terrains with added irregular bumps on the
+ Decoder k, quantitative evaluations    1                                             surfaces, with maximum amplitude varying from 5 to 15 cm
+ Hindsight labeling and storage                                          Curated composite courses: A separate set of eight compact courses
+ Vertical contact-force threshold       1N                               combines sparse footholds with whole-body obstacles and varied tran-
+                                                                         sition distances. These courses are shown in Figure S1 and evaluated
+ Minimum contact-segment duration       10 steps (0.2 s)                 separately from the group-level composition benchmark.
+ Contact lookahead horizon              75 steps (1.5 s)
+ Target footprint in body-yaw coor-     [−0.8, 0.8] × [−0.5, 0.5] m
+ dinates
+ Maximum recorded steps per             500
+ episode
+ Goal-reaching replay truncation dis-   0.2 m
+ tance
+ Minimum distance used for quality      0.5 m
+ normalization
+ Research Article                                                                                                       ETH Zurich      24
+
+
+
+
+Table S6. PPO optimization settings. Batch sizes count transitions. Per-worker minibatches are one eighth of the corresponding rollout batch;
+effective total minibatches include all workers. Stage-1 distributed totals are not reported.
+  Parameter                                                                               Stage 1        Stage 2              Stage 3
+  Rollout and batch sizes
+  Parallel environments per worker                                                        12,000          2,400                 2,100
+  Rollout batch per worker                                                               288,000         57,600                50,400
+  Minibatch per worker                                                                    36,000          7,200                 6,300
+  Training workers (one GPU each)                                                            —              2                     4
+  Total parallel environments                                                                —           4,800                 8,400
+  Total rollout batch                                                                        —          115,200               201,600
+  Effective total minibatch                                                                  —          14,400                 25,200
+  Shared PPO settings
+  Rollout steps per environment                                                                            24
+  Optimization epochs                                                                                       5
+  Minibatches per epoch                                                                                     8
+  Policy clip range                                                                                        0.2
+  Value-loss coefficient                                                                                   1.0
+  Maximum gradient norm                                                                                    1.0
+  Discount factor                                                                                         0.99
+  GAE parameter                                                                                           0.95
+  Tracker and reference-following critic
+  Initial learning rate                                                                                 10−4
+  Learning-rate schedule                                                                              KL-adaptive
+  Target KL                                                                                 0.02         0.01                   0.01
+  Entropy coefficient                                                                      0.006        0.005                  0.002
+  Stage-3 goal-reaching critic
+  Learning rate (fixed)                                                                      —             —                   10−3
+  Warmup duration (PPO iterations)                                                           —             —                    500
+ Research Article                                                                                                        ETH Zurich         25
+
+
+
+
+Fig. S1. Eight curated composite courses used for evaluation. Each panel shows four successive robot poses from one successful traversal.
+Green markers indicate starting positions, and red circles show the 0.5 m horizontal goal tolerance. Success rates for Ours and MGMT are mea-
+sured over 1,000 episodes per method and course.
+

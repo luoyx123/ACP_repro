@@ -1,0 +1,1460 @@
+[
+  {
+    "clip": "climb_03_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 317,
+    "lost_hand_near_surface_steps": 378,
+    "diagnostics": "clips/climb_03_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_01_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 276,
+    "lost_hand_near_surface_steps": 339,
+    "diagnostics": "clips/climb_01_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_03_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 269,
+    "lost_hand_near_surface_steps": 287,
+    "diagnostics": "clips/climb_03_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_01_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 262,
+    "lost_hand_near_surface_steps": 563,
+    "diagnostics": "clips/climb_01_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_11_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 243,
+    "lost_hand_near_surface_steps": 450,
+    "diagnostics": "clips/climb_11_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_00_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 242,
+    "lost_hand_near_surface_steps": 349,
+    "diagnostics": "clips/climb_00_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_00_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 235,
+    "lost_hand_near_surface_steps": 358,
+    "diagnostics": "clips/climb_00_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_11_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 229,
+    "lost_hand_near_surface_steps": 434,
+    "diagnostics": "clips/climb_11_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_01_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 227,
+    "lost_hand_near_surface_steps": 262,
+    "diagnostics": "clips/climb_01_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_11_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 226,
+    "lost_hand_near_surface_steps": 381,
+    "diagnostics": "clips/climb_11_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_01_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 222,
+    "lost_hand_near_surface_steps": 538,
+    "diagnostics": "clips/climb_01_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_23_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 219,
+    "lost_hand_near_surface_steps": 296,
+    "diagnostics": "clips/climb_23_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_03_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 216,
+    "lost_hand_near_surface_steps": 228,
+    "diagnostics": "clips/climb_03_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_11_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 215,
+    "lost_hand_near_surface_steps": 250,
+    "diagnostics": "clips/climb_11_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_01_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 214,
+    "lost_hand_near_surface_steps": 534,
+    "diagnostics": "clips/climb_01_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_12_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 213,
+    "lost_hand_near_surface_steps": 343,
+    "diagnostics": "clips/climb_12_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_03_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 206,
+    "lost_hand_near_surface_steps": 271,
+    "diagnostics": "clips/climb_03_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_02_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 191,
+    "lost_hand_near_surface_steps": 280,
+    "diagnostics": "clips/climb_02_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_20_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 188,
+    "lost_hand_near_surface_steps": 255,
+    "diagnostics": "clips/climb_20_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_12_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 178,
+    "lost_hand_near_surface_steps": 223,
+    "diagnostics": "clips/climb_12_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_23_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 176,
+    "lost_hand_near_surface_steps": 289,
+    "diagnostics": "clips/climb_23_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_23_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 170,
+    "lost_hand_near_surface_steps": 224,
+    "diagnostics": "clips/climb_23_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_12_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 169,
+    "lost_hand_near_surface_steps": 199,
+    "diagnostics": "clips/climb_12_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_22_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 167,
+    "lost_hand_near_surface_steps": 216,
+    "diagnostics": "clips/climb_22_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_24_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 167,
+    "lost_hand_near_surface_steps": 200,
+    "diagnostics": "clips/climb_24_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_22_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 166,
+    "lost_hand_near_surface_steps": 173,
+    "diagnostics": "clips/climb_22_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_22_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 163,
+    "lost_hand_near_surface_steps": 188,
+    "diagnostics": "clips/climb_22_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_11_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 155,
+    "lost_hand_near_surface_steps": 176,
+    "diagnostics": "clips/climb_11_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_25_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 151,
+    "lost_hand_near_surface_steps": 180,
+    "diagnostics": "clips/climb_25_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_23_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 151,
+    "lost_hand_near_surface_steps": 169,
+    "diagnostics": "clips/climb_23_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_24_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 146,
+    "lost_hand_near_surface_steps": 149,
+    "diagnostics": "clips/climb_24_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_24_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 144,
+    "lost_hand_near_surface_steps": 149,
+    "diagnostics": "clips/climb_24_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_12_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 126,
+    "lost_hand_near_surface_steps": 183,
+    "diagnostics": "clips/climb_12_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_25_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 123,
+    "lost_hand_near_surface_steps": 152,
+    "diagnostics": "clips/climb_25_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_03_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 122,
+    "lost_hand_near_surface_steps": 134,
+    "diagnostics": "clips/climb_03_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_25_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 121,
+    "lost_hand_near_surface_steps": 158,
+    "diagnostics": "clips/climb_25_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_00_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 119,
+    "lost_hand_near_surface_steps": 189,
+    "diagnostics": "clips/climb_00_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_12_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 113,
+    "lost_hand_near_surface_steps": 166,
+    "diagnostics": "clips/climb_12_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_25_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 110,
+    "lost_hand_near_surface_steps": 122,
+    "diagnostics": "clips/climb_25_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_13_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 106,
+    "lost_hand_near_surface_steps": 244,
+    "diagnostics": "clips/climb_13_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_02_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 103,
+    "lost_hand_near_surface_steps": 210,
+    "diagnostics": "clips/climb_02_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_13_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 101,
+    "lost_hand_near_surface_steps": 193,
+    "diagnostics": "clips/climb_13_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_09_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 93,
+    "lost_hand_near_surface_steps": 117,
+    "diagnostics": "clips/climb_09_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_13_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 82,
+    "lost_hand_near_surface_steps": 177,
+    "diagnostics": "clips/climb_13_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_20_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 81,
+    "lost_hand_near_surface_steps": 127,
+    "diagnostics": "clips/climb_20_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_28_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 77,
+    "lost_hand_near_surface_steps": 219,
+    "diagnostics": "clips/climb_28_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_09_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 76,
+    "lost_hand_near_surface_steps": 142,
+    "diagnostics": "clips/climb_09_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_08_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 74,
+    "lost_hand_near_surface_steps": 154,
+    "diagnostics": "clips/climb_08_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_09_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 74,
+    "lost_hand_near_surface_steps": 130,
+    "diagnostics": "clips/climb_09_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_22_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 73,
+    "lost_hand_near_surface_steps": 89,
+    "diagnostics": "clips/climb_22_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_00_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 69,
+    "lost_hand_near_surface_steps": 80,
+    "diagnostics": "clips/climb_00_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_28_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 67,
+    "lost_hand_near_surface_steps": 100,
+    "diagnostics": "clips/climb_28_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_20_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 64,
+    "lost_hand_near_surface_steps": 190,
+    "diagnostics": "clips/climb_20_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_28_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 64,
+    "lost_hand_near_surface_steps": 130,
+    "diagnostics": "clips/climb_28_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_02_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 63,
+    "lost_hand_near_surface_steps": 173,
+    "diagnostics": "clips/climb_02_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_08_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 62,
+    "lost_hand_near_surface_steps": 152,
+    "diagnostics": "clips/climb_08_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_08_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 62,
+    "lost_hand_near_surface_steps": 133,
+    "diagnostics": "clips/climb_08_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_26_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 55,
+    "lost_hand_near_surface_steps": 64,
+    "diagnostics": "clips/climb_26_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_28_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 51,
+    "lost_hand_near_surface_steps": 115,
+    "diagnostics": "clips/climb_28_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_23_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 49,
+    "lost_hand_near_surface_steps": 50,
+    "diagnostics": "clips/climb_23_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_24_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 48,
+    "lost_hand_near_surface_steps": 58,
+    "diagnostics": "clips/climb_24_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_26_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 47,
+    "lost_hand_near_surface_steps": 59,
+    "diagnostics": "clips/climb_26_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_04_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 47,
+    "lost_hand_near_surface_steps": 58,
+    "diagnostics": "clips/climb_04_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_19_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 46,
+    "lost_hand_near_surface_steps": 48,
+    "diagnostics": "clips/climb_19_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_09_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 41,
+    "lost_hand_near_surface_steps": 89,
+    "diagnostics": "clips/climb_09_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_26_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 40,
+    "lost_hand_near_surface_steps": 46,
+    "diagnostics": "clips/climb_26_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_26_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 39,
+    "lost_hand_near_surface_steps": 58,
+    "diagnostics": "clips/climb_26_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_07_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 39,
+    "lost_hand_near_surface_steps": 40,
+    "diagnostics": "clips/climb_07_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_25_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 36,
+    "lost_hand_near_surface_steps": 57,
+    "diagnostics": "clips/climb_25_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_08_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 32,
+    "lost_hand_near_surface_steps": 70,
+    "diagnostics": "clips/climb_08_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_27_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 28,
+    "lost_hand_near_surface_steps": 71,
+    "diagnostics": "clips/climb_27_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_08_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 26,
+    "lost_hand_near_surface_steps": 35,
+    "diagnostics": "clips/climb_08_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_07_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 26,
+    "lost_hand_near_surface_steps": 28,
+    "diagnostics": "clips/climb_07_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_07_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 26,
+    "lost_hand_near_surface_steps": 27,
+    "diagnostics": "clips/climb_07_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_09_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 25,
+    "lost_hand_near_surface_steps": 74,
+    "diagnostics": "clips/climb_09_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_13_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 25,
+    "lost_hand_near_surface_steps": 60,
+    "diagnostics": "clips/climb_13_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_07_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 25,
+    "lost_hand_near_surface_steps": 25,
+    "diagnostics": "clips/climb_07_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_27_z_scale_1.2",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 23,
+    "lost_hand_near_surface_steps": 38,
+    "diagnostics": "clips/climb_27_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_19_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 22,
+    "lost_hand_near_surface_steps": 23,
+    "diagnostics": "clips/climb_19_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_22_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 21,
+    "lost_hand_near_surface_steps": 25,
+    "diagnostics": "clips/climb_22_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_27_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 20,
+    "lost_hand_near_surface_steps": 91,
+    "diagnostics": "clips/climb_27_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_28_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 20,
+    "lost_hand_near_surface_steps": 25,
+    "diagnostics": "clips/climb_28_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_07_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 20,
+    "lost_hand_near_surface_steps": 22,
+    "diagnostics": "clips/climb_07_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_04_z_scale_1.0",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 17,
+    "lost_hand_near_surface_steps": 22,
+    "diagnostics": "clips/climb_04_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_00_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 14,
+    "lost_hand_near_surface_steps": 35,
+    "diagnostics": "clips/climb_00_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_04_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 11,
+    "lost_hand_near_surface_steps": 20,
+    "diagnostics": "clips/climb_04_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_26_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 10,
+    "lost_hand_near_surface_steps": 12,
+    "diagnostics": "clips/climb_26_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_20_z_scale_0.9",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 5,
+    "lost_hand_near_surface_steps": 8,
+    "diagnostics": "clips/climb_20_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_19_z_scale_1.1",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 3,
+    "lost_hand_near_surface_steps": 5,
+    "diagnostics": "clips/climb_19_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_24_z_scale_0.8",
+    "reasons": [
+      "introduced_native_environment_pairs",
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 2,
+    "lost_hand_near_surface_steps": 4,
+    "diagnostics": "clips/climb_24_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_02_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 48,
+    "diagnostics": "clips/climb_02_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_13_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 39,
+    "diagnostics": "clips/climb_13_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_02_z_scale_0.9",
+    "reasons": [
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 35,
+    "diagnostics": "clips/climb_02_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_04_z_scale_0.9",
+    "reasons": [
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 11,
+    "diagnostics": "clips/climb_04_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_04_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 10,
+    "diagnostics": "clips/climb_04_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_27_z_scale_0.9",
+    "reasons": [
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 6,
+    "diagnostics": "clips/climb_27_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_20_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 2,
+    "diagnostics": "clips/climb_20_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_27_z_scale_0.8",
+    "reasons": [
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 2,
+    "diagnostics": "clips/climb_27_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_19_z_scale_0.9",
+    "reasons": [
+      "introduced_native_self_pairs",
+      "source_hand_near_surface_steps_lost"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 1,
+    "diagnostics": "clips/climb_19_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_05_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_05_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_05_z_scale_0.9",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_05_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_05_z_scale_1.0",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_05_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_05_z_scale_1.1",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_05_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_05_z_scale_1.2",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_05_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_06_z_scale_1.1",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_06_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_06_z_scale_1.2",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_06_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_10_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_10_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_10_z_scale_0.9",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_10_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_10_z_scale_1.0",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_10_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_10_z_scale_1.1",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_10_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_10_z_scale_1.2",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_10_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_14_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_14_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_14_z_scale_0.9",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_14_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_14_z_scale_1.0",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_14_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_14_z_scale_1.1",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_14_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_14_z_scale_1.2",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_14_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_15_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_15_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_15_z_scale_0.9",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_15_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_15_z_scale_1.0",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_15_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_15_z_scale_1.1",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_15_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_15_z_scale_1.2",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_15_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_16_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_16_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_16_z_scale_0.9",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_16_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_16_z_scale_1.0",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_16_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_16_z_scale_1.1",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_16_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_16_z_scale_1.2",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_16_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_17_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_17_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_17_z_scale_0.9",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_17_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_17_z_scale_1.0",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_17_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_17_z_scale_1.1",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_17_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_17_z_scale_1.2",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_17_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_18_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_18_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_18_z_scale_0.9",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_18_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_18_z_scale_1.0",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_18_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_18_z_scale_1.1",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_18_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_18_z_scale_1.2",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_18_z_scale_1.2/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_19_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_19_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_21_z_scale_0.8",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_21_z_scale_0.8/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_21_z_scale_0.9",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_21_z_scale_0.9/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_21_z_scale_1.0",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_21_z_scale_1.0/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_21_z_scale_1.1",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_21_z_scale_1.1/comparison/diagnostics.npz"
+  },
+  {
+    "clip": "climb_21_z_scale_1.2",
+    "reasons": [
+      "introduced_native_self_pairs"
+    ],
+    "introduced_environment_frames": 0,
+    "lost_hand_near_surface_steps": 0,
+    "diagnostics": "clips/climb_21_z_scale_1.2/comparison/diagnostics.npz"
+  }
+]

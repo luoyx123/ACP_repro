@@ -1,0 +1,236 @@
+[
+  {
+    "clip": "climb_00_z_scale_0.9",
+    "frames": 1006,
+    "root_waist_legs_exactly_preserved": true,
+    "maximum_foot_fk_error_m": 0.0,
+    "source_contact_surface_point_drift_m": {
+      "before": {
+        "count": 439,
+        "mean": 0.005228435608878368,
+        "p95": 0.01182475782396811,
+        "p99": 0.01745557054296328,
+        "max": 0.019690957253140122
+      },
+      "after": {
+        "count": 439,
+        "mean": 0.0013016751752596928,
+        "p95": 0.002707852623001356,
+        "p99": 0.004810715495039509,
+        "max": 0.0121531391242979
+      }
+    },
+    "hand_environment_invalid_steps": {
+      "source": 0,
+      "before": 79,
+      "after": 0,
+      "introduced_before": 79,
+      "introduced_after": 0
+    },
+    "remaining_invalid_hand_steps": [],
+    "native_environment_invalid_frames": {
+      "source": 6,
+      "before": 75,
+      "after": 6,
+      "introduced_before": 69,
+      "introduced_after": 0
+    },
+    "temporal_derivatives": {
+      "before": {
+        "arm_speed_rad_s": {
+          "count": 8040,
+          "mean": 0.3343314676638959,
+          "p95": 1.3092691163607204,
+          "p99": 2.654960405465269,
+          "max": 6.363147797989054
+        },
+        "arm_acceleration_rad_s2": {
+          "count": 8032,
+          "mean": 4.499438602609116,
+          "p95": 16.75674992797225,
+          "p99": 34.89250707558472,
+          "max": 208.28349348490212
+        }
+      },
+      "after": {
+        "arm_speed_rad_s": {
+          "count": 8040,
+          "mean": 0.3435336410716635,
+          "p95": 1.3394411061070182,
+          "p99": 2.682510706533393,
+          "max": 6.317695654595336
+        },
+        "arm_acceleration_rad_s2": {
+          "count": 8032,
+          "mean": 4.805880766762717,
+          "p95": 17.938059737712198,
+          "p99": 37.1810032998458,
+          "max": 191.13164767038336
+        }
+      }
+    },
+    "training_admitted": false,
+    "limitations": [
+      "Closest surface point is geometric, not a measured sticking contact",
+      "No acceleration or torque feasibility acceptance threshold has been calibrated",
+      "Raw self-collision filtering still needs source-model allowed-pair calibration",
+      "No successful dynamic tracking rollout or force hindsight labels"
+    ]
+  },
+  {
+    "clip": "climb_01_z_scale_0.9",
+    "frames": 871,
+    "root_waist_legs_exactly_preserved": true,
+    "maximum_foot_fk_error_m": 0.0,
+    "source_contact_surface_point_drift_m": {
+      "before": {
+        "count": 572,
+        "mean": 0.01496816523916303,
+        "p95": 0.02597637901220379,
+        "p99": 0.026644586775379175,
+        "max": 0.027023114696832714
+      },
+      "after": {
+        "count": 572,
+        "mean": 0.002602246936646695,
+        "p95": 0.004685411427275491,
+        "p99": 0.006853266497102481,
+        "max": 0.008242960857981464
+      }
+    },
+    "hand_environment_invalid_steps": {
+      "source": 1,
+      "before": 312,
+      "after": 0,
+      "introduced_before": 312,
+      "introduced_after": 0
+    },
+    "remaining_invalid_hand_steps": [],
+    "native_environment_invalid_frames": {
+      "source": 61,
+      "before": 337,
+      "after": 60,
+      "introduced_before": 276,
+      "introduced_after": 0
+    },
+    "temporal_derivatives": {
+      "before": {
+        "arm_speed_rad_s": {
+          "count": 6960,
+          "mean": 0.27278976448659753,
+          "p95": 0.8718648259429442,
+          "p99": 1.5553017068861936,
+          "max": 5.339729033892676
+        },
+        "arm_acceleration_rad_s2": {
+          "count": 6952,
+          "mean": 3.348212456781713,
+          "p95": 11.42691134107767,
+          "p99": 24.49543198519176,
+          "max": 187.34024620006056
+        }
+      },
+      "after": {
+        "arm_speed_rad_s": {
+          "count": 6960,
+          "mean": 0.2840277150125372,
+          "p95": 0.9218147519607988,
+          "p99": 1.5934008349012316,
+          "max": 5.215916302397294
+        },
+        "arm_acceleration_rad_s2": {
+          "count": 6952,
+          "mean": 3.8099946946650527,
+          "p95": 12.935257207105332,
+          "p99": 30.827254410294856,
+          "max": 191.658514127203
+        }
+      }
+    },
+    "training_admitted": false,
+    "limitations": [
+      "Closest surface point is geometric, not a measured sticking contact",
+      "No acceleration or torque feasibility acceptance threshold has been calibrated",
+      "Raw self-collision filtering still needs source-model allowed-pair calibration",
+      "No successful dynamic tracking rollout or force hindsight labels"
+    ]
+  },
+  {
+    "clip": "climb_03_z_scale_1.0",
+    "frames": 1009,
+    "root_waist_legs_exactly_preserved": true,
+    "maximum_foot_fk_error_m": 0.0,
+    "source_contact_surface_point_drift_m": {
+      "before": {
+        "count": 800,
+        "mean": 0.00885308925645269,
+        "p95": 0.0249110662506548,
+        "p99": 0.026904485287732195,
+        "max": 0.026934006970468594
+      },
+      "after": {
+        "count": 800,
+        "mean": 0.0017559444194130925,
+        "p95": 0.004195879422907651,
+        "p99": 0.004739139584185112,
+        "max": 0.005507569750735805
+      }
+    },
+    "hand_environment_invalid_steps": {
+      "source": 1,
+      "before": 374,
+      "after": 0,
+      "introduced_before": 373,
+      "introduced_after": 0
+    },
+    "remaining_invalid_hand_steps": [],
+    "native_environment_invalid_frames": {
+      "source": 17,
+      "before": 334,
+      "after": 16,
+      "introduced_before": 317,
+      "introduced_after": 0
+    },
+    "temporal_derivatives": {
+      "before": {
+        "arm_speed_rad_s": {
+          "count": 8064,
+          "mean": 0.2881362730754761,
+          "p95": 0.9829829656945739,
+          "p99": 1.5524562929966323,
+          "max": 7.160629555802278
+        },
+        "arm_acceleration_rad_s2": {
+          "count": 8056,
+          "mean": 3.206643603492218,
+          "p95": 11.459791121111095,
+          "p99": 27.314640437336163,
+          "max": 171.52469202556327
+        }
+      },
+      "after": {
+        "arm_speed_rad_s": {
+          "count": 8064,
+          "mean": 0.2959485822449664,
+          "p95": 1.0156369072691356,
+          "p99": 1.636397474809709,
+          "max": 6.949059614338005
+        },
+        "arm_acceleration_rad_s2": {
+          "count": 8056,
+          "mean": 3.469638698316394,
+          "p95": 12.015820449962996,
+          "p99": 28.84565736259676,
+          "max": 251.70410054954976
+        }
+      }
+    },
+    "training_admitted": false,
+    "limitations": [
+      "Closest surface point is geometric, not a measured sticking contact",
+      "No acceleration or torque feasibility acceptance threshold has been calibrated",
+      "Raw self-collision filtering still needs source-model allowed-pair calibration",
+      "No successful dynamic tracking rollout or force hindsight labels"
+    ]
+  }
+]

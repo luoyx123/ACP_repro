@@ -1,0 +1,12 @@
+{
+  "retarget_python": "/绝对路径/请填写/retarget_python",
+  "label_python": ".venv/bin/python",
+  "blender": "blender",
+  "holosoma_root": "/绝对路径/请填写/holosoma_root",
+  "asap_root": "/绝对路径/请填写/asap_root",
+  "omni_dataset": "/绝对路径/请填写/omni_dataset",
+  "lafan_dataset": "/绝对路径/请填写/lafan_dataset",
+  "mixamo_dataset": "/绝对路径/请填写/mixamo_dataset",
+  "php_dataset": "/绝对路径/请填写/php_dataset",
+  "php_root": "/绝对路径/请填写/php_root"
+}

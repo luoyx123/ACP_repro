@@ -1,0 +1,19 @@
+{
+  "source": "assets/papaer/Zhang 等 - 2026 - Agile and Generalized Legged Locomotion via Attention-Based Neural Map Encoding.pdf",
+  "title": "AME-2: Agile and Generalized Legged Locomotion via Attention-Based Neural Map Encoding",
+  "sha256": "132bd32f376b4ee92dda6fa35cbfae92e7ccac9035d6a1562e7cc3e060f34e74",
+  "pages": 20,
+  "paper_version": "arXiv:2601.08485v1",
+  "paper_date": "2026-01-13",
+  "extraction_date": "2026-10-30",
+  "converter": "markitdown",
+  "converter_version": "0.1.9",
+  "mode": "convert_local; plugins disabled; no cloud OCR",
+  "layout_extraction": "pdftotext -layout",
+  "ocr_or_vision_checks": "none; figures read from embedded vector text only",
+  "code_release": {
+    "repo": "https://github.com/leggedrobotics/ame2_minimal",
+    "checked_at": "2026-10-30",
+    "notes": "G1 + Isaac Lab 2.3.2; neural mapping model and G1 student training listed as unavailable until the next paper release"
+  }
+}

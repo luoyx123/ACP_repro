@@ -1,0 +1,792 @@
+{
+  "0f3625529b2f2b0f970819e47fb7de1a": {
+    "support_kind": "seat",
+    "review_status": "unconfirmed_engineering_test_scene",
+    "contact_weight": 200.0,
+    "step_size": 0.2,
+    "original_scene_recovered": false,
+    "approved_for_training": false,
+    "fit_from_manifest": "/home/lyx/train/ACP_repro/outputs/mixamo_asap23_priority_flat/clips/0f3625529b2f2b0f970819e47fb7de1a/manifest.json",
+    "evidence": {
+      "fit": "terminal pelvis collision bottom minus 2mm",
+      "seat_top_m": 0.3850335410261404
+    },
+    "boxes": [
+      {
+        "name": "seat",
+        "position": [
+          -0.4499159445298816,
+          0.044766409340724254,
+          0.3550335410261404
+        ],
+        "size": [
+          0.32,
+          0.42,
+          0.06
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          -0.011890508742188
+        ]
+      }
+    ]
+  },
+  "27b793aeb4838dbb29025352815be1a0": {
+    "support_kind": "ladder",
+    "review_status": "unconfirmed_engineering_test_scene",
+    "contact_weight": 2000.0,
+    "step_size": 0.2,
+    "original_scene_recovered": false,
+    "approved_for_training": false,
+    "fit_from_manifest": "/home/lyx/train/ACP_repro/outputs/mixamo_asap23_priority_flat/clips/27b793aeb4838dbb29025352815be1a0/manifest.json",
+    "evidence": {
+      "fit": "regular horizontal rungs through stable retargeted toe supports",
+      "foot_anchor_centres_w": [
+        [
+          -0.41610312638357205,
+          -0.05046350974905617,
+          0.7956236204461682
+        ],
+        [
+          -0.4011264459265861,
+          0.17970439597882368,
+          0.9820549954015654
+        ]
+      ],
+      "rung_spacing_m": 0.1864313749553972,
+      "note": "hand grip geometry and rail placement require visual review"
+    },
+    "boxes": [
+      {
+        "name": "rung_0",
+        "position": [
+          -0.41468822424923857,
+          0.0646950647447532,
+          0.7686236204461682
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1293067170071724
+        ]
+      },
+      {
+        "name": "rung_1",
+        "position": [
+          -0.40254134806092007,
+          0.06454582148501431,
+          0.9550549954015654
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1293067170071724
+        ]
+      },
+      {
+        "name": "rung_2",
+        "position": [
+          -0.3903944718726015,
+          0.06439657822527542,
+          1.1414863703569624
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1293067170071724
+        ]
+      },
+      {
+        "name": "rung_3",
+        "position": [
+          -0.378247595684283,
+          0.06424733496553654,
+          1.3279177453123596
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1293067170071724
+        ]
+      },
+      {
+        "name": "rung_4",
+        "position": [
+          -0.3661007194959644,
+          0.06409809170579765,
+          1.5143491202677568
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1293067170071724
+        ]
+      },
+      {
+        "name": "rung_5",
+        "position": [
+          -0.3539538433076459,
+          0.06394884844605878,
+          1.700780495223154
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1293067170071724
+        ]
+      },
+      {
+        "name": "rung_6",
+        "position": [
+          -0.34180696711932734,
+          0.06379960518631989,
+          1.8872118701785512
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1293067170071724
+        ]
+      },
+      {
+        "name": "rung_7",
+        "position": [
+          -0.32966009093100884,
+          0.063650361926581,
+          2.0736432451339484
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1293067170071724
+        ]
+      },
+      {
+        "name": "rung_8",
+        "position": [
+          -0.3175132147426903,
+          0.06350111866684212,
+          2.2600746200893456
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1293067170071724
+        ]
+      }
+    ]
+  },
+  "6d6857f80acfb5ef3111f77e86d4eab9": {
+    "support_kind": "ladder",
+    "review_status": "unconfirmed_engineering_test_scene",
+    "contact_weight": 2000.0,
+    "step_size": 0.2,
+    "original_scene_recovered": false,
+    "approved_for_training": false,
+    "fit_from_manifest": "/home/lyx/train/ACP_repro/outputs/mixamo_asap23_priority_flat/clips/6d6857f80acfb5ef3111f77e86d4eab9/manifest.json",
+    "evidence": {
+      "fit": "regular horizontal rungs through stable retargeted toe supports",
+      "foot_anchor_centres_w": [
+        [
+          0.2690700158455656,
+          0.10110397899968909,
+          0.48013294843359633
+        ],
+        [
+          0.4035217641047037,
+          -0.08542765169617772,
+          0.9161738569470299
+        ],
+        [
+          0.5820852759694091,
+          0.0880988008593945,
+          1.3827559418497377
+        ]
+      ],
+      "rung_spacing_m": 0.45131149670807075,
+      "note": "hand grip geometry and rail placement require visual review"
+    },
+    "boxes": [
+      {
+        "name": "rung_0",
+        "position": [
+          0.2644595721038446,
+          0.0232467389483189,
+          0.4531329484335963
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.07364725157976273
+        ]
+      },
+      {
+        "name": "rung_1",
+        "position": [
+          0.419979746941914,
+          0.03472112527119607,
+          0.9044444451416671
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.07364725157976273
+        ]
+      },
+      {
+        "name": "rung_2",
+        "position": [
+          0.5754999217799834,
+          0.046195511594073244,
+          1.355755941849738
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.07364725157976273
+        ]
+      },
+      {
+        "name": "rung_3",
+        "position": [
+          0.7310200966180528,
+          0.057669897916950416,
+          1.8070674385578087
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.07364725157976273
+        ]
+      },
+      {
+        "name": "rung_4",
+        "position": [
+          0.8865402714561222,
+          0.06914428423982759,
+          2.2583789352658794
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.07364725157976273
+        ]
+      }
+    ]
+  },
+  "8c56f6ba2d819e69ecf6764f4ec6542e": {
+    "support_kind": "ladder",
+    "review_status": "unconfirmed_engineering_test_scene",
+    "contact_weight": 2000.0,
+    "step_size": 0.2,
+    "original_scene_recovered": false,
+    "approved_for_training": false,
+    "fit_from_manifest": "/home/lyx/train/ACP_repro/outputs/mixamo_asap23_priority_flat/clips/8c56f6ba2d819e69ecf6764f4ec6542e/manifest.json",
+    "evidence": {
+      "fit": "regular horizontal rungs through stable retargeted toe supports",
+      "foot_anchor_centres_w": [
+        [
+          0.26696913515873927,
+          -0.07998555694107003,
+          0.2709467207980266
+        ],
+        [
+          0.32872636884955697,
+          0.09478271815644657,
+          0.5059210575567213
+        ]
+      ],
+      "rung_spacing_m": 0.23497433675869472,
+      "note": "hand grip geometry and rail placement require visual review"
+    },
+    "boxes": [
+      {
+        "name": "rung_0",
+        "position": [
+          0.25812149448961397,
+          0.0031718538711952467,
+          0.24394672079802662
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      },
+      {
+        "name": "rung_1",
+        "position": [
+          0.3375740095186821,
+          0.011625307344181268,
+          0.4789210575567213
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      },
+      {
+        "name": "rung_2",
+        "position": [
+          0.4170265245477503,
+          0.020078760817167286,
+          0.713895394315416
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      },
+      {
+        "name": "rung_3",
+        "position": [
+          0.49647903957681844,
+          0.02853221429015331,
+          0.9488697310741108
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      },
+      {
+        "name": "rung_4",
+        "position": [
+          0.5759315546058866,
+          0.03698566776313933,
+          1.1838440678328055
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      },
+      {
+        "name": "rung_5",
+        "position": [
+          0.6553840696349547,
+          0.045439121236125334,
+          1.4188184045915002
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      }
+    ]
+  },
+  "bfe5d1961033c37b16af565b85dc1dad": {
+    "support_kind": "ladder",
+    "review_status": "unconfirmed_engineering_test_scene",
+    "contact_weight": 2000.0,
+    "step_size": 0.2,
+    "original_scene_recovered": false,
+    "approved_for_training": false,
+    "fit_from_manifest": "/home/lyx/train/ACP_repro/outputs/mixamo_asap23_priority_flat/clips/bfe5d1961033c37b16af565b85dc1dad/manifest.json",
+    "evidence": {
+      "fit": "regular horizontal rungs through stable retargeted toe supports",
+      "foot_anchor_centres_w": [
+        [
+          -0.09900544433038459,
+          0.9862319852772065,
+          0.5940028221083937
+        ],
+        [
+          -0.08917907200222226,
+          0.7785349700583988,
+          0.7913017564490097
+        ]
+      ],
+      "rung_spacing_m": 0.19729893434061596,
+      "note": "hand grip geometry and rail placement require visual review"
+    },
+    "boxes": [
+      {
+        "name": "rung_0",
+        "position": [
+          -0.1006926580464606,
+          0.8824908245022336,
+          0.5670028221083937
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1253304008171123
+        ]
+      },
+      {
+        "name": "rung_1",
+        "position": [
+          -0.08749185828614624,
+          0.8822761308333718,
+          0.7643017564490097
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1253304008171123
+        ]
+      },
+      {
+        "name": "rung_2",
+        "position": [
+          -0.07429105852583186,
+          0.8820614371645098,
+          0.9616006907896256
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1253304008171123
+        ]
+      },
+      {
+        "name": "rung_3",
+        "position": [
+          -0.06109025876551749,
+          0.8818467434956478,
+          1.1588996251302417
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1253304008171123
+        ]
+      },
+      {
+        "name": "rung_4",
+        "position": [
+          -0.047889459005203125,
+          0.8816320498267859,
+          1.3561985594708577
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1253304008171123
+        ]
+      },
+      {
+        "name": "rung_5",
+        "position": [
+          -0.03468865924488875,
+          0.8814173561579239,
+          1.5534974938114736
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1253304008171123
+        ]
+      },
+      {
+        "name": "rung_6",
+        "position": [
+          -0.021487859484574393,
+          0.881202662489062,
+          1.7507964281520896
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1253304008171123
+        ]
+      },
+      {
+        "name": "rung_7",
+        "position": [
+          -0.008287059724260038,
+          0.8809879688202,
+          1.9480953624927055
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          3.1253304008171123
+        ]
+      }
+    ]
+  },
+  "de853577df76be590347f5759a8dccde": {
+    "support_kind": "ladder",
+    "review_status": "unconfirmed_engineering_test_scene",
+    "contact_weight": 2000.0,
+    "step_size": 0.2,
+    "original_scene_recovered": false,
+    "approved_for_training": false,
+    "fit_from_manifest": "/home/lyx/train/ACP_repro/outputs/mixamo_asap23_priority_flat/clips/de853577df76be590347f5759a8dccde/manifest.json",
+    "evidence": {
+      "fit": "regular horizontal rungs through stable retargeted toe supports",
+      "foot_anchor_centres_w": [
+        [
+          0.26696913515873927,
+          -0.07998555694107003,
+          0.2709467207980266
+        ],
+        [
+          0.32872636884955697,
+          0.09478271815644657,
+          0.5059210575567213
+        ]
+      ],
+      "rung_spacing_m": 0.23497433675869472,
+      "note": "hand grip geometry and rail placement require visual review"
+    },
+    "boxes": [
+      {
+        "name": "rung_0",
+        "position": [
+          0.25812149448961397,
+          0.0031718538711952467,
+          0.24394672079802662
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      },
+      {
+        "name": "rung_1",
+        "position": [
+          0.3375740095186821,
+          0.011625307344181268,
+          0.4789210575567213
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      },
+      {
+        "name": "rung_2",
+        "position": [
+          0.4170265245477503,
+          0.020078760817167286,
+          0.713895394315416
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      },
+      {
+        "name": "rung_3",
+        "position": [
+          0.49647903957681844,
+          0.02853221429015331,
+          0.9488697310741108
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      },
+      {
+        "name": "rung_4",
+        "position": [
+          0.5759315546058866,
+          0.03698566776313933,
+          1.1838440678328055
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      },
+      {
+        "name": "rung_5",
+        "position": [
+          0.6553840696349547,
+          0.045439121236125334,
+          1.4188184045915002
+        ],
+        "size": [
+          0.06,
+          0.65,
+          0.04
+        ],
+        "rpy": [
+          0.0,
+          0.0,
+          0.1059975282842642
+        ]
+      }
+    ]
+  }
+}

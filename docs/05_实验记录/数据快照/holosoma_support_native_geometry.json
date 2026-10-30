@@ -1,0 +1,36 @@
+{
+  "scene": "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/demo_data/acp_omniretarget_terrain/climb_00_z_scale_0.9/g1_23dof_rev_1_0_w_multi_boxes_scaled_1.00_1.00_1.00.xml",
+  "mujoco_version": "3.15.0",
+  "frames": 1006,
+  "robot_collision_geoms": 32,
+  "terrain_collision_geoms": 2,
+  "native_minimum_distance_m": -0.0020294172117163445,
+  "native_invalid_geometry_frames": [],
+  "drake_invalid_geometry_frames": [],
+  "native_near_contact_steps_unfiltered": {
+    "left_foot": 852,
+    "right_foot": 839,
+    "left_knee": 0,
+    "right_knee": 28,
+    "left_hand": 384,
+    "right_hand": 291,
+    "left_elbow": 0,
+    "right_elbow": 0,
+    "pelvis": 0
+  },
+  "native_vs_drake_raw_contact_flag_agreement": 1.0,
+  "native_raw_vs_drake_filtered_flag_agreement": 0.9990059642147118,
+  "source_stance_diagnostics": {
+    "left": {
+      "stance_steps": 870,
+      "stance_near_surface_fraction": 0.9632183908045977,
+      "stance_gap_p95_m": 0.012106473815089943
+    },
+    "right": {
+      "stance_steps": 899,
+      "stance_near_surface_fraction": 0.9243604004449388,
+      "stance_gap_p95_m": 0.06668645461559751
+    }
+  },
+  "note": "Raw flags are distance-only before segment filtering; this is not force validation."
+}

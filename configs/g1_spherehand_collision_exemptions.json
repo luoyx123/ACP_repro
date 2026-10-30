@@ -1,0 +1,42 @@
+{
+  "version": "spherehand_g1_ankle_housing_v1",
+  "target_urdf_sha256": "b3fadf880468daab7929b51a2a1bc0fcf69e7b49d89d8ceeed3c33ec3128f725",
+  "note": "Engineering collision allowance for shank/ankle articulation housing only. Raw contacts remain reported. All other body pairs and contacts outside this local region remain errors.",
+  "rules": [
+    {
+      "body_pair": [
+        "left_knee_link",
+        "left_ankle_roll_link"
+      ],
+      "joint": "left_ankle_pitch_joint",
+      "maximum_contact_point_distance_to_joint_m": 0.035,
+      "maximum_penetration_m": 0.04
+    },
+    {
+      "body_pair": [
+        "right_knee_link",
+        "right_ankle_roll_link"
+      ],
+      "joint": "right_ankle_pitch_joint",
+      "maximum_contact_point_distance_to_joint_m": 0.035,
+      "maximum_penetration_m": 0.04
+    }
+  ],
+  "calibration": {
+    "sampled_clips": 97,
+    "samples_per_clip": 8,
+    "contact_samples": 5698,
+    "penetration_quantiles_m": [
+      -0.03738602102255378,
+      -0.03233380666696059,
+      -0.01821989296690963,
+      -0.016958801056116645
+    ],
+    "contact_point_distance_to_ankle_pitch_joint_quantiles_m": [
+      0.0037394428886235987,
+      0.019592494660077862,
+      0.0245353447472286,
+      0.026903203808194637
+    ]
+  }
+}

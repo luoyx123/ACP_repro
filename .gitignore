@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+data/
+outputs/
+configs/machine.local.json
+
+# Machine credentials, local indexes and generated runtime files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.codegraph/

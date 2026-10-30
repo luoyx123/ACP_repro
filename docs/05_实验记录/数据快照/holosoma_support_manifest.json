@@ -1,0 +1,125 @@
+{
+  "status": "end_to_end_data_pipeline_completed_not_training_admitted",
+  "robot": "g1_23dof_rev_1_0",
+  "source": "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_00_z_scale_0.9.npz",
+  "source_sha256": "c5f2af25c176cc85357d011aac100d1832485e3410da46491d67ef7ab25dbea9",
+  "source_frames_requested": 604,
+  "retargeting_fps": 50,
+  "seed": 0,
+  "foot_support": true,
+  "foot_sticking_tolerance": 0.001,
+  "holosoma_root": "/home/lyx/train/holosoma",
+  "holosoma_commit": "6a9cb7a29aaa2ef652636238c5fb53c6af6d01d6",
+  "files_sha256": {
+    "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/config_types/robot.py": "d174ee5f6f9e970dafd9c3c4e221a290ffccc3efd2ccdb15bbd6faea8b1f3567",
+    "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/config_types/data_type.py": "bc6fb532d2687b3317b7e7af7517ee33357e0b8868a5029be0ff40874bf0b229",
+    "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/src/interaction_mesh_retargeter.py": "8248ce2e2d3cdd4d629035f3cb7064e0cf6002e07db7982967b5590aaddb1314",
+    "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/examples/robot_retarget.py": "cd513ed54dfb00af89ba675f51ea5b043ea3e9f1177f1678e5e6186dfb5cd154",
+    "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/examples/prepare_omniretarget_terrain.py": "f9ea709e919ac6cd146156c4493e7e5e8aac2a7299d0b94bfd3eb1874e28be2e",
+    "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/demo_data/acp_omniretarget_terrain/climb_00_z_scale_0.9/multi_boxes.urdf": "5682db64290eaea9ee04c322989da467fcd7c296b549a40d8644353003cdb3a1",
+    "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/models/g1_23dof_rev_1_0/g1_23dof_rev_1_0.urdf": "44c0b09ae71bd129d62a5816cefa7796cf67ef8e79d0540ec7a45fc32db599fc",
+    "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/models/g1_23dof_rev_1_0/g1_23dof_rev_1_0.xml": "7163c3cfef5ad474bf32370764c397fdc27cf91e928a7ad2803f6b1ca11a4401",
+    "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/demo_data/acp_omniretarget_terrain/climb_00_z_scale_0.9/g1_23dof_rev_1_0_w_multi_boxes_scaled_1.00_1.00_1.00.xml": "18e94474705a9ba2c8b9fe5055fb7ce392f046f2b4e2a1aeb5e6bb084f766530",
+    "/home/lyx/train/ACP_repro/src/acp/data/holosoma.py": "5688ff5c8b00bd52af5c8634866800a3ddbd16744763bf05537cd77c53660241",
+    "/home/lyx/train/ACP_repro/src/acp/data/scene.py": "4175c0afe4bee78f4e03bb12b8df4ee9c49d63650a323a63754144998ba2647a",
+    "/home/lyx/train/ACP_repro/scripts/prepare_holosoma_g1.py": "925a0ae2d686cf719c98ee1f2d9c231c04cdf945d01898db32d2f9deb5a00631",
+    "/home/lyx/train/ACP_repro/scripts/check_holosoma_mujoco.py": "3624e1306d5f2c42c023c0963c7df51c68176e7e3970090b7ce1c516a936b5fe"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/home/lyx/train/ACP_repro/.venv/bin/python",
+        "/home/lyx/train/ACP_repro/scripts/prepare_holosoma_g1.py",
+        "--unitree-root",
+        "/home/lyx/train/unitree_ros/robots/g1_description",
+        "--holosoma-root",
+        "/home/lyx/train/holosoma"
+      ],
+      "cwd": "/home/lyx/train/ACP_repro",
+      "log": "01_model.log"
+    },
+    {
+      "argv": [
+        "/home/lyx/.holosoma_deps/miniconda3/envs/hsretargeting/bin/python3.11",
+        "examples/prepare_omniretarget_terrain.py",
+        "--input-file",
+        "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_00_z_scale_0.9.npz",
+        "--output-root",
+        "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/demo_data/acp_omniretarget_terrain",
+        "--frames",
+        "604",
+        "--robot",
+        "g1_23dof_rev_1_0",
+        "--output-fps",
+        "50"
+      ],
+      "cwd": "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting",
+      "log": "02_import.log"
+    },
+    {
+      "argv": [
+        "/home/lyx/.holosoma_deps/miniconda3/envs/hsretargeting/bin/python3.11",
+        "-c",
+        "import numpy as np, runpy; np.random.seed(0); runpy.run_path('examples/robot_retarget.py', run_name='__main__')",
+        "--task-type",
+        "climbing",
+        "--task-name",
+        "climb_00_z_scale_0.9",
+        "--data-path",
+        "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/demo_data/acp_omniretarget_terrain",
+        "--data-format",
+        "omniretarget_terrain",
+        "--robot",
+        "g1_23dof_rev_1_0",
+        "--retargeter.activate-foot-support",
+        "True",
+        "--retargeter.foot-sticking-tolerance",
+        "0.001",
+        "--save-dir",
+        "/home/lyx/train/ACP_repro/outputs/holosoma_climb00_50hz_support_current_pose_seed0/retargeted"
+      ],
+      "cwd": "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting",
+      "log": "03_retarget.log"
+    },
+    {
+      "argv": [
+        "/home/lyx/train/ACP_repro/.venv/bin/python",
+        "-m",
+        "acp.data.holosoma",
+        "--input",
+        "/home/lyx/train/ACP_repro/outputs/holosoma_climb00_50hz_support_current_pose_seed0/retargeted/climb_00_z_scale_0.9_original.npz",
+        "--target-urdf",
+        "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/models/g1_23dof_rev_1_0/g1_23dof_rev_1_0.urdf",
+        "--terrain-urdf",
+        "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/demo_data/acp_omniretarget_terrain/climb_00_z_scale_0.9/multi_boxes.urdf",
+        "--source-clip",
+        "/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/robot-terrain/climb_00_z_scale_0.9.npz",
+        "--output",
+        "/home/lyx/train/ACP_repro/outputs/holosoma_climb00_50hz_support_current_pose_seed0/labeled"
+      ],
+      "cwd": "/home/lyx/train/ACP_repro",
+      "log": "04_labels.log"
+    },
+    {
+      "argv": [
+        "/home/lyx/.holosoma_deps/miniconda3/envs/hsretargeting/bin/python3.11",
+        "/home/lyx/train/ACP_repro/scripts/check_holosoma_mujoco.py",
+        "--scene",
+        "/home/lyx/train/holosoma/src/holosoma_retargeting/holosoma_retargeting/demo_data/acp_omniretarget_terrain/climb_00_z_scale_0.9/g1_23dof_rev_1_0_w_multi_boxes_scaled_1.00_1.00_1.00.xml",
+        "--motion",
+        "/home/lyx/train/ACP_repro/outputs/holosoma_climb00_50hz_support_current_pose_seed0/labeled/motion.npz",
+        "--retargeted",
+        "/home/lyx/train/ACP_repro/outputs/holosoma_climb00_50hz_support_current_pose_seed0/retargeted/climb_00_z_scale_0.9_original.npz",
+        "--output",
+        "/home/lyx/train/ACP_repro/outputs/holosoma_climb00_50hz_support_current_pose_seed0/validation"
+      ],
+      "cwd": "/home/lyx/train/ACP_repro",
+      "log": "05_native_geometry.log"
+    }
+  ],
+  "labeled_motion": "/home/lyx/train/ACP_repro/outputs/holosoma_climb00_50hz_support_current_pose_seed0/labeled/motion.npz",
+  "limitations": [
+    "geometric references, not force-validated rollout labels",
+    "human-to-23 re-retargeting is an engineering reproduction choice"
+  ]
+}
