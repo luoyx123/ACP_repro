@@ -9,12 +9,17 @@ GROUPS={
  'pipeline':'统一编排：命令、资源限制、Blender 与支撑场景工具',
  'pipeline/datasets':'数据集适配编排：共享输出契约，输入差异独立保留',
  'robot':'机器人：模型、关节子集、碰撞策略和源 FK',
+ 'envs':'M2 仿真：参考查询、可追溯导入、G1 批量 PD 环境与物理验收',
  'quality':'质量：独立检查、全量筛查、29/23 成对诊断及局部修复',
  'visualization':'可视化：所有数据集共用的回放、源轨迹叠加和导出',
  'data':'共享数据契约：时间、几何、接触、资产定位与播放时钟',
  'data/adapters':'输入适配：人体骨架、Holosoma 输出和 PHP 包格式',
  'management':'管理：完整性检查、状态、迁移、架构索引和重构追溯'}
 PURPOSE={
+ 'reference':'仿真无关的按名称动作加载、SLERP 查询与动作／关节目标转换',
+ 'conversion':'保留惯量的 URDF 清理、九部位分组和真实场景三角网格转换',
+ 'g1':'IsaacLab G1-23：200Hz PD、参考 reset、九部位接触与高度扫描',
+ 'calibrate':'统一 M2 验收：站立、参考重置、限幅、地形配准、接触夹具与批量报告',
  'simulation':'按物理 GPU／UUID 隔离 IsaacLab 空场景预检，记录步进与退出码',
  'portable':'生成跨机器模型路径副本和前后哈希，保留原始模型证据',
  'cli':'统一命令解析、环境选择、批次启动、状态与资产目录',
@@ -68,6 +73,7 @@ def update(stage=None):
 | 架构索引与阶段记录 | `structure --stage "本次完成的阶段"` |
 | 跨机器模型路径副本 | `materialize`，读取本机路径映射 |
 | IsaacLab 单卡环境预检 | `sim-check --gpu <空闲物理编号或UUID> --steps 1000` |
+| M2 机器人与仿真验收 | `calibrate --gpu 0 --num-envs 1 16 64 --policy-steps 500 --render` |
 | 历史目录迁移 | `migrate`，只用于目录管理 |
 
 上述均接在 `.venv/bin/python scripts/acp_pipeline.py` 后；专项功能使用 `<命令> --help` 查看具体参数。不同原始格式保留适配器，回放、标签和总评估共用实现。
@@ -81,6 +87,8 @@ flowchart TD
     P --> V[visualization.viewer]
     P --> Q[quality 评估与修复]
     P --> M[management 管理]
+    P --> E[envs G1 仿真与校准]
+    E --> S
     D --> R[robot 模型与关节]
     D --> A[data.adapters 输入规范化]
     A --> C[data.scene / contacts 几何与标签]

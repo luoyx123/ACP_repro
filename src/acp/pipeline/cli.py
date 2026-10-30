@@ -98,7 +98,7 @@ def main():
     sp.add_argument('--background',action='store_true',help='后台执行，记录 PID、命令与日志')
     sp.add_argument('--label-timeout',type=int,default=120,help='每条 Drake 标注子进程最长秒数，默认 120')
     # Advanced functions share this same entry; their parsers own their options.
-    operations={'sim-check':'acp.management.simulation','materialize':'acp.management.portable','structure':'acp.management.structure','check':'acp.management.check','repair':'acp.quality.repair',
+    operations={'calibrate':'acp.envs.calibrate','sim-check':'acp.management.simulation','materialize':'acp.management.portable','structure':'acp.management.structure','check':'acp.management.check','repair':'acp.quality.repair',
                 'finalize':'acp.quality.finalize','compare':'acp.quality.compare',
                 'fit-scenes':'acp.pipeline.scene_fit','match-names':'acp.pipeline.names',
                 'migrate':'acp.management.organize'}
@@ -108,7 +108,7 @@ def main():
     if args.command in operations:
         if args.config:os.environ['ACP_MACHINE_CONFIG']=str(args.config.absolute())
         cfg=machine()
-        python=sys.executable if args.command in ('check','migrate','structure','materialize','sim-check') else str(cfg_path(cfg,'retarget_python'))
+        python=sys.executable if args.command in ('check','migrate','structure','materialize','sim-check','calibrate') else str(cfg_path(cfg,'retarget_python'))
         raise SystemExit(subprocess.call([python,'-m',operations[args.command],*extra],cwd=PROJECT,
             env={**os.environ,'PYTHONPATH':str(PROJECT/'src')+os.pathsep+os.environ.get('PYTHONPATH','')}))
     if args.config:os.environ['ACP_MACHINE_CONFIG']=str(args.config.absolute())
