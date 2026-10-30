@@ -6,6 +6,7 @@ is implemented here; all reset/step tensors use the canonical data joint order.
 import hashlib
 import json
 import math
+import time
 from pathlib import Path
 import numpy as np
 import torch
@@ -39,6 +40,8 @@ class G1ReferenceEnv:
     def __init__(self, info, config, num_envs, *, terrain=True, scenes=None):
         import mujoco
         import trimesh
+        started = time.monotonic()
+        def milestone(message): print(f'[G1 init {time.monotonic()-started:.1f}s | {num_envs} envs] {message}',flush=True)
         self.cfg, self.info, self.num_envs = config, info, num_envs
         self.device = 'cuda:0';self.dt = config['physics_dt'];self.decimation = config['decimation']
         self.joint_names, self.body_names = config['joint_names'], config['body_names']
@@ -80,6 +83,7 @@ class G1ReferenceEnv:
             vertices,faces = combine_meshes([(floor.vertices,floor.faces),*parts])
             self.scan_groups.append((torch.tensor(ids,device=self.device),convert_to_warp_mesh(vertices,faces,self.device)))
         self.scan_mesh = self.scan_groups[0][1]
+        milestone('Terrain colliders and scan meshes ready')
         # Physical limits/gains are explicit and independent of URDF importer defaults.
         by_name = lambda values: dict(zip(self.joint_names, values))
         cfg = ArticulationCfg(
@@ -99,14 +103,17 @@ class G1ReferenceEnv:
                 stiffness=by_name(config['kp']), damping=by_name(config['kd']),
                 effort_limit=by_name(config['effort_limits']), effort_limit_sim=by_name(config['effort_limits']),
                 velocity_limit_sim=by_name(config['velocity_limits']), armature=by_name(config['armature']))})
-        self.robot = Articulation(cfg)
+        # Finish a single prototype before cloning. Editing every cloned USD
+        # subtree made large-batch startup scale poorly and duplicated meshes.
+        prototype = '/World/envs/env_0/Robot'
+        cfg.spawn.func(prototype,cfg.spawn,translation=cfg.init_state.pos,orientation=cfg.init_state.rot)
         # This installed URDF importer creates instanceable collision references
         # even when make_instanceable=False. Deinstance before editing colliders.
         for prim in list(self.stage.Traverse()):
-            if prim.IsInstance() and '/Robot/' in str(prim.GetPath()): prim.SetInstanceable(False)
+            if prim.IsInstance() and str(prim.GetPath()).startswith(prototype+'/'): prim.SetInstanceable(False)
         self.collider_repairs = []
         for prim in self.stage.Traverse():
-            if '/Robot/' not in str(prim.GetPath()) or '/collisions/' not in str(prim.GetPath()): continue
+            if not str(prim.GetPath()).startswith(prototype+'/') or '/collisions/' not in str(prim.GetPath()): continue
             if prim.HasAPI(UsdPhysics.CollisionAPI):
                 UsdPhysics.CollisionAPI(prim).GetCollisionEnabledAttr().Set(False)
         # Author collision shapes directly below rigid links from the source
@@ -118,21 +125,27 @@ class G1ReferenceEnv:
             bid = self.model.geom_bodyid[g];name = self.model.body(bid).name
             v, f = geom_mesh(self.model, self.mjdata, g)
             local = (v-self.mjdata.xpos[bid])@self.mjdata.xmat[bid].reshape(3, 3)
-            for i in range(num_envs):
-                path = f'/World/envs/env_{i}/Robot/{name}/M2Colliders/geom_{g}'
-                if self.model.geom_type[g] == mujoco.mjtGeom.mjGEOM_SPHERE:
-                    shape = UsdGeom.Sphere.Define(self.stage, path)
-                    shape.CreateRadiusAttr(float(self.model.geom_size[g, 0]))
-                    center = (self.mjdata.geom_xpos[g]-self.mjdata.xpos[bid])@self.mjdata.xmat[bid].reshape(3, 3)
-                    shape.AddTranslateOp().Set(Gf.Vec3d(*map(float, center)))
-                    UsdPhysics.CollisionAPI.Apply(shape.GetPrim())
-                else:
-                    prim = mesh_prim(self.stage, path, local, f)
-                    UsdPhysics.MeshCollisionAPI.Apply(prim).CreateApproximationAttr('convexHull')
-                self.collider_repairs.append(path)
-        for i in range(num_envs):
-            sim_utils.modify_collision_properties(f'/World/envs/env_{i}/Robot',
-                sim_utils.CollisionPropertiesCfg(contact_offset=config['contact_offset'], rest_offset=config['rest_offset']))
+            path = f'{prototype}/{name}/M2Colliders/geom_{g}'
+            if self.model.geom_type[g] == mujoco.mjtGeom.mjGEOM_SPHERE:
+                shape = UsdGeom.Sphere.Define(self.stage, path)
+                shape.CreateRadiusAttr(float(self.model.geom_size[g, 0]))
+                center = (self.mjdata.geom_xpos[g]-self.mjdata.xpos[bid])@self.mjdata.xmat[bid].reshape(3, 3)
+                shape.AddTranslateOp().Set(Gf.Vec3d(*map(float, center)))
+                UsdPhysics.CollisionAPI.Apply(shape.GetPrim())
+            else:
+                prim = mesh_prim(self.stage, path, local, f)
+                UsdPhysics.MeshCollisionAPI.Apply(prim).CreateApproximationAttr('convexHull')
+            self.collider_repairs.append(path)
+        sim_utils.modify_collision_properties(prototype,
+            sim_utils.CollisionPropertiesCfg(contact_offset=config['contact_offset'],rest_offset=config['rest_offset']))
+        milestone('Robot prototype ready; cloning shared USD geometry')
+        if num_envs>1:
+            from isaacsim.core.cloner import Cloner
+            Cloner(stage=self.stage).clone(prototype,[f'/World/envs/env_{i}/Robot' for i in range(1,num_envs)],
+                replicate_physics=False,copy_from_source=False)
+        cfg.spawn = None
+        self.robot = Articulation(cfg)
+        milestone('Robot clones ready; initializing PhysX and sensors')
         self.sensor = ContactSensor(ContactSensorCfg(
             prim_path='/World/envs/env_.*/Robot/.*', history_length=4, update_period=0.0,
             max_contact_data_count_per_prim=16))
@@ -144,6 +157,7 @@ class G1ReferenceEnv:
             init_state=RigidObjectCfg.InitialStateCfg(pos=(0, 0, -10))))
         self.sim.reset()
         self.robot.update(0.0);self.sensor.update(0.0, force_recompute=True);self.probe.update(0.0)
+        milestone('PhysX and sensor tensors ready')
         self.joint_ids = torch.tensor(name_indices(self.robot.joint_names, self.joint_names), device=self.device)
         self.body_ids = torch.tensor([self.robot.body_names.index(n) for n in config['body_links']], device=self.device)
         self.group_matrix = torch.zeros((len(self.sensor.body_names), 9), device=self.device)
