@@ -15,6 +15,7 @@ GROUPS={
  'data/adapters':'输入适配：人体骨架、Holosoma 输出和 PHP 包格式',
  'management':'管理：完整性检查、状态、迁移、架构索引和重构追溯'}
 PURPOSE={
+ 'simulation':'按物理 GPU／UUID 隔离 IsaacLab 空场景预检，记录步进与退出码',
  'portable':'生成跨机器模型路径副本和前后哈希，保留原始模型证据',
  'cli':'统一命令解析、环境选择、批次启动、状态与资产目录',
  'omni':'Omni robot-terrain 的 G1-29→23 批处理',
@@ -66,6 +67,7 @@ def update(stage=None):
 | 文档和资产完整性 | `check --manifests` |
 | 架构索引与阶段记录 | `structure --stage "本次完成的阶段"` |
 | 跨机器模型路径副本 | `materialize`，读取本机路径映射 |
+| IsaacLab 单卡环境预检 | `sim-check --gpu <空闲物理编号或UUID> --steps 1000` |
 | 历史目录迁移 | `migrate`，只用于目录管理 |
 
 上述均接在 `.venv/bin/python scripts/acp_pipeline.py` 后；专项功能使用 `<命令> --help` 查看具体参数。不同原始格式保留适配器，回放、标签和总评估共用实现。
