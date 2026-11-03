@@ -102,13 +102,14 @@ def main():
                 'finalize':'acp.quality.finalize','compare':'acp.quality.compare',
                 'fit-scenes':'acp.pipeline.scene_fit','match-names':'acp.pipeline.names',
                 'migrate':'acp.management.organize'}
+    operations['supermimic']='acp.training.supermimic.runner'
     for name in operations:
         sub.add_parser(name,add_help=False,help='专项操作：'+name+' --help')
     args,extra=p.parse_known_args()
     if args.command in operations:
         if args.config:os.environ['ACP_MACHINE_CONFIG']=str(args.config.absolute())
         cfg=machine()
-        python=sys.executable if args.command in ('check','migrate','structure','materialize','sim-check','calibrate','train','diagnose') else str(cfg_path(cfg,'retarget_python'))
+        python=sys.executable if args.command in ('check','migrate','structure','materialize','sim-check','calibrate','train','diagnose','supermimic') else str(cfg_path(cfg,'retarget_python'))
         raise SystemExit(subprocess.call([python,'-m',operations[args.command],*extra],cwd=PROJECT,
             env={**os.environ,'PYTHONPATH':str(PROJECT/'src')+os.pathsep+os.environ.get('PYTHONPATH','')}))
     if args.config:os.environ['ACP_MACHINE_CONFIG']=str(args.config.absolute())

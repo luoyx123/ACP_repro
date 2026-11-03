@@ -10,13 +10,20 @@ GROUPS={
  'pipeline/datasets':'数据集适配编排：共享输出契约，输入差异独立保留',
  'robot':'机器人：模型、关节子集、碰撞策略和源 FK',
  'envs':'仿真：G1 批量 PD、真实地形、M2 验收和 Stage 1 任务',
- 'training':'Stage 1：GPU 参考与接触查询、原生 PyTorch PPO、共享策略训练与评估',
+ 'training':'Stage 1：GPU 参考与接触查询、PPO／SuperMimic、共享策略训练与评估',
+ 'training/supermimic':'新分支后端：MuJoCo-Warp 采集、残差世界模型、多步拟合、BPTT 与特权 critic',
  'quality':'质量：独立检查、全量筛查、29/23 成对诊断及局部修复',
  'visualization':'可视化：所有数据集共用的回放、源轨迹叠加和导出',
  'data':'共享数据契约：时间、几何、接触、资产定位与播放时钟',
  'data/adapters':'输入适配：人体骨架、Holosoma 输出和 PHP 包格式',
  'management':'管理：完整性检查、状态、迁移、架构索引和重构追溯'}
 PURPOSE={
+ 'training/supermimic/assets':'自包含 walk／box 训练包、网格依赖复制、SHA256 与显式 MuJoCo 配置',
+ 'training/supermimic/env':'MuJoCo-Warp GPU 批量 PD、随机化回读、九部位法向力及 CPU 核验夹具',
+ 'training/supermimic/model':'23DoF 可微残差世界模型、含固定球手的 FK 与真实地形三角形高程查询',
+ 'training/supermimic/task':'真实／想象过程共用的 ACP 468／353 观测、14 项奖励与终止接口',
+ 'training/supermimic/runner':'统一 prepare／check／smoke／benchmark／train／evaluate、回放库、BPTT、保存续训',
+ 'training/supermimic/rotations':'沿用 InstinctMJ 的可微旋转计算；来源与许可证见 third_party/instinctmj',
  'stage1':'Stage 1 物理任务：按场景分配环境、468/353 观测、论文奖励及 CSI',
  'randomization':'Table S2：固定启动动力学及 PhysX 回读、动作延迟、里程计和观测／重置扰动',
  'task':'GPU 参考库、实际 yaw 下的 oracle 接触、CSI 更新及 Table 3 奖励公式',
@@ -86,6 +93,7 @@ def update(stage=None):
 | Stage 1 结果报告与视频 | `training-report --run <训练目录> --output <报告目录>` |
 | Stage 1 控制与物理诊断 | `diagnose offline/rollout/suite/report --run <训练目录> --output <诊断目录> ...` |
 | Stage 1 共享 Tracker 训练 | `train --task walk_box --gpu 0 --num-envs 2048 --iterations 10000 --background` |
+| SuperMimic 新分支入口 | `supermimic prepare/check/smoke/benchmark/train/evaluate ...`；操作手册见 SuperMimic迁移与4090部署 |
 | 历史目录迁移 | `migrate`，只用于目录管理 |
 
 上述均接在 `.venv/bin/python scripts/acp_pipeline.py` 后；专项功能使用 `<命令> --help` 查看具体参数。不同原始格式保留适配器，回放、标签和总评估共用实现。
@@ -101,6 +109,8 @@ flowchart TD
     P --> M[management 管理]
     P --> E[envs G1 仿真与校准]
     P --> L[training PPO 与评估]
+    P --> SM[training.supermimic 世界模型与BPTT]
+    SM --> MW[MuJoCo-Warp GPU物理采集]
     L --> E
     E --> S
     D --> R[robot 模型与关节]
@@ -128,7 +138,8 @@ flowchart TD
         if p.name=='__init__.py':continue
         ast.parse(p.read_text())
         rel=p.relative_to(PROJECT)
-        text+=f'| [{rel}](../../{rel}) | {PURPOSE.get(p.stem,"参见模块文档和公开函数")} |\n'
+        key=str(p.relative_to(PROJECT/'src/acp').with_suffix(''))
+        text+=f'| [{rel}](../../{rel}) | {PURPOSE.get(key,PURPOSE.get(p.stem,"参见模块文档和公开函数"))} |\n'
     text+='''
 ## 维护规则
 

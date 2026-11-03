@@ -1,0 +1,14 @@
+{
+  "source_commit": "7ca851e002980011f24a1664011305d0ba94aefc",
+  "source_worktree_status": " M src/instinct_mj/rl/supermimic/mdp.py\n M src/instinct_mj/tasks/shadowing/perceptive/perceptive_env_cfg.py\n?? .codegraph/\n?? docs/\n",
+  "files": {
+    "src/instinct_mj/rl/supermimic/runner.py": "42bb05279a3914e56db3996f52252a5cb114c8abc204bce7748074ff286067aa",
+    "src/instinct_mj/rl/supermimic/networks.py": "6973b3f7cc072acd538b3438f5258280a40a32f1bfe6b9b95e2b282aaf14bd0b",
+    "src/instinct_mj/rl/supermimic/kinematics.py": "cd5c54147de6a356c9d5ee3051e93188e543b261089b36a425942cbee669aa20",
+    "src/instinct_mj/rl/supermimic/rotations.py": "1e16014fcfe61010824cdaeda07d7e0b7705f3432ede9e26b455cf647caee7a2",
+    "src/instinct_mj/rl/supermimic/config.py": "9d995f50c0b0420ba1e0cf8d85c1f0f13e6313ab86ad9054298ea2f7f533da19",
+    "src/instinct_mj/rl/supermimic/mdp.py": "5f16a77a954a8b7aef32a6c6ee1154de826c8e1dca630bae8db31c6e26e038c5",
+    "src/instinct_mj/tasks/shadowing/perceptive/perceptive_env_cfg.py": "fb9a54c9cfcb6f7377ec6cbc6de84323671d9279eee3262c501e8feea1221194"
+  },
+  "deployed_snapshot": "/home/hitcsc/lyx/ACP_deps/InstinctMJ"
+}

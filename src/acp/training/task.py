@@ -125,7 +125,8 @@ def rewards(state, reference, previous_action, previous_previous_action, body_ac
     """Table 3 raw terms; caller applies weights and the 0.02s control dt."""
     move = (reference['base_linear_velocity_w'].norm(dim=-1)>.1).float()
     root_error = (state['root_position']-reference['base_position_w']).square().sum(-1)
-    angle = quaternion_error(state['root_quaternion'],reference['base_quaternion_wxyz'])
+    angle = (state['orientation_error'] if 'orientation_error' in state else
+             quaternion_error(state['root_quaternion'],reference['base_quaternion_wxyz']))
     actual_local = yaw_local(state['body_positions'],state['root_position'],state['root_quaternion'])
     reference_local = yaw_local(reference['body_landmarks_w'],reference['base_position_w'],reference['base_quaternion_wxyz'])
     q = state['joint_positions'];bounds = state['joint_limits']

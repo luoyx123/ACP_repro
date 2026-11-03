@@ -4,6 +4,8 @@
 
 **文档入口：[中文知识库](docs/README.md) · [快速开始](docs/01_使用指南/快速开始.md) · [完整手册](docs/01_使用指南/数据流水线手册.md)**
 
+`feat/supermimic-stage1` 分支在保留 ACP 接触条件观测和奖励的基础上，增加 MuJoCo-Warp＋SuperMimic 训练后端。4090 部署、数据包、检查及训练命令见 [SuperMimic迁移与4090部署](docs/01_使用指南/SuperMimic迁移与4090部署.md)。本分支阶段不启动正式训练；CUDA 验证与提速结论须有实际测试证据。
+
 ![流水线](docs/01_使用指南/图示/数据处理流程.svg)
 
 ```bash
