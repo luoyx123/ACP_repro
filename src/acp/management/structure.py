@@ -21,6 +21,7 @@ PURPOSE={
  'randomization':'Table S2：固定启动动力学及 PhysX 回读、动作延迟、里程计和观测／重置扰动',
  'task':'GPU 参考库、实际 yaw 下的 oracle 接触、CSI 更新及 Table 3 奖励公式',
  'ppo':'非对称 actor/critic、运行归一化、显式超时 bootstrap 的 GAE 与 PPO',
+ 'report':'Stage 1 训练离线评估、实际物理轨迹与参考对照视频、单文件HTML报告',
  'runner':'Stage 1 单卡启动、训练／评估、TensorBoard、checkpoint 与断点续训',
  'reference':'仿真无关的按名称动作加载、SLERP 查询与动作／关节目标转换',
  'conversion':'保留惯量的 URDF 清理、九部位分组和真实场景三角网格转换',
@@ -80,6 +81,7 @@ def update(stage=None):
 | 跨机器模型路径副本 | `materialize`，读取本机路径映射 |
 | IsaacLab 单卡环境预检 | `sim-check --gpu <空闲物理编号或UUID> --steps 1000` |
 | M2 机器人与仿真验收 | `calibrate --gpu 0 --num-envs 1 16 64 --policy-steps 500 --render` |
+| Stage 1 结果报告与视频 | `training-report --run <训练目录> --output <报告目录>` |
 | Stage 1 共享 Tracker 训练 | `train --task walk_box --gpu 0 --num-envs 2048 --iterations 10000 --background` |
 | 历史目录迁移 | `migrate`，只用于目录管理 |
 
