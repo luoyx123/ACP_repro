@@ -21,7 +21,7 @@ PURPOSE={
  'randomization':'Table S2：固定启动动力学及 PhysX 回读、动作延迟、里程计和观测／重置扰动',
  'task':'GPU 参考库、实际 yaw 下的 oracle 接触、CSI 更新及 Table 3 奖励公式',
  'ppo':'非对称 actor/critic、运行归一化、显式超时 bootstrap 的 GAE 与 PPO',
- 'contact_audit':'Stage 1 几何／真实接触时序审计、landmark与表面偏移及成对oracle配置',
+ 'contact_audit':'Stage 1 几何／法向力接触时序、失稳姿态与冲击审计、点源偏移及成对oracle配置',
  'report':'Stage 1 训练离线评估、实际物理轨迹与参考对照视频、单文件HTML报告',
  'runner':'Stage 1 单卡启动、训练／评估、TensorBoard、checkpoint 与断点续训',
  'reference':'仿真无关的按名称动作加载、SLERP 查询与动作／关节目标转换',
