@@ -92,9 +92,13 @@ def assess(row, root, criteria):
                           and digest(manifest['target_urdf'])==collision_policy.get('target_urdf_sha256'))
     signature = {"motion_sha256": digest(motion_path), "evaluator_sha256": digest(__file__),
                  "manifest_sha256": digest(clip / "manifest.json"),
+                 "scene_sha256": digest(scene_from_manifest(manifest)),
+                 "target_urdf_sha256": digest(manifest['target_urdf']),
                  "native_geometry_sha256": digest(clip / "validation/mujoco_geometry.npz"),
                  "source_keypoints_sha256": digest(retargeted),
                  "criteria": criteria, "mujoco_version": mujoco.__version__}
+    if criteria.get('contact_speed_method') == 'native_surface_tangent':
+        signature['contact_probe_sha256']=digest(Path(__file__).with_name('compare.py'))
     if use_collision_policy:signature['collision_policy_sha256']=digest(collision_policy_path)
     cache_path = clip / "quality/report.json"
     if cache_path.exists():
@@ -149,6 +153,13 @@ def assess(row, root, criteria):
     self_min = np.zeros(len(qpos))
     nonlocal_self_min = np.zeros(len(qpos))
     self_pairs = Counter()
+    tangent_method=criteria.get('contact_speed_method')=='native_surface_tangent'
+    tangent_speed=np.full((len(qpos),2),np.nan)
+    if tangent_method:
+        from acp.quality.compare import NativeProbe
+        probe=NativeProbe(model)
+        probe.data=data
+        q_velocity=np.zeros(model.nv)
     unexpected_self_min = np.zeros(len(qpos))
     unexpected_self_pairs = Counter()
     structural_contact_count=0
@@ -187,6 +198,12 @@ def assess(row, root, criteria):
         errors[index] = np.linalg.norm(data.xpos[body_ids] - desired[index], axis=1)
         if use_toe_stance:
             toe_positions[index] = data.xpos[toe_ids]
+        if tangent_method:
+            lo,hi=max(0,index-1),min(len(qpos)-1,index+1)
+            mujoco.mj_differentiatePos(model,q_velocity,float(times[hi]-times[lo]),qpos[lo],qpos[hi])
+            for foot in range(2):
+                if flags[index,foot] and (source_stance is None or source_stance[index,foot]):
+                    tangent_speed[index,foot]=probe.tangential_speed(q_velocity,foot)
         pairs_this_frame = set()
         nonlocal_pairs_this_frame = set()
         unexpected_pairs_this_frame = set()
@@ -233,6 +250,12 @@ def assess(row, root, criteria):
             'speed_mask':'source stance and target contact, interior samples' if source_stance is not None else 'target contact interior samples',
             "contact_planar_speed_mean_m_s": float(speeds.mean()) if len(speeds) else None,
             "contact_planar_speed_p95_m_s": float(np.percentile(speeds, 95)) if len(speeds) else None}
+        if tangent_method:
+            samples=tangent_speed[interior,index]
+            foot_metrics[side].update(speed_method='native_surface_tangent',
+                contact_tangential_speed_p95_m_s=float(np.percentile(samples,95)) if len(samples) and np.isfinite(samples).all() else None,
+                contact_velocity_unavailable=bool(len(samples) and not np.isfinite(samples).all()),
+                note='Sole-center planar speed retained as diagnostic; gate uses rigid-body witness-point tangential speed')
     expected = int(np.floor((row["source_frames"] - 1) / row["source_fps"] * fps + 1e-9)) + 1
     reasons = []
     if len(qpos) != expected or len(times) != expected:
@@ -254,7 +277,8 @@ def assess(row, root, criteria):
         reasons.append("mapped_keypoint_error")
     for side, metrics in foot_metrics.items():
         near = metrics.get("stance_near_surface_fraction")
-        slide = metrics.get("contact_planar_speed_p95_m_s")
+        slide = metrics.get("contact_tangential_speed_p95_m_s") if tangent_method else metrics.get("contact_planar_speed_p95_m_s")
+        if metrics.get('contact_velocity_unavailable'):reasons.append(f'{side}_contact_velocity_unavailable')
         # No ground stance is a valid observation for a jump, seated clip or
         # ladder phase. Missing samples cannot establish either a gap or sliding.
         if metrics.get('stance_steps', 0) and (near is None or near < criteria["minimum_stance_near_surface_fraction_per_foot"]):
@@ -331,18 +355,20 @@ def assess(row, root, criteria):
                         unexpected_self_contact_minimum_distances=unexpected_self_min,
                         nonlocal_self_contact_minimum_distances=nonlocal_self_min,
                         self_collision_frames=self_invalid, mapped_keypoint_errors=errors,
-                        foot_planar_speeds=planar_speed)
+                        foot_planar_speeds=planar_speed, contact_tangential_speeds=tangent_speed)
     return result
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", type=Path, required=True)
-    parser.add_argument("--criteria", type=Path, default=Path(__file__).resolve().parents[3] / "configs/data_quality.json")
+    parser.add_argument("--criteria", type=Path, help='默认使用批次 quality_criteria.json，否则使用 configs/data_quality.json')
     parser.add_argument("--workers", type=int, default=4)
     args = parser.parse_args()
     run = args.run.resolve()
-    criteria = read_record(args.criteria)
+    criteria_path=args.criteria or (run/'quality_criteria.json' if (run/'quality_criteria.json').exists()
+                                  else Path(__file__).resolve().parents[3]/'configs/data_quality.json')
+    criteria = read_record(criteria_path)
     rows = read_record(run / "inventory.json")
     results = []
     with ProcessPoolExecutor(max_workers=args.workers) as pool:
@@ -404,6 +430,9 @@ def main():
              "| 动作 | 路径 | 状态 | 不通过项 |", "| --- | --- | --- | --- |"]
     lines += [f"| {row['clip']} | {row['route']} | {row['status']} | {', '.join(row.get('reasons', []))} |" for row in results]
     (run / "QUALITY.md").write_text("\n".join(lines) + "\n")
+    if criteria.get('contact_speed_method')=='native_surface_tangent':
+        from acp.quality.support import write_contact_audit
+        write_contact_audit(run)
     print(json.dumps(summary, indent=2))
 
 

@@ -334,8 +334,8 @@ def repair(clip_name, baseline, output, passes=2, maximum_frames=None, smooth_we
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--method', choices=('arms', 'fullbody'), default='arms',
-                        help='arms: 原 23DoF 肩肘修复；fullbody: 原生 29DoF 几何约束修复并重标注')
+    parser.add_argument('--method', choices=('arms', 'fullbody', 'support'), default='arms',
+                        help='arms: 23DoF 肩肘；fullbody: 29DoF 几何修复；support: 原模型支撑意图与物理接触点复评')
     parser.add_argument("--baseline", type=Path, default=run_path("omni_asap23"))
     parser.add_argument("--output", type=Path, default=run_path("omni_asap23_arm_repair"))
     parser.add_argument("--clips", nargs="+", help='fullbody 不传时处理清单全部片段')
@@ -343,13 +343,24 @@ def main():
     parser.add_argument("--passes", type=int, default=2)
     parser.add_argument("--maximum-frames", type=int)
     parser.add_argument("--smooth-weight", type=float, default=3.0)
+    parser.add_argument('--source-baseline', type=Path,
+                        help='support 必填：含原模型 native29_comparison 几何证据的未修复批次')
+    parser.add_argument('--temporal', action='store_true',
+                        help='support：仅对仍不通过的支撑／滑动项尝试跨帧修正，重标注并拒绝恶化结果')
     args = parser.parse_args()
     if args.workers < 1 or args.passes < 1 or (args.maximum_frames is not None and args.maximum_frames < 2):
         parser.error("workers/passes positive; maximum-frames at least two")
     if args.output.resolve() == args.baseline.resolve():
         parser.error("Output must differ from the preserved baseline")
+    if args.temporal and args.method != 'support':
+        parser.error('--temporal belongs to --method support')
     if args.method == 'fullbody':
         from acp.quality.fullbody import run
+        return run(args)
+    if args.method == 'support':
+        if args.source_baseline is None or args.maximum_frames is not None:
+            parser.error('support requires --source-baseline and whole clips (no --maximum-frames)')
+        from acp.quality.support import run
         return run(args)
     if not args.clips:
         parser.error('arms requires --clips')

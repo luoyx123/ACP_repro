@@ -1,0 +1,845 @@
+{
+  "generated_at": "2026-11-03T10:25:00.403687+00:00",
+  "scope": "All 145 Omni robot-terrain native29 clips",
+  "original_model_pair": {
+    "clips": 145,
+    "frames": 91095,
+    "source_environment_invalid_frames": 2256,
+    "target_environment_invalid_frames": 26643,
+    "introduced_environment_invalid_frames": 24894,
+    "inherited_environment_invalid_frames": 1749,
+    "source_raw_self_invalid_frames": 91095,
+    "target_raw_self_invalid_frames": 30435,
+    "source_distant_link_invalid_frames": 27489,
+    "target_distant_link_invalid_frames": 30435,
+    "introduced_distant_link_invalid_frames": 6014,
+    "note": "Same original29 input, time grid and terrain; different actual robot collision models. See per-clip source-vs-target evidence."
+  },
+  "repaired_summary": {
+    "scope": "robot-terrain only",
+    "expected_inputs": 145,
+    "results": 145,
+    "base_motion_groups": 29,
+    "has_human_joints": 112,
+    "missing_human_joints": 33,
+    "statuses": {
+      "offline_kinematic_candidate": 130,
+      "needs_repair": 15
+    },
+    "reason_counts": {
+      "right_foot_sliding": 9,
+      "left_foot_sliding": 8
+    },
+    "routes": {
+      "native29_fullbody_geometric_support": {
+        "inputs": 145,
+        "statuses": {
+          "offline_kinematic_candidate": 130,
+          "needs_repair": 15
+        }
+      }
+    },
+    "evaluated_frames": 91095,
+    "evaluated_duration_s": 1819.0,
+    "frame_weighted_environment_invalid_fraction": 0.0,
+    "frame_weighted_self_collision_fraction": 0.0,
+    "frame_weighted_unexpected_self_collision_fraction": 0.0,
+    "clips_with_nonlocal_self_collision": 0,
+    "frame_weighted_nonlocal_self_collision_fraction": 0.0,
+    "frame_weighted_joint_velocity_invalid_fraction": 0.0,
+    "stage1_offline_candidates": 130,
+    "stage2_hindsight_admitted": 0,
+    "criteria": {
+      "version": "native29_geometric_support_tangent_v2",
+      "environment_penetration_tolerance_m": 0.003,
+      "self_penetration_tolerance_m": 0.003,
+      "maximum_invalid_environment_frames": 0,
+      "maximum_invalid_joint_position_frames": 0,
+      "maximum_invalid_joint_velocity_frames": 0,
+      "maximum_self_collision_frames": 0,
+      "minimum_stance_near_surface_fraction_per_foot": 0.9,
+      "maximum_contact_foot_planar_speed_p95_m_s": 0.15,
+      "maximum_mapped_keypoint_mean_error_m": 0.08,
+      "maximum_mapped_keypoint_p95_error_m": 0.15,
+      "minimum_native_drake_raw_flag_agreement": 0.999,
+      "note": "Native29 profile: same numeric thresholds; geometric source support excludes stationary airborne feet. Primary sliding speed is rigid-body witness velocity projected onto the environment tangent plane; retain sole-center XY proxy as diagnostic. Geometric intent is not force/hindsight evidence.",
+      "contact_speed_method": "native_surface_tangent",
+      "source_stance_definition": "source low toe velocity AND original robot foot-environment distance <=15mm"
+    },
+    "complete_inventory_handled": true,
+    "all_processing_successful": true,
+    "note": "All-input denominator includes failed processing. Acceptance thresholds are engineering choices. Split future train/validation sets by source motion groups, not individual augmentations or windows."
+  },
+  "temporal_selection": {
+    "unchanged": 116,
+    "8.0": 5,
+    "3.0": 24
+  },
+  "temporal_attempts": 51,
+  "source_support_old_steps": [
+    69684,
+    70956
+  ],
+  "source_support_geometric_steps": [
+    53297,
+    49408
+  ],
+  "all_body_geometric_retention": {
+    "left_foot": {
+      "source_near_steps": 60339,
+      "target_near_steps": 59127,
+      "fraction": 0.9799134887883458
+    },
+    "right_foot": {
+      "source_near_steps": 55141,
+      "target_near_steps": 53792,
+      "fraction": 0.9755354454942783
+    },
+    "left_knee": {
+      "source_near_steps": 5604,
+      "target_near_steps": 5158,
+      "fraction": 0.9204139900071378
+    },
+    "right_knee": {
+      "source_near_steps": 6965,
+      "target_near_steps": 6627,
+      "fraction": 0.9514716439339554
+    },
+    "left_hand": {
+      "source_near_steps": 19097,
+      "target_near_steps": 19053,
+      "fraction": 0.9976959731895062
+    },
+    "right_hand": {
+      "source_near_steps": 14950,
+      "target_near_steps": 14919,
+      "fraction": 0.9979264214046822
+    },
+    "left_elbow": {
+      "source_near_steps": 21,
+      "target_near_steps": 21,
+      "fraction": 1.0
+    },
+    "right_elbow": {
+      "source_near_steps": 34,
+      "target_near_steps": 34,
+      "fraction": 1.0
+    },
+    "pelvis": {
+      "source_near_steps": 5149,
+      "target_near_steps": 4051,
+      "fraction": 0.7867547096523597
+    }
+  },
+  "fullbody_retention_note": "All original near-surface frames, not measured support/force. These nine-body diagnostics are not yet a calibrated per-body acceptance gate; pelvis/knee mismatch remains reviewable.",
+  "pose_checks": {
+    "all_retargeted_labeled_identical": true,
+    "all_root_quaternions_identical_to_original": true,
+    "maximum_root_shift_m": 0.10916094137305223,
+    "p95_root_shift_m": 0.01695086078610315,
+    "maximum_joint_correction_rad": 0.8084315249210502,
+    "maximum_keypoint_mean_error_m": 0.017742513891569833,
+    "maximum_keypoint_p95_error_m": 0.05255871774714619
+  },
+  "remaining": [
+    {
+      "clip": "climb_03_z_scale_1.2",
+      "reasons": [
+        "left_foot_sliding",
+        "right_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.24566813385459257,
+        "right": 0.18132134690783713
+      }
+    },
+    {
+      "clip": "climb_07_z_scale_1.2",
+      "reasons": [
+        "right_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.08551221146480895,
+        "right": 0.16494731594803938
+      }
+    },
+    {
+      "clip": "climb_08_z_scale_1.1",
+      "reasons": [
+        "right_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.12111257084751863,
+        "right": 0.1906542174062155
+      }
+    },
+    {
+      "clip": "climb_08_z_scale_1.2",
+      "reasons": [
+        "left_foot_sliding",
+        "right_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.18935197207923785,
+        "right": 0.2831699772760661
+      }
+    },
+    {
+      "clip": "climb_09_z_scale_1.2",
+      "reasons": [
+        "right_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.12492406461500637,
+        "right": 0.15156603901562493
+      }
+    },
+    {
+      "clip": "climb_10_z_scale_1.1",
+      "reasons": [
+        "right_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.09619414227327125,
+        "right": 0.16598238693424047
+      }
+    },
+    {
+      "clip": "climb_10_z_scale_1.2",
+      "reasons": [
+        "right_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.11832120084485188,
+        "right": 0.157607855649265
+      }
+    },
+    {
+      "clip": "climb_13_z_scale_1.2",
+      "reasons": [
+        "left_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.19768648000630493,
+        "right": 0.12871898884612618
+      }
+    },
+    {
+      "clip": "climb_19_z_scale_1.2",
+      "reasons": [
+        "left_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.16880828902706468,
+        "right": 0.07184736561450566
+      }
+    },
+    {
+      "clip": "climb_21_z_scale_1.0",
+      "reasons": [
+        "right_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.1312585420414858,
+        "right": 0.179233550933086
+      }
+    },
+    {
+      "clip": "climb_21_z_scale_1.1",
+      "reasons": [
+        "left_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.1631545808400793,
+        "right": 0.1389172754458105
+      }
+    },
+    {
+      "clip": "climb_21_z_scale_1.2",
+      "reasons": [
+        "right_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.13874398731092272,
+        "right": 0.15143410701013102
+      }
+    },
+    {
+      "clip": "climb_24_z_scale_1.2",
+      "reasons": [
+        "left_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.1914110221694833,
+        "right": 0.1428182704794383
+      }
+    },
+    {
+      "clip": "climb_25_z_scale_1.2",
+      "reasons": [
+        "left_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.17459335510529211,
+        "right": 0.11713617364948024
+      }
+    },
+    {
+      "clip": "climb_26_z_scale_1.2",
+      "reasons": [
+        "left_foot_sliding"
+      ],
+      "tangential_p95_m_s": {
+        "left": 0.7022092809374663,
+        "right": 0.09471195231177572
+      }
+    }
+  ],
+  "validation": "No formal training. Offline engineering screen only; no Stage-2 hindsight admission.",
+  "contact_review": {
+    "clips": 145,
+    "expected_inputs": 145,
+    "review_clips": 52,
+    "offline_candidates_with_contact_review": 46,
+    "conservative_candidates": 84,
+    "minimum_aggregate_source_near_duration_s": 0.2,
+    "review_minimum_coverage": 0.9,
+    "bodies": {
+      "left_foot": {
+        "source_near_steps": 60339,
+        "target_near_steps": 59127,
+        "fraction": 0.9799134887883458
+      },
+      "right_foot": {
+        "source_near_steps": 55141,
+        "target_near_steps": 53792,
+        "fraction": 0.9755354454942783
+      },
+      "left_knee": {
+        "source_near_steps": 5604,
+        "target_near_steps": 5158,
+        "fraction": 0.9204139900071378
+      },
+      "right_knee": {
+        "source_near_steps": 6965,
+        "target_near_steps": 6627,
+        "fraction": 0.9514716439339554
+      },
+      "left_hand": {
+        "source_near_steps": 19097,
+        "target_near_steps": 19053,
+        "fraction": 0.9976959731895062
+      },
+      "right_hand": {
+        "source_near_steps": 14950,
+        "target_near_steps": 14919,
+        "fraction": 0.9979264214046822
+      },
+      "left_elbow": {
+        "source_near_steps": 21,
+        "target_near_steps": 21,
+        "fraction": 1.0
+      },
+      "right_elbow": {
+        "source_near_steps": 34,
+        "target_near_steps": 34,
+        "fraction": 1.0
+      },
+      "pelvis": {
+        "source_near_steps": 5149,
+        "target_near_steps": 4051,
+        "fraction": 0.7867547096523597
+      }
+    },
+    "note": "Geometric-nearness retention only, not force/load or Stage-2 hindsight evidence. Extra review does not alter the versioned offline criteria."
+  },
+  "source_speed_example": {
+    "clip": "climb_03_z_scale_1.2",
+    "fps": 50,
+    "method": "Original29 rigid-body nearest witness tangent speed; raw near-surface band, source geometric stance, interior samples; not force evidence",
+    "tangential_p95_m_s": {
+      "left": 0.1804115716748868,
+      "right": 0.17729566978989397
+    }
+  },
+  "conservative_candidate_clips": [
+    "climb_00_z_scale_0.8",
+    "climb_00_z_scale_0.9",
+    "climb_00_z_scale_1.0",
+    "climb_02_z_scale_0.8",
+    "climb_04_z_scale_0.8",
+    "climb_04_z_scale_0.9",
+    "climb_04_z_scale_1.0",
+    "climb_04_z_scale_1.1",
+    "climb_04_z_scale_1.2",
+    "climb_05_z_scale_0.8",
+    "climb_05_z_scale_0.9",
+    "climb_05_z_scale_1.0",
+    "climb_05_z_scale_1.1",
+    "climb_05_z_scale_1.2",
+    "climb_06_z_scale_0.8",
+    "climb_06_z_scale_0.9",
+    "climb_06_z_scale_1.0",
+    "climb_06_z_scale_1.1",
+    "climb_06_z_scale_1.2",
+    "climb_07_z_scale_0.8",
+    "climb_07_z_scale_0.9",
+    "climb_07_z_scale_1.0",
+    "climb_07_z_scale_1.1",
+    "climb_10_z_scale_0.8",
+    "climb_10_z_scale_0.9",
+    "climb_10_z_scale_1.0",
+    "climb_11_z_scale_1.0",
+    "climb_12_z_scale_0.8",
+    "climb_12_z_scale_0.9",
+    "climb_12_z_scale_1.0",
+    "climb_12_z_scale_1.1",
+    "climb_12_z_scale_1.2",
+    "climb_13_z_scale_0.9",
+    "climb_14_z_scale_0.8",
+    "climb_14_z_scale_0.9",
+    "climb_14_z_scale_1.0",
+    "climb_14_z_scale_1.1",
+    "climb_14_z_scale_1.2",
+    "climb_15_z_scale_0.8",
+    "climb_15_z_scale_0.9",
+    "climb_15_z_scale_1.0",
+    "climb_15_z_scale_1.1",
+    "climb_15_z_scale_1.2",
+    "climb_16_z_scale_0.8",
+    "climb_16_z_scale_0.9",
+    "climb_16_z_scale_1.0",
+    "climb_16_z_scale_1.1",
+    "climb_16_z_scale_1.2",
+    "climb_17_z_scale_0.8",
+    "climb_17_z_scale_0.9",
+    "climb_17_z_scale_1.0",
+    "climb_17_z_scale_1.1",
+    "climb_17_z_scale_1.2",
+    "climb_18_z_scale_0.8",
+    "climb_18_z_scale_0.9",
+    "climb_18_z_scale_1.0",
+    "climb_18_z_scale_1.1",
+    "climb_18_z_scale_1.2",
+    "climb_19_z_scale_0.9",
+    "climb_19_z_scale_1.0",
+    "climb_19_z_scale_1.1",
+    "climb_20_z_scale_0.8",
+    "climb_20_z_scale_1.0",
+    "climb_20_z_scale_1.1",
+    "climb_20_z_scale_1.2",
+    "climb_22_z_scale_0.8",
+    "climb_22_z_scale_0.9",
+    "climb_22_z_scale_1.0",
+    "climb_22_z_scale_1.1",
+    "climb_22_z_scale_1.2",
+    "climb_23_z_scale_0.9",
+    "climb_23_z_scale_1.0",
+    "climb_23_z_scale_1.1",
+    "climb_23_z_scale_1.2",
+    "climb_25_z_scale_0.8",
+    "climb_25_z_scale_0.9",
+    "climb_25_z_scale_1.1",
+    "climb_26_z_scale_0.9",
+    "climb_26_z_scale_1.1",
+    "climb_28_z_scale_0.8",
+    "climb_28_z_scale_0.9",
+    "climb_28_z_scale_1.0",
+    "climb_28_z_scale_1.1",
+    "climb_28_z_scale_1.2"
+  ],
+  "contact_review_by_clip": [
+    {
+      "clip": "climb_00_z_scale_1.1",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.5833333333333334,
+        "right_knee": 0.8653846153846154
+      }
+    },
+    {
+      "clip": "climb_00_z_scale_1.2",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.8235294117647058,
+        "right_knee": 0.5681818181818182
+      }
+    },
+    {
+      "clip": "climb_01_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.3728813559322034
+      }
+    },
+    {
+      "clip": "climb_01_z_scale_0.9",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.3114754098360656
+      }
+    },
+    {
+      "clip": "climb_01_z_scale_1.0",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.28125
+      }
+    },
+    {
+      "clip": "climb_01_z_scale_1.1",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.29310344827586204
+      }
+    },
+    {
+      "clip": "climb_01_z_scale_1.2",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.6101694915254238
+      }
+    },
+    {
+      "clip": "climb_02_z_scale_0.9",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.0
+      }
+    },
+    {
+      "clip": "climb_02_z_scale_1.0",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.13846153846153847
+      }
+    },
+    {
+      "clip": "climb_02_z_scale_1.1",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.379746835443038
+      }
+    },
+    {
+      "clip": "climb_02_z_scale_1.2",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.3974358974358974
+      }
+    },
+    {
+      "clip": "climb_03_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.09615384615384616
+      }
+    },
+    {
+      "clip": "climb_03_z_scale_0.9",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.3142857142857143
+      }
+    },
+    {
+      "clip": "climb_03_z_scale_1.0",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.4578313253012048
+      }
+    },
+    {
+      "clip": "climb_03_z_scale_1.1",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.35064935064935066
+      }
+    },
+    {
+      "clip": "climb_03_z_scale_1.2",
+      "offline_candidate": false,
+      "review": {
+        "left_knee": 0.8473282442748091,
+        "pelvis": 0.49056603773584906
+      }
+    },
+    {
+      "clip": "climb_08_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.8623853211009175
+      }
+    },
+    {
+      "clip": "climb_08_z_scale_0.9",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.8732394366197183
+      }
+    },
+    {
+      "clip": "climb_08_z_scale_1.0",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.6811594202898551,
+        "pelvis": 0.8815165876777251
+      }
+    },
+    {
+      "clip": "climb_08_z_scale_1.1",
+      "offline_candidate": false,
+      "review": {
+        "left_knee": 0.8181818181818182,
+        "pelvis": 0.8949771689497716
+      }
+    },
+    {
+      "clip": "climb_08_z_scale_1.2",
+      "offline_candidate": false,
+      "review": {
+        "right_foot": 0.8955223880597015,
+        "left_knee": 0.5142857142857142
+      }
+    },
+    {
+      "clip": "climb_09_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.6363636363636364
+      }
+    },
+    {
+      "clip": "climb_09_z_scale_0.9",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.8571428571428571
+      }
+    },
+    {
+      "clip": "climb_09_z_scale_1.0",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.7857142857142857
+      }
+    },
+    {
+      "clip": "climb_09_z_scale_1.1",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.6923076923076923
+      }
+    },
+    {
+      "clip": "climb_09_z_scale_1.2",
+      "offline_candidate": false,
+      "review": {
+        "left_knee": 0.5
+      }
+    },
+    {
+      "clip": "climb_11_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "right_knee": 0.8454545454545455
+      }
+    },
+    {
+      "clip": "climb_11_z_scale_0.9",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.6756756756756757,
+        "right_knee": 0.8888888888888888
+      }
+    },
+    {
+      "clip": "climb_11_z_scale_1.1",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.46296296296296297,
+        "right_knee": 0.8045112781954887
+      }
+    },
+    {
+      "clip": "climb_11_z_scale_1.2",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.525,
+        "right_knee": 0.7846153846153846
+      }
+    },
+    {
+      "clip": "climb_13_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "right_hand": 0.8409090909090909,
+        "pelvis": 0.7941176470588235
+      }
+    },
+    {
+      "clip": "climb_13_z_scale_1.0",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.8603351955307262
+      }
+    },
+    {
+      "clip": "climb_13_z_scale_1.1",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.0
+      }
+    },
+    {
+      "clip": "climb_19_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "right_knee": 0.8421052631578947
+      }
+    },
+    {
+      "clip": "climb_20_z_scale_0.9",
+      "offline_candidate": true,
+      "review": {
+        "right_knee": 0.6818181818181818
+      }
+    },
+    {
+      "clip": "climb_21_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "left_foot": 0.8857142857142857
+      }
+    },
+    {
+      "clip": "climb_21_z_scale_0.9",
+      "offline_candidate": true,
+      "review": {
+        "left_foot": 0.8875
+      }
+    },
+    {
+      "clip": "climb_23_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.7333333333333333
+      }
+    },
+    {
+      "clip": "climb_24_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "pelvis": 0.8571428571428571
+      }
+    },
+    {
+      "clip": "climb_24_z_scale_0.9",
+      "offline_candidate": true,
+      "review": {
+        "right_knee": 0.3333333333333333,
+        "pelvis": 0.875
+      }
+    },
+    {
+      "clip": "climb_24_z_scale_1.0",
+      "offline_candidate": true,
+      "review": {
+        "right_knee": 0.375
+      }
+    },
+    {
+      "clip": "climb_24_z_scale_1.1",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.88,
+        "right_knee": 0.7111111111111111
+      }
+    },
+    {
+      "clip": "climb_24_z_scale_1.2",
+      "offline_candidate": false,
+      "review": {
+        "left_knee": 0.5
+      }
+    },
+    {
+      "clip": "climb_25_z_scale_1.0",
+      "offline_candidate": true,
+      "review": {
+        "right_knee": 0.8846153846153846
+      }
+    },
+    {
+      "clip": "climb_26_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "right_knee": 0.7647058823529411
+      }
+    },
+    {
+      "clip": "climb_26_z_scale_1.0",
+      "offline_candidate": true,
+      "review": {
+        "right_knee": 0.5967741935483871
+      }
+    },
+    {
+      "clip": "climb_26_z_scale_1.2",
+      "offline_candidate": false,
+      "review": {
+        "left_knee": 0.5
+      }
+    },
+    {
+      "clip": "climb_27_z_scale_0.8",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.881578947368421,
+        "pelvis": 0.08333333333333333
+      }
+    },
+    {
+      "clip": "climb_27_z_scale_0.9",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.5373134328358209,
+        "pelvis": 0.7808219178082192
+      }
+    },
+    {
+      "clip": "climb_27_z_scale_1.0",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.6521739130434783,
+        "pelvis": 0.810126582278481
+      }
+    },
+    {
+      "clip": "climb_27_z_scale_1.1",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.5714285714285714,
+        "pelvis": 0.8636363636363636
+      }
+    },
+    {
+      "clip": "climb_27_z_scale_1.2",
+      "offline_candidate": true,
+      "review": {
+        "left_knee": 0.0,
+        "pelvis": 0.6781609195402298
+      }
+    }
+  ],
+  "validation_code_sha256": {
+    "evaluate": "91f7fbb0b379781b57dfc02d5113b311036df261ce9748f506e7e868a32319fe",
+    "support": "66977c1806eb8de7d1d6a301ad7bfb1a5b672079b3a19088dd9d3df0ea9c3586",
+    "compare": "76157d7858b73973db0a474e8745307576c6168e0ef7302e0dee9442339f0d84"
+  },
+  "producer_code_sha256": {
+    "evaluate.py": "80897bfadf395cc669b501cfb160bdf4a1289692d6410d22c3ccb161a54968e3",
+    "compare.py": "76157d7858b73973db0a474e8745307576c6168e0ef7302e0dee9442339f0d84",
+    "fullbody.py": "ef877e234a6a29f1a91f82b66a97e91b0a02726e2e5e00dd24921586ea4a6e81",
+    "support.py": "8408849ec73aaa944252798e897c098f2af1cfff2e9bfb35fa9188118ccb77d6"
+  }
+}

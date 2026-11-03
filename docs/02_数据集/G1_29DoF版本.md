@@ -140,3 +140,87 @@ with np.load('outputs/数据集/omni/instinct29_v1/clips/climb_00_z_scale_0.9/la
 ```
 
 当前 Stage 1 / SuperMimic 的策略维度和机器人控制仍按原 23DoF 配置。29DoF 数据版作为独立资产提供，训练接入需要同步修改动作维度、观测维度、模型和基座语义。
+
+## Omni：原29DoF到目标29DoF的修复
+
+Omni 输入已经是29DoF机器人动作，不需要再次从人体重定向，也不依赖缺失的 human joints。
+但原版 `g1_29dof_spherehand.urdf` 与 InstinctMJ 的实际训练 MJCF 使用不同碰撞体；根坐标、关节顺序正确转换后，还需要进行**模型适配**。
+尤其原手部网格换成半径5cm的胶囊，直接使用原角度会碰到原来未触及的箱壁或身体。原始动作合理不代表它在另一套碰撞模型下仍无穿透。
+
+```mermaid
+flowchart TD
+    A[原始Omni G1-29和地形] --> B[原模型FK与目标模型坐标转换]
+    B --> C[原生转换基线 instinct29_v1]
+    C --> D[compare 原模型/目标模型同帧几何对比]
+    C --> E[fullbody 全身消穿透]
+    E --> F[Drake九部位重标注与MuJoCo复核]
+    D --> G[原模型九部位接近地形的证据]
+    F --> H[support 核实支撑相与接触点速度]
+    G --> H
+    H --> I{仍有滑动/支撑/速度超限?}
+    I -->|有| J[temporal 跨帧平滑修正量并再次重标注]
+    J --> K[只采用无新增失败项且有改善的结果]
+    I -->|无| L[完整轨迹复评与候选清单]
+    K --> L
+```
+
+当前完整修复版由稳定ID `omni_instinct29_geometry` 定位；原生 `omni_instinct29` 继续指向未修复的转换基线。
+全量统计、尚未通过的片段与全身接触保留情况见 [质量审计](../05_实验记录/29DoF质量与全身接触审计_20261103.md)。
+
+### 从头生成新修复批次
+
+下面不会改写原始动作。第二、三步请使用新的独立目录；开发前缀和少数片段试验应放 `outputs/实验归档/`，不要覆盖完整批次清单。
+
+```bash
+# 1. 同一时间网格对比原模型与目标模型，缓存九部位源几何证据
+.venv/bin/python scripts/acp_pipeline.py compare \
+  --run outputs/数据集/omni/instinct29_v1 --workers 4
+
+# 2. 所有145条完整轨迹：保留原动作作为保真目标，适配原生碰撞几何
+.venv/bin/python scripts/acp_pipeline.py repair --method fullbody \
+  --baseline outputs/数据集/omni/instinct29_v1 \
+  --output outputs/数据集/omni/instinct29_geometry_new --workers 4 --passes 2
+
+# 3. 核实支撑相；仅对仍未通过的片段尝试跨帧修正，并重新独立核验
+.venv/bin/python scripts/acp_pipeline.py repair --method support --temporal \
+  --baseline outputs/数据集/omni/instinct29_geometry_new \
+  --source-baseline outputs/数据集/omni/instinct29_v1 \
+  --output outputs/数据集/omni/instinct29_support_new --workers 4
+
+.venv/bin/python scripts/acp_pipeline.py evaluate omni_instinct29_geometry --workers 4
+.venv/bin/python scripts/acp_pipeline.py view omni_instinct29_geometry \
+  --clip climb_01_z_scale_1.2 --show-source
+```
+
+`support` 不带 `--temporal` 时严格保留输入姿态，只修正支撑统计口径；带该选项才会对未通过的片段尝试修正。
+修正平滑的是“目标姿态相对原动作的改变量”，不会把整段原始爬升动作直接低通滤波。
+目前尝试平滑权重3和8、前向／后向两遍。每次都重新生成几何标签、检查关节和关键点，出现新的失败项就拒绝替换。
+
+### 两个需要区分的评估口径
+
+原生批次使用旧的 `configs/data_quality.json`。修复版显式记录 `quality_criteria.json`，采用 `configs/data_quality_native29.json`：
+
+- 源支撑相采用“原来的低脚尖速度条件 ∩ **原模型脚部到真实地形距离≤15mm**”。攀爬时悬空不动的脚不会再被误判为站立；旧速度标记另存为 `source_stance_flags_velocity_only`。
+- 滑动门槛采用**刚体接触witness点在地形切平面内的速度**。中心点移动不一定表示滑动，例如脚从脚跟滚到脚尖。旧脚底中心XY速度继续保留作诊断。
+- 数值门槛不变：3mm穿透、90%足部支撑覆盖、0.15m/s速度P95、8cm／15cm关键点均值／P95误差。统计对象改变了，因此不同口径的候选数量不能直接作为算法提升量。
+
+`evaluate` 会自动读取批次自己的 `quality_criteria.json`，避免复评时悄悄换回旧口径。
+这些仍是离线工程筛查，并非论文训练成功标准；九部位几何意图也不是接触力或 Stage2 hindsight 真值。
+
+### 最终应检查的文件
+
+| 文件 | 用途 |
+| --- | --- |
+| `quality_summary.json`、`quality_all_clips.json` | 全清单分母、逐条失败原因与质量口径 |
+| `stage1_candidate_clips.txt`、`needs_repair_clips.txt` | 整条通过与仍未通过的清单；不以成功窗口代替完整轨迹 |
+| `fullbody_contact_retention_summary.json`、`fullbody_contact_retention_by_clip.json` | 九部位源几何意图保留率；独立暴露膝／骨盆接触丢失 |
+| `contact_review_clips.txt`、`conservative_candidate_clips.txt` | 额外全身几何复核清单，以及现有候选中剔除这些复核项的保守子集；当前为52／84条 |
+| `clips/<ID>/support_refinement_report.json` | 旧／新支撑样本数量、跨帧尝试和最终选择 |
+| `clips/<ID>/quality_before_temporal.json` | 跨帧修正前的独立检查结果 |
+| `clips/<ID>/attempts/temporal_*/` | 包括被拒绝尝试在内的轨迹、标签和评估证据 |
+| `clips/<ID>/retargeted/*_original.npz` | 最终姿态、旧支撑标记、原模型九部位几何意图和环境witness点 |
+
+场景、URDF及原模型资源仍引用原生基线，迁移时需一起携带；不能仅复制最终 `motion.npz` 后就删除上游资产。
+
+目前145条中130条通过现有足部／几何／保真筛查，15条保留速度超限标记；130条中又有46条触发额外的全身接触复核，故建议先查看84条保守子集。
+额外复核采用每部位累计源接近样本≥0.2s且目标覆盖<90%的规则，是几何审查提示，不代表原动作错误或实际承重失败。

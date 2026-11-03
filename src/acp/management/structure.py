@@ -49,9 +49,10 @@ PURPOSE={
  'joints':'ASAP 六腕固定定义和按名称关节投影',
  'transfer':'源机器人模型加载与 FK 关键点；所有机器人适配器及回放共用',
  'collision':'限定模型哈希、身体范围与深度的局部碰撞校准',
- 'native':'MuJoCo 独立几何核验', 'compare':'29/23 同时钟的精确投影和新增／继承问题对比',
+ 'native':'MuJoCo 独立几何核验', 'compare':'原29／目标29及29→23同时钟对比；九部位源几何证据与刚体接触点切向速度',
  'evaluate':'四类数据共用的全量质量筛查、候选清单与报告',
- 'repair':'统一修复入口：23DoF 肩肘局部修复或 29DoF 全身几何约束修复', 'finalize':'局部修复后重新标注、核验与总评估',
+ 'repair':'统一修复入口：23DoF 肩肘、29DoF 全身几何约束与原模型支撑意图核实', 'finalize':'局部修复后重新标注、核验与总评估',
+ 'quality/support':'原模型九部位支撑意图、可选跨帧修正、接触保留审计与保守候选子集；显式版本复评，几何意图不是受力或 hindsight 标签',
  'fullbody':'所在 quality 时负责 29DoF 原生几何约束优化与重标注复评；所在 training/supermimic 时负责九部位环境接触过滤、初始化几何准入与诊断',
  'viewer':'共用交互回放、PNG/MP4、源轨迹叠加与最差帧定位',
  'holosoma':'Holosoma 输出规范化与九部位几何接触标注',
@@ -85,8 +86,9 @@ def update(stage=None):
 | 实时状态／资产目录 | `status <数据集或批次>`、`catalog` |
 | 回放／视频／定格图 | `view <数据集或批次> --clip <ID> [--show-source] [--output ...]` |
 | 全量质量检查 | `evaluate <数据集或批次>` |
-| 机器人 29/23 对比 | `compare --run <批次> ...`，Mixamo 原始人体不走此对比 |
-| 23DoF 肩肘／29DoF 全身修复 | `repair --method arms/fullbody --baseline ... --output ... --clips ...`；fullbody 自动重标注复评，arms 用 `finalize --run ...` |
+| 原29／目标29及29→23对比 | `compare --run <批次> ...`，Mixamo 原始人体不走此对比 |
+| 23DoF 肩肘／29DoF 全身修复 | `repair --method arms/fullbody --baseline ... --output ... [--clips ...]`；fullbody 自动重标注复评，arms 用 `finalize --run ...` |
+| 原模型几何支撑与接触点复评 | `repair --method support --baseline <全身修复批次> --source-baseline <原生转换批次> --output <新目录>`；先对原生批次执行 `compare` |
 | Mixamo 场景／语义候选 | `fit-scenes ...`、`match-names ...` |
 | 文档和资产完整性 | `check --manifests` |
 | 架构索引与阶段记录 | `structure --stage "本次完成的阶段"` |

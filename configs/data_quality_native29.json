@@ -1,0 +1,17 @@
+{
+  "version": "native29_geometric_support_tangent_v2",
+  "environment_penetration_tolerance_m": 0.003,
+  "self_penetration_tolerance_m": 0.003,
+  "maximum_invalid_environment_frames": 0,
+  "maximum_invalid_joint_position_frames": 0,
+  "maximum_invalid_joint_velocity_frames": 0,
+  "maximum_self_collision_frames": 0,
+  "minimum_stance_near_surface_fraction_per_foot": 0.9,
+  "maximum_contact_foot_planar_speed_p95_m_s": 0.15,
+  "maximum_mapped_keypoint_mean_error_m": 0.08,
+  "maximum_mapped_keypoint_p95_error_m": 0.15,
+  "minimum_native_drake_raw_flag_agreement": 0.999,
+  "note": "Native29 profile: same numeric thresholds; geometric source support excludes stationary airborne feet. Primary sliding speed is rigid-body witness velocity projected onto the environment tangent plane; retain sole-center XY proxy as diagnostic. Geometric intent is not force/hindsight evidence.",
+  "contact_speed_method": "native_surface_tangent",
+  "source_stance_definition": "source low toe velocity AND original robot foot-environment distance <=15mm"
+}

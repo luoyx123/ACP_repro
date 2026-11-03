@@ -22,6 +22,167 @@ from acp.robot.joints import project_joint_subset
 from acp.data.motions import resample_drake
 from acp.data.playback import resolve_clip
 from acp.robot.model import compile_robot, digest, make_scene, save_robot_xml
+from acp.data.assets import atomic_json
+
+
+class NativeProbe:
+    """Keep raw collisions and distant-link collisions separate from joint housings."""
+    def __init__(self, model):
+        self.model, self.data = model, mujoco.MjData(model)
+        self.env = {g for g in range(model.ngeom) if model.geom_bodyid[g] == 0
+                    or (model.geom(g).name or '').startswith('multi_boxes_')}
+        self.separation = {}
+        names=['left_ankle_roll_link','right_ankle_roll_link','left_knee_link','right_knee_link',
+               'left_wrist_yaw_link','right_wrist_yaw_link','left_elbow_link','right_elbow_link','pelvis']
+        # Synthetic diagnostic fixtures need not carry all nine semantic bodies.
+        self.groups={}
+        for i,name in enumerate(names):
+            body=mujoco.mj_name2id(model,mujoco.mjtObj.mjOBJ_BODY,name)
+            if body>=0:self.groups[body]=i
+        for body in range(1,model.nbody):
+            parent=int(model.body_parentid[body])
+            if body not in self.groups and not model.body_jntnum[body] and parent in self.groups:
+                self.groups[body]=self.groups[parent]
+        self.contact_geoms=[(g,self.groups[int(model.geom_bodyid[g])]) for g in range(model.ngeom)
+            if int(model.geom_bodyid[g]) in self.groups and (model.geom_contype[g] or model.geom_conaffinity[g])]
+        self.jacobian=np.zeros((3,model.nv))
+
+    def joint_distance(self, a, b):
+        key=tuple(sorted((a,b)))
+        if key not in self.separation:
+            ancestors={};count=0
+            while True:
+                ancestors[a]=count
+                if not a:break
+                count+=int(self.model.body_jntnum[a]>0);a=int(self.model.body_parentid[a])
+            count=0
+            while b not in ancestors:
+                count+=int(self.model.body_jntnum[b]>0);b=int(self.model.body_parentid[b])
+            self.separation[key]=count+ancestors[b]
+        return self.separation[key]
+
+    def state(self, qpos):
+        self.data.qpos[:]=qpos;mujoco.mj_forward(self.model,self.data)
+        minimum=np.zeros(3);pairs=set()
+        for c in self.data.contact:
+            a,b=int(c.geom1),int(c.geom2)
+            if a in self.env and b in self.env:continue
+            if a in self.env or b in self.env:
+                minimum[0]=min(minimum[0],c.dist)
+            else:
+                minimum[1]=min(minimum[1],c.dist)
+                ba,bb=map(int,self.model.geom_bodyid[[a,b]])
+                if self.joint_distance(ba,bb)>2:
+                    minimum[2]=min(minimum[2],c.dist)
+                    if c.dist<-.003:
+                        names=[self.model.body(b).name.replace('_sphere_hand_link','_wrist_yaw_link') for b in (ba,bb)]
+                        pairs.add(' / '.join(sorted(names)))
+        return minimum,pairs
+
+    def surface_distances(self):
+        """All-body geometric intentions, independent of world z and link velocity."""
+        distances=np.full(9,.1);witnesses=np.zeros((9,3))
+        for a,group in self.contact_geoms:
+            for b in self.env:
+                if not (self.model.geom_contype[b] or self.model.geom_conaffinity[b]):continue
+                points=np.zeros(6)
+                distance=mujoco.mj_geomDistance(self.model,self.data,a,b,.1,points)
+                if distance<distances[group]:
+                    distances[group]=distance;witnesses[group]=points[3:]
+        return distances,witnesses
+
+    def tangential_speed(self, velocity, group):
+        """Rigid-body point velocity at the nearest physical environment witness.
+
+        A rolling sole center can translate while its instantaneous contact point
+        is stationary. Do not confuse the two when screening contact sliding.
+        """
+        nearest=None
+        for a,index in self.contact_geoms:
+            if index!=group:continue
+            for b in self.env:
+                if not (self.model.geom_contype[b] or self.model.geom_conaffinity[b]):continue
+                points=np.zeros(6)
+                distance=mujoco.mj_geomDistance(self.model,self.data,a,b,.1,points)
+                if nearest is None or distance<nearest[0]:nearest=(distance,a,b,points.copy())
+        if nearest is None or nearest[0]>=.1:return float('nan')
+        distance,a,b,points=nearest;normal=points[3:]-points[:3]
+        if np.linalg.norm(normal)<1e-10:
+            contact=next((c for c in self.data.contact if {int(c.geom1),int(c.geom2)}=={a,b}),None)
+            if contact is None:return float('nan')
+            normal=contact.frame.reshape(3,3)[0].copy()
+        normal/=np.linalg.norm(normal)
+        mujoco.mj_jac(self.model,self.data,self.jacobian,None,points[:3],int(self.model.geom_bodyid[a]))
+        point_velocity=self.jacobian@velocity
+        return float(np.linalg.norm(point_velocity-normal*np.dot(normal,point_velocity)))
+
+
+def compare_native29(row, run):
+    """Compare original29 geometry and target29 geometry on the identical 50Hz grid."""
+    run=Path(run);clip=run/'clips'/row['clip'];manifest=read_record(clip/'manifest.json')
+    if not manifest.get('source_robot_xml') or not (clip/'source29.npz').exists():
+        raise ValueError('Native comparison needs original robot29; Mixamo human FBX is not robot29')
+    folder=clip/'native29_comparison';folder.mkdir(exist_ok=True)
+    signature={key:digest(path) for key,path in dict(code=__file__,source=clip/'source29.npz',
+        source_model=manifest['source_robot_xml'],terrain=manifest['terrain_urdf'],
+        target_scene=manifest['scene'],target_motion=clip/'labeled/motion.npz').items()}
+    report_path=folder/'report.json'
+    if report_path.exists() and read_record(report_path).get('signature')==signature:
+        return read_record(report_path)
+    source_model=make_scene(Path(manifest['source_robot_xml']),Path(manifest['terrain_urdf']),folder/'source_scene.xml')
+    target_model=mujoco.MjModel.from_xml_path(manifest['scene'])
+    with np.load(clip/'source29.npz',allow_pickle=False) as source:
+        raw=source['qpos'].copy();source_fps=float(source['fps'])
+        names=source['joint_names'].tolist()
+    assert names==[source_model.joint(j).name for j in range(source_model.njnt)
+                   if source_model.jnt_type[j]!=mujoco.mjtJoint.mjJNT_FREE]
+    with np.load(clip/'labeled/motion.npz',allow_pickle=False) as z:
+        target_q=np.c_[z['base_position_w'],z['base_quaternion_wxyz'],z['joint_positions']]
+        times=z['timestamps'].copy();fps=float(z['fps'])
+    source_times,source_q,_=resample_drake(raw,source_fps,fps)
+    np.testing.assert_array_equal(times,source_times)
+    source_q=np.c_[source_q[:,4:7],source_q[:,:4],source_q[:,7:]]
+    probes=(NativeProbe(source_model),NativeProbe(target_model))
+    distances=np.zeros((len(times),2,3));added_pairs=Counter()
+    source_contacts=np.zeros((len(times),9));source_witnesses=np.zeros((len(times),9,3))
+    for i,(qs,qt) in enumerate(zip(source_q,target_q)):
+        ds,ps=probes[0].state(qs);dt,pt=probes[1].state(qt)
+        distances[i]=(ds,dt);added_pairs.update(pt-ps)
+        source_contacts[i],source_witnesses[i]=probes[0].surface_distances()
+    env=distances[:,:,0]<-.003;raw_self=distances[:,:,1]<-.003;distant=distances[:,:,2]<-.003
+    result=dict(clip=row['clip'],frames=len(times),fps=fps,signature=signature,
+        source_environment_invalid_frames=int(env[:,0].sum()),target_environment_invalid_frames=int(env[:,1].sum()),
+        introduced_environment_invalid_frames=int((env[:,1]&~env[:,0]).sum()),
+        inherited_environment_invalid_frames=int((env[:,1]&env[:,0]).sum()),
+        source_raw_self_invalid_frames=int(raw_self[:,0].sum()),target_raw_self_invalid_frames=int(raw_self[:,1].sum()),
+        source_distant_link_invalid_frames=int(distant[:,0].sum()),target_distant_link_invalid_frames=int(distant[:,1].sum()),
+        introduced_distant_link_invalid_frames=int((distant[:,1]&~distant[:,0]).sum()),
+        introduced_distant_body_pair_frames=dict(added_pairs.most_common()),
+        minimum_source_environment_m=float(distances[:,0,0].min()),
+        minimum_target_environment_m=float(distances[:,1,0].min()),
+        note='Distant links are separated by >2 moving joints, a diagnostic not a calibrated collision allowance. Raw source joint-housing overlaps do not invalidate original motions.')
+    np.savez_compressed(folder/'diagnostics.npz',distances=distances,timestamps=times,
+                        source_body_environment_distances=source_contacts,source_environment_witnesses=source_witnesses,
+                        models=['original29','target29'],channels=['environment','raw_self','distant_self'])
+    atomic_json(report_path,result)
+    return result
+
+
+def native_comparisons(rows, run, workers):
+    results=[]
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        for task in as_completed([pool.submit(compare_native29,row,run) for row in rows]):
+            results.append(task.result())
+    fields=('frames','source_environment_invalid_frames','target_environment_invalid_frames',
+        'introduced_environment_invalid_frames','inherited_environment_invalid_frames',
+        'source_raw_self_invalid_frames','target_raw_self_invalid_frames',
+        'source_distant_link_invalid_frames','target_distant_link_invalid_frames','introduced_distant_link_invalid_frames')
+    summary=dict(clips=len(results),**{key:sum(r[key] for r in results) for key in fields},
+                 note='Same original29 input, time grid and terrain; different actual robot collision models. See per-clip source-vs-target evidence.')
+    atomic_json(Path(run)/'native29_paired_comparison.json',sorted(results,key=lambda r:r['clip']))
+    atomic_json(Path(run)/'native29_paired_summary.json',summary)
+    print(json.dumps(summary,indent=2))
+    return summary
 
 
 def contact_summary(model, data):
@@ -208,6 +369,8 @@ def main():
     run = resolve_path(args.run).resolve()
     rows = read_record(run / "inventory.json")
     selected = [row for row in rows if args.clips is None or row["clip"] in args.clips]
+    if selected and read_record(run/'clips'/selected[0]['clip']/'manifest.json').get('dof')==29:
+        return native_comparisons(selected,run,args.workers)
     results = []
     with ProcessPoolExecutor(max_workers=args.workers) as pool:
         pending = [pool.submit(compare, row, str(run), str(resolve_path(args.old_run)) if args.old_run else None) for row in selected]

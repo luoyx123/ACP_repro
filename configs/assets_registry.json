@@ -385,10 +385,10 @@
       "label": "php InstinctMJ原生29DoF"
     },
     "omni_instinct29_geometry": {
-      "path": "outputs/数据集/omni/instinct29_geometry_v3",
+      "path": "outputs/数据集/omni/instinct29_geometry_v5",
       "dataset": "omni",
-      "role": "archive",
-      "label": "omni 29DoF全身几何修复试验（完整单片段，详见质量报告）",
+      "role": "dataset",
+      "label": "omni 29DoF全量模型适配与跨帧修复（准入见质量/全身接触清单）",
       "training_admitted": false
     },
     "lafan1_instinct29_geometry": {

@@ -25,8 +25,11 @@ class GeometryRepair:
     supplies a distance constraint. Local point Jacobians include free-base
     translation and the entire reversed waist chain.
     """
-    def __init__(self, model):
+    def __init__(self, model, smooth_weight=.55):
         self.model, self.data = model, mujoco.MjData(model)
+        if not np.isfinite(smooth_weight) or smooth_weight < 0:
+            raise ValueError('Correction smoothing weight must be finite and nonnegative')
+        self.smooth_weight = float(smooth_weight)
         joints = [j for j in range(model.njnt) if model.jnt_type[j] == mujoco.mjtJoint.mjJNT_HINGE]
         self.qids = np.r_[0:3, model.jnt_qposadr[joints]]
         self.vids = np.r_[0:3, model.jnt_dofadr[joints]]
@@ -76,8 +79,8 @@ class GeometryRepair:
                 candidate = q.copy();candidate[self.qids] = x;self.set(candidate)
                 delta = x-nominal[self.qids]
                 smooth = delta-previous_delta
-                cost = .5*np.sum(weights*delta**2)+.5*.55**2*np.sum(smooth**2)
-                grad = weights*delta+.55**2*smooth
+                cost = .5*np.sum(weights*delta**2)+.5*self.smooth_weight**2*np.sum(smooth**2)
+                grad = weights*delta+self.smooth_weight**2*smooth
                 for body, target in zip(self.bodies, desired):
                     error = self.data.xpos[body]-target
                     cost += .5*64.*np.sum(error**2)
@@ -153,8 +156,8 @@ class GeometryRepair:
             A = [np.diag(np.sqrt(regularization))]
             b = [np.sqrt(regularization) * (nominal[self.qids] - q[self.qids])]
             # Smooth the correction, not the original motion itself.
-            A.append(np.eye(width) * .55)
-            b.append(.55 * (delta_previous - (q[self.qids] - nominal[self.qids])))
+            A.append(np.eye(width) * self.smooth_weight)
+            b.append(self.smooth_weight * (delta_previous - (q[self.qids] - nominal[self.qids])))
             for body, target in zip(self.bodies, desired):
                 A.append(8. * self.point_jac(body, self.data.xpos[body]))
                 b.append(8. * (target - self.data.xpos[body]))
@@ -228,6 +231,9 @@ def repair_clip(row, baseline, output, passes=2, maximum_frames=None, label_pyth
             return read_record(dst/'fullbody_repair_report.json')
         raise ValueError(f'Output exists with incomplete/different signature: {dst}; choose a fresh output')
     dst.mkdir(parents=True, exist_ok=True)
+    atomic_json(dst/'manifest.json', {**manifest,'signature':signature,'status':'running',
+        'baseline_artifact':str(src),'route':'native29_fullbody_geometry_repair',
+        'stage1_training_admitted':False})
     model = mujoco.MjModel.from_xml_path(manifest['scene'])
     problem = GeometryRepair(model)
     with np.load(src/'retargeted'/f"{row['clip']}_original.npz", allow_pickle=False) as z:
@@ -281,7 +287,7 @@ def repair_clip(row, baseline, output, passes=2, maximum_frames=None, label_pyth
             '--input',str(retargeted),'--target-urdf',manifest['target_urdf'],
             '--terrain-urdf',manifest['terrain_urdf'],'--source-clip',manifest['source'],
             '--output',str(dst/'labeled'),'--fps',str(float(values['fps'])),'--input-method','native_g1_29'],
-            cwd=PROJECT,stdout=log,stderr=subprocess.STDOUT,check=True)
+            cwd=PROJECT,stdout=log,stderr=subprocess.STDOUT,check=True,timeout=600)
     with (dst/'native.log').open('w') as log, redirect_stdout(log):
         check(Path(manifest['scene']), dst/'labeled/motion.npz', dst/'validation', retargeted)
     manifest['status'] = 'end_to_end_fullbody_repair_pipeline_completed_not_training_admitted'
@@ -316,11 +322,27 @@ def run(args):
         os.environ[key]='1'
     results=[]
     with ProcessPoolExecutor(max_workers=args.workers) as pool:
-        tasks=[pool.submit(repair_clip,r,baseline,output,args.passes,args.maximum_frames) for r in rows]
+        tasks={pool.submit(repair_clip,r,baseline,output,args.passes,args.maximum_frames):r for r in rows}
         for task in as_completed(tasks):
-            result=task.result();results.append(result)
+            row=tasks[task]
+            try:
+                result=task.result()
+            except Exception as exc:
+                result=dict(clip=row['clip'],status='failed',error=f'{type(exc).__name__}: {exc}')
+                artifact=output/'clips'/row['clip'];artifact.mkdir(parents=True,exist_ok=True)
+                path=artifact/'manifest.json'
+                manifest=read_record(path) if path.exists() else {}
+                atomic_json(path,{**manifest,**result,'stage1_training_admitted':False})
+            results.append(result)
             atomic_json(output/'fullbody_repair_summary.json',results)
+            atomic_json(output/'progress.json',dict(expected=len(rows),processed=len(results),
+                processing_failed=sum(r.get('status')=='failed' for r in results),
+                offline_candidates=sum(r.get('quality_status')=='offline_kinematic_candidate' for r in results),
+                needs_repair=sum(r.get('quality_status')=='needs_repair' for r in results),
+                note='Full-clip geometry repair followed by relabeling and unchanged quality thresholds'))
             print(json.dumps(dict(done=len(results),total=len(rows),**result)),flush=True)
     if args.maximum_frames is None:
         subprocess.run([__import__('sys').executable,'-m','acp.quality.evaluate','--run',str(output),
                         '--workers',str(args.workers)],check=True)
+    if any(r.get('status')=='failed' for r in results):
+        raise SystemExit('Some clips failed processing; see fullbody_repair_summary.json')
