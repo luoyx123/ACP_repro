@@ -359,6 +359,30 @@
       "role": "archive",
       "label": "结构重构后Mixamo端到端回归",
       "training_admitted": false
+    },
+    "omni_instinct29": {
+      "path": "outputs/数据集/omni/instinct29_v1",
+      "dataset": "omni",
+      "role": "dataset",
+      "label": "omni InstinctMJ原生29DoF"
+    },
+    "lafan1_instinct29": {
+      "path": "outputs/数据集/lafan1/instinct29_v1",
+      "dataset": "lafan1",
+      "role": "dataset",
+      "label": "lafan1 InstinctMJ原生29DoF"
+    },
+    "mixamo_instinct29": {
+      "path": "outputs/数据集/mixamo/instinct29_v1",
+      "dataset": "mixamo",
+      "role": "dataset",
+      "label": "mixamo InstinctMJ原生29DoF"
+    },
+    "php_instinct29": {
+      "path": "outputs/数据集/php/instinct29_v1",
+      "dataset": "php",
+      "role": "dataset",
+      "label": "php InstinctMJ原生29DoF"
     }
   },
   "datasets": {

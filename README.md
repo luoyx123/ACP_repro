@@ -2,6 +2,8 @@
 
 面向《Humanoid Mobility via Attention-based Contacts》的数据准备工程。将 OmniRetarget、LAFAN1、Mixamo、PHP 数据统一到 G1-23 球手模型，生成轨迹、场景、九部位几何接触标签、回放和离线质量报告。
 
+另提供独立的 [InstinctMJ G1-29DoF 数据版本](docs/02_数据集/G1_29DoF版本.md)：`run <dataset> --dof 29`，四类数据分别保存到 `outputs/数据集/<dataset>/instinct29_v1`，使用原生躯干基座模型并重新计算接触标签。
+
 **文档入口：[中文知识库](docs/README.md) · [快速开始](docs/01_使用指南/快速开始.md) · [完整手册](docs/01_使用指南/数据流水线手册.md)**
 
 `feat/supermimic-stage1` 分支在保留 ACP 接触条件观测和奖励的基础上，增加 MuJoCo-Warp＋SuperMimic 训练后端。4090 部署、数据包、检查及训练命令见 [SuperMimic迁移与4090部署](docs/01_使用指南/SuperMimic迁移与4090部署.md)。本分支阶段不启动正式训练；CUDA 验证与提速结论须有实际测试证据。

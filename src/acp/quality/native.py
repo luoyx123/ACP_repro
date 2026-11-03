@@ -28,6 +28,8 @@ def check(scene_path, motion_path, output, retargeted_path=None):
         raise ValueError("Scene joint ordering does not match the labeled motion")
     hands = ([f"{side}_sphere_hand_link" for side in ("left", "right")]
              if mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "left_sphere_hand_link") >= 0
+             else [f"{side}_wrist_yaw_link" for side in ("left", "right")]
+             if mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "left_hand_target") >= 0
              else [f"{side}_wrist_roll_rubber_hand" for side in ("left", "right")])
     physical = ["left_ankle_roll_link", "right_ankle_roll_link", "left_knee_link", "right_knee_link", *hands,
                 "left_elbow_link", "right_elbow_link", "pelvis"]

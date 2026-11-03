@@ -42,8 +42,9 @@ def playback_audit():
     import numpy as np
     from acp.data.playback import resolve_clip
     report={}
-    for dataset,entry in registry()['datasets'].items():
-        run=run_path(entry['run_id']);rows=read_record(run/'artifact_index.json') if (run/'artifact_index.json').exists() else []
+    for dataset,entry in registry()['runs'].items():
+        if entry['role']!='dataset':continue
+        run=run_path(dataset);rows=read_record(run/'artifact_index.json') if (run/'artifact_index.json').exists() else []
         result=dict(indexed=len(rows),playable=0,source_overlay_ready=0,without_motion=0,errors=[])
         for row in rows:
             if not row.get('motion'):
@@ -57,9 +58,10 @@ def playback_audit():
                 info=dict(motion=motion,artifact=artifact,source=Path(record['source']))
                 with np.load(info['motion'],allow_pickle=False) as z:
                     t=z['timestamps'];n=len(t)
-                    if (n<2 or not np.all(np.diff(t)>0) or z['joint_positions'].shape!=(n,23)
+                    dof=len(z['joint_names'])
+                    if (n<2 or dof not in (23,29) or not np.all(np.diff(t)>0) or z['joint_positions'].shape!=(n,dof)
                             or z['base_position_w'].shape!=(n,3) or z['base_quaternion_wxyz'].shape!=(n,4)
-                            or len(z['joint_names'])!=23):raise ValueError('Invalid playback motion schema')
+                            or len(set(z['joint_names'].tolist()))!=dof):raise ValueError('Invalid playback motion schema')
                 result['playable']+=1
                 record=read_record(info['artifact']/'manifest.json')
                 if record.get('source_format')=='mixamo_fbx_world_bones':

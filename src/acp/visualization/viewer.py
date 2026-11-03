@@ -67,6 +67,9 @@ class Clip:
         self.env_geoms = {i for i in range(self.model.ngeom)
                           if self.model.geom_bodyid[i] == 0
                           or (self.model.geom(i).name or "").startswith("multi_boxes_")}
+        # Native InstinctMJ puts default geoms in collision group 3, which
+        # this viewer hides initially. Terrain must remain visible regardless.
+        self.model.geom_group[list(self.env_geoms)] = 0
         self.source_points, self.source_edges = None, []
         self.paired = None
         self.repair = None
@@ -101,6 +104,23 @@ class Clip:
         from scipy.spatial.transform import Rotation, Slerp
         from holosoma_retargeting.config_types.data_type import MotionDataConfig
         from acp.robot.transfer import load_source_model
+
+        if self.manifest.get('dof') == 29:
+            # Original LAFAN/PHP models have different fixed-link names. Use
+            # the saved original-model FK on the exact output timestamps.
+            from holosoma_retargeting.config_types.data_type import MOCAP_DEMO_JOINTS
+            names = list(self.manifest['target_mapping'])
+            retargeted = self.info['artifact'] / 'retargeted' / (self.info['artifact'].name + '_original.npz')
+            with np.load(retargeted, allow_pickle=False) as z:
+                self.source_points = z['robot_fk_keypoints'][:, [MOCAP_DEMO_JOINTS.index(n) for n in names]].copy()
+            if len(self.source_points) != len(self.times):
+                raise ValueError('Original 29DoF FK differs from playback timestamps')
+            edges = [('Spine1', key) for key in ('LeftUpLeg', 'RightUpLeg', 'LeftArm', 'RightArm')]
+            for side in ('Left', 'Right'):
+                edges += [(side+a, side+b) for a,b in (('UpLeg','Leg'), ('Leg','Foot'),
+                    ('Foot','ToeBase'), ('Arm','ForeArm'), ('ForeArm','HandMiddle3'))]
+            self.source_edges = [(names.index(a), names.index(b)) for a,b in edges]
+            return
 
         source = self.info["source"]
         if "source_motion_npz" in self.manifest:

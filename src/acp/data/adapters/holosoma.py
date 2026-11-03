@@ -70,7 +70,7 @@ def label_holosoma_clip(input_path, target_urdf, terrain_urdf, output_dir,
     scene = MotionScene(target_urdf, terrain_urdf)
     xml_root = ET.parse(target_urdf.with_suffix(".xml")).getroot()
     xml_joint_names = [joint.get("name") for joint in xml_root.findall(".//joint")
-                       if joint.get("type") != "free"]
+                       if joint.get("name") is not None and joint.get("type") != "free"]
     if xml_joint_names != scene.joint_names:
         raise ValueError("Target URDF and MJCF joint order differs; cannot interpret Holosoma qpos safely")
     if canonical.shape[1] != 7 + len(scene.joint_names):
@@ -122,6 +122,7 @@ def label_holosoma_clip(input_path, target_urdf, terrain_urdf, output_dir,
         base_linear_velocity_w=base_linear_velocity, base_angular_velocity_w=angular_velocity,
         joint_positions=canonical[:, 7:], joint_velocities=joint_velocities,
         joint_names=np.asarray(scene.joint_names), body_names=np.asarray(BODY_NAMES),
+        base_body_name=np.asarray(scene.base_body_name),
         body_landmarks_w=landmarks, contact_surface_positions_w=witnesses,
         geometric_signed_distances=distances, minimum_environment_distances=minimum_distances,
         geometry_valid=geometry_valid, joint_limits_valid=joint_limits_valid,
@@ -143,6 +144,7 @@ def label_holosoma_clip(input_path, target_urdf, terrain_urdf, output_dir,
         "output_frames": len(times), "joint_names": scene.joint_names,
         "qpos_input_order": "xyz,wxyz,joints_in_target_MJCF_order",
         "qpos_output_order": "wxyz,xyz,joints_in_target_URDF_order",
+        "base_body_name": scene.base_body_name,
         "contact_body_names": list(BODY_NAMES),
         "geometry_valid_fraction": float(geometry_valid.mean()),
         "joint_limits_valid_fraction": float(joint_limits_valid.mean()),
@@ -167,6 +169,8 @@ def label_holosoma_clip(input_path, target_urdf, terrain_urdf, output_dir,
                         if input_method == "holosoma" else
                         ["Joint-subset baseline preserves retained joints; wrist contact is not optimized"]
                         if input_method == "asap_joint_subset" else
+                        ["All source wrist values retained; pelvis-to-torso base and reversed waist coordinates converted by name"]
+                        if input_method == "native_g1_29" else
                         ["Local shoulder/elbow repair preserves root, waist and legs; consult arm_repair_report for geometry failures"]) + [
                         "contacts come from static collision geometry, not measured contact forces",
                         "Drake convex hull distance queries may differ from MuJoCo collision contacts",
@@ -186,7 +190,7 @@ def main():
     parser.add_argument("--source-clip", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--fps", type=float, default=50.0)
-    parser.add_argument("--input-method", choices=("holosoma", "asap_joint_subset", "asap_local_arm_repair"), default="holosoma")
+    parser.add_argument("--input-method", choices=("holosoma", "native_g1_29", "asap_joint_subset", "asap_local_arm_repair"), default="holosoma")
     args = parser.parse_args()
     label_holosoma_clip(args.input, args.target_urdf, args.terrain_urdf, args.output,
                         source_clip=args.source_clip, output_fps=args.fps, input_method=args.input_method)

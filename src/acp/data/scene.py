@@ -23,6 +23,11 @@ class MotionScene:
         # Drake proximity queries require OBJ rather than Unitree's STL meshes.
         # Convert cached copies, preserving source meshes and all URDF transforms.
         robot_xml = ET.parse(self.robot_urdf).getroot()
+        roots = {link.get('name') for link in robot_xml.findall('link')} - {
+            j.find('child').get('link') for j in robot_xml.findall('joint')}
+        if len(roots) != 1:
+            raise ValueError('Expected exactly one floating robot root')
+        self.base_body_name = roots.pop()
         for mesh in robot_xml.findall(".//mesh"):
             mesh_path = Path(mesh.get("filename"))
             if not mesh_path.is_absolute():
@@ -55,6 +60,8 @@ class MotionScene:
         links = {link.get("name") for link in robot_xml.findall("link")}
         hands = ([f"{s}_sphere_hand_link" for s in ["left", "right"]]
                  if "left_sphere_hand_link" in links
+                 else [f"{s}_wrist_yaw_link" for s in ["left", "right"]]
+                 if "left_hand_target" in links
                  else [f"{s}_wrist_roll_rubber_hand" for s in ["left", "right"]])
         self.landmark_links = ["left_ankle_roll_link", "right_ankle_roll_link", "left_knee_link",
                                "right_knee_link", *hands, "left_elbow_link", "right_elbow_link", "pelvis"]

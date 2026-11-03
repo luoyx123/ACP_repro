@@ -6,6 +6,7 @@ stable while supplying machine-specific model, interpreter and Blender paths.
 import os
 from pathlib import Path
 import sys
+import time
 PROJECT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(PROJECT/'src'))
 from acp.data.assets import machine
@@ -27,6 +28,22 @@ def configured_convert(row, run, _label_python, fps):
 
 
 original_convert_safe=batch.convert_safe
+
+
+def throttle_status(interval=15.):
+    """Keep all-input snapshots without rereading 2453 metadata files per clip."""
+    import acp.management.status as module
+    original=module.status
+    last=[-float('inf')]
+    def snapshot(run,dataset):
+        now=time.monotonic()
+        if now-last[0]<interval:return None
+        last[0]=now
+        return original(run,dataset)
+    module.status=snapshot
+    return original
+
+
 if __name__=='__main__':
     cfg=machine()
     blender=Path(cfg.get('blender','blender'))
@@ -35,4 +52,7 @@ if __name__=='__main__':
         os.environ['PATH']=str(blender.parent)+os.pathsep+os.environ.get('PATH','')
     batch.prepare=configured_prepare
     batch.convert_safe=configured_convert
+    full_status=throttle_status() if '--dof' in sys.argv and sys.argv[sys.argv.index('--dof')+1]=='29' else None
     batch.main()
+    if full_status and '--output' in sys.argv:
+        full_status(Path(sys.argv[sys.argv.index('--output')+1]),Path(cfg['mixamo_dataset']))

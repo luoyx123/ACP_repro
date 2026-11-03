@@ -66,7 +66,10 @@ def convert(row, run, label_python, fps):
     artifact = run / 'clips' / row['clip']
     artifact.mkdir(parents=True, exist_ok=True)
     assets = run / 'assets'
-    urdf = assets / 'g1_asap23_spherehand.urdf'
+    dof = row.get('dof', 23)
+    if dof == 29:
+        from acp.robot.instinct import STEM
+    urdf = assets / ((STEM if dof == 29 else 'g1_asap23_spherehand') + '.urdf')
     terrain = assets/'flat_ground.urdf'
     scene_path = urdf.with_suffix('.xml')
     support = row.get('support_scene')
@@ -76,6 +79,10 @@ def convert(row, run, label_python, fps):
         scene_path = artifact/'support_scene.xml'
         make_scene(assets/'robot_only.xml',terrain,scene_path)
     mapping = target_mapping()
+    if dof == 29:
+        for side in ('Left', 'Right'):
+            mapping[side+'ToeBase'] = 'acp_'+side.lower()+'_toe'
+            mapping[side+'Hand'] = side.lower()+'_hand_target'
     signature = {'source':digest(row['source']), 'extract':digest(row['extracted']),
                  'runner':digest(__file__), 'target':digest(urdf), 'scene':digest(urdf.with_suffix('.xml')),
                  'solver':digest(Path(__import__('holosoma_retargeting').__file__).parent/'src/interaction_mesh_retargeter.py'),
@@ -90,6 +97,7 @@ def convert(row, run, label_python, fps):
         if previous.get('signature')==signature and previous.get('status','').startswith('end_to_end'):
             return {'clip':row['clip'],'status':'resumed'}
     manifest = {'source':row['source'], 'signature':signature, 'route':row['route'], 'status':'running',
+                'dof':dof, 'root_body':'torso_link' if dof == 29 else 'pelvis',
                 'target_urdf':str(urdf), 'scene':str(scene_path),
                 'terrain_urdf':str(terrain), 'target_mapping':mapping,
                 'support_scene':support,
@@ -128,7 +136,7 @@ def convert(row, run, label_python, fps):
         # Only mapped entries are used; absent finger points are not fabricated.
         left,right=ground_stance(points,MOCAP_DEMO_JOINTS,times,(support or {}).get('boxes',())).T
         sequence=[{'L_Toe':bool(l),'R_Toe':bool(r)} for l,r in zip(left,right)]
-        constants=SimpleNamespace(ROBOT_URDF_FILE=str(urdf),ROBOT_DOF=23,
+        constants=SimpleNamespace(ROBOT_URDF_FILE=str(urdf),ROBOT_DOF=dof,
            OBJECT_NAME='multi_boxes' if support else 'ground',SCENE_XML_FILE=str(scene_path),
            FOOT_STICKING_LINKS=[mapping[s+'ToeBase'] for s in ('Left','Right')],DEMO_JOINTS=MOCAP_DEMO_JOINTS,
            JOINTS_MAPPING=mapping,MANUAL_LB={},MANUAL_UB={},MANUAL_COST={},NOMINAL_TRACKING_INDICES=[])
@@ -144,8 +152,8 @@ def convert(row, run, label_python, fps):
                                   for y in (-half[1],0,half[1]) for z in (-half[2],half[2])])
                 surfaces.extend(Rotation.from_euler('xyz',box.get('rpy',[0,0,0])).apply(surface)+box['position'])
             ground=np.vstack([ground,surfaces])
-        initial=np.zeros(30);initial[3]=1
-        initial[:3]=points[0,MOCAP_DEMO_JOINTS.index('Hips')]
+        initial=np.zeros(model.nq);initial[3]=1
+        initial[:3]=points[0,MOCAP_DEMO_JOINTS.index('Spine' if dof == 29 else 'Hips')]
         for side in ('left','right'):
             for joint,value in [('hip_pitch',-.15),('knee',.3),('ankle_pitch',-.15),('elbow',.3)]:
                 initial[model.joint(side+'_'+joint+'_joint').qposadr[0]]=value
@@ -162,7 +170,8 @@ def convert(row, run, label_python, fps):
         events=[]
         avoid_bodies=['torso_link','pelvis_contour_link']+[
             s+'_'+part+'_link' for s in ('left','right') for part in ('hip_pitch','hip_roll','knee')]
-        avoid_pairs=[(s+'_sphere_hand_link',body) for s in ('left','right') for body in avoid_bodies]
+        hand_suffix = '_wrist_yaw_link' if dof == 29 else '_sphere_hand_link'
+        avoid_pairs=[(s+hand_suffix,body) for s in ('left','right') for body in avoid_bodies]
         with (artifact/'retarget.log').open('w') as log,redirect_stdout(log),redirect_stderr(log),numerical_recovery(events):
             solver=MixamoContactRetargeter(constants,None,activate_foot_support=True,
                        activate_foot_sticking=True,penetration_tolerance=.001,smooth_weight=.3,
@@ -171,7 +180,7 @@ def convert(row, run, label_python, fps):
             solver.surface_contact_masks={}
             solver.surface_contact_weight=(support or {}).get('contact_weight',200.)
             if support:
-                targets = [('LeftHand','left_sphere_hand_link'),('RightHand','right_sphere_hand_link')] if support['support_kind']=='ladder' else [('Hips','pelvis_contour_link')]
+                targets = [('LeftHand','left'+hand_suffix),('RightHand','right'+hand_suffix)] if support['support_kind']=='ladder' else [('Hips','pelvis' if dof == 29 else 'pelvis_contour_link')]
                 for source_name,body in targets:
                     p=points[:,MOCAP_DEMO_JOINTS.index(source_name)]
                     mask=stable_segments(np.linalg.norm(np.gradient(p,times,axis=0),axis=1)<.25,max(2,int(np.ceil(.12*fps))))
@@ -184,7 +193,7 @@ def convert(row, run, label_python, fps):
         (artifact/'numerical_recovery.json').write_text(json.dumps(events,indent=2)+'\n')
         with np.load(output) as z:
             result=z['qpos'].copy()
-        if result.shape!=(len(points),30) or not np.isfinite(result).all():
+        if result.shape!=(len(points),model.nq) or not np.isfinite(result).all():
             raise ValueError('Nonfinite or incomplete retargeter output')
         # Conic numerical tolerances can leave microradian bound violations.
         # Remove only sub-0.1mrad residuals, then run geometry and velocity checks
@@ -199,6 +208,8 @@ def convert(row, run, label_python, fps):
                 maximum_bound_projection=max(maximum_bound_projection,residual)
                 result[:,index]=bounded
         np.savez_compressed(output,qpos=result,fps=fps,human_joints=points,
+            joint_names=[model.joint(i).name for i in range(1,model.njnt)],
+            root_body='torso_link' if dof == 29 else 'pelvis',
                             keypoint_names=np.asarray(MOCAP_DEMO_JOINTS),source_stance_flags=np.c_[left,right],
                             surface_contact_body_names=np.asarray(list(solver.surface_contact_masks)),
                             surface_contact_masks=np.column_stack(list(solver.surface_contact_masks.values())) if solver.surface_contact_masks else np.zeros((len(points),0),dtype=bool))
@@ -243,6 +254,8 @@ def main():
     p.add_argument('--support-scenes',type=Path,help='Explicit per-clip support box configurations')
     p.add_argument('--workers',type=int,default=8)
     p.add_argument('--fps',type=float,default=50)
+    p.add_argument('--dof',type=int,choices=(23,29),default=23)
+    p.add_argument('--robot-resource',type=Path)
     p.add_argument('--clips',nargs='+')
     p.add_argument('--extract-only',action='store_true')
     args=p.parse_args()
@@ -250,13 +263,24 @@ def main():
     run=args.output.resolve();assets=run/'assets';assets.mkdir(parents=True,exist_ok=True)
     if args.dataset_root.resolve() == run or args.dataset_root.resolve() in run.parents:
         p.error('Keep outputs outside the source dataset')
-    urdf=prepare('/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/models/g1/g1_29dof_spherehand.urdf',
-                 '/home/lyx/train/ASAP',assets)
+    if args.dof == 29:
+        from acp.robot.instinct import prepare as prepare_instinct
+        if not args.robot_resource:p.error('29DoF requires --robot-resource')
+        urdf=prepare_instinct(args.robot_resource,assets)
+    else:
+        urdf=prepare('/home/lyx/train/retarget/dataset/OmniRetarget_Dataset/models/g1/g1_29dof_spherehand.urdf',
+                     '/home/lyx/train/ASAP',assets)
     (assets/'robot_only.xml').write_bytes(urdf.with_suffix('.xml').read_bytes())
     terrain=assets/'flat_ground.urdf';terrain.write_text('<robot name="ground"><link name="world"/></robot>\n')
     # The native retargeter reads the sibling XML when OBJECT_NAME=ground.
     scene=assets/'ground_scene.xml';make_scene(urdf.with_suffix('.xml'),terrain,scene)
     urdf.with_suffix('.xml').write_bytes(scene.read_bytes())
+    if args.dof == 29:
+        from acp.data.assets import atomic_json, read_record
+        provenance=read_record(assets/'provenance.json')
+        provenance.update(robot_only_xml_sha256=provenance['target_xml_sha256'],
+                          target_xml_sha256=digest(urdf.with_suffix('.xml')))
+        atomic_json(assets/'provenance.json',provenance)
     sources=sorted((args.dataset_root/'animation').glob('*.fbx'))
     if args.clips:sources=[s for s in sources if s.stem in args.clips]
     if not sources or (args.clips and set(args.clips)-{s.stem for s in sources}):p.error('No matching animations')
@@ -264,7 +288,7 @@ def main():
     supports=json.loads(args.support_scenes.read_text()) if args.support_scenes else {}
     extracted=(args.extracted_root or run/'extracted').absolute()
     rows=[{'clip':s.stem,'source':str(s.resolve()),'extracted':str(extracted/(s.stem+'.npz')),
-           'route':'mixamo_holosoma_direct23','has_human_joints':True,'scope':'Mixamo FBX flat-ground hypothesis',
+           'route':f'mixamo_holosoma_direct{args.dof}','dof':args.dof,'has_human_joints':True,'scope':'Mixamo FBX flat-ground hypothesis',
            'motion_group':s.stem,'semantic':semantics.get(s.stem),'support_scene':supports.get(s.stem)} for s in sources]
     def priority(row):
         semantic=row['semantic'] or {}

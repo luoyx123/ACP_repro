@@ -18,6 +18,8 @@ GROUPS={
  'data/adapters':'输入适配：人体骨架、Holosoma 输出和 PHP 包格式',
  'management':'管理：完整性检查、状态、迁移、架构索引和重构追溯'}
 PURPOSE={
+ 'robot/instinct':'InstinctMJ 原生躯干基座 G1-29、精确碰撞 URDF 导出、骨盆基座转换与关节名称映射',
+ 'pipeline/datasets/g1_29':'Omni／LAFAN1／PHP 原始 29DoF 独立转换、重新标注及全量质量评估；不依赖 23DoF 轨迹',
  'training/supermimic/assets':'自包含 walk／box 训练包、网格依赖复制、SHA256 与显式 MuJoCo 配置',
  'training/supermimic/env':'MuJoCo-Warp GPU 批量 PD、随机化回读、九部位法向力及 CPU 核验夹具',
  'training/supermimic/model':'23DoF 可微残差世界模型、含固定球手的 FK 与真实地形三角形高程查询',
@@ -78,7 +80,7 @@ def update(stage=None):
 | 需求 | 统一命令 |
 | --- | --- |
 | 环境与数据入口 | `doctor`、`list` |
-| 四类数据批处理 | `run omni/lafan1/mixamo/php` |
+| 四类数据批处理 | `run omni/lafan1/mixamo/php [--dof 23/29]`；29 使用 InstinctMJ 躯干基座模型 |
 | 实时状态／资产目录 | `status <数据集或批次>`、`catalog` |
 | 回放／视频／定格图 | `view <数据集或批次> --clip <ID> [--show-source] [--output ...]` |
 | 全量质量检查 | `evaluate <数据集或批次>` |

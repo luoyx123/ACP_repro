@@ -10,5 +10,6 @@
   "lafan_dataset": "/绝对路径/请填写/lafan_dataset",
   "mixamo_dataset": "/绝对路径/请填写/mixamo_dataset",
   "php_dataset": "/绝对路径/请填写/php_dataset",
-  "php_root": "/绝对路径/请填写/php_root"
+  "php_root": "/绝对路径/请填写/php_root",
+  "instinct_g1_resource": "/绝对路径/InstinctMJ/src/instinct_mj/assets/resources/unitree_g1"
 }

@@ -277,7 +277,8 @@ def assess(row, root, criteria):
                     side=0 if body.startswith('left') else 1
                     mask=source_stance[:,side] if source_stance is not None else np.zeros(len(qpos),dtype=bool)
                 else:
-                    mask=source_support.get(body.replace('_hand','_sphere_hand_link'),np.zeros(len(qpos),dtype=bool))
+                    key=body.replace('_hand','_wrist_yaw_link' if manifest.get('dof')==29 else '_sphere_hand_link')
+                    mask=source_support.get(key,np.zeros(len(qpos),dtype=bool))
                 expected_contact=stable_segments(mask,max(1,int(np.ceil(.2*fps))))
                 expectations[body]=int(expected_contact.sum())
                 fraction=float(flags[expected_contact,body_names.index(body)].mean()) if expected_contact.any() else None

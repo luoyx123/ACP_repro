@@ -12,6 +12,18 @@ WRIST_JOINTS = tuple(f"{side}_wrist_{axis}_joint"
                      for side in ("left", "right") for axis in ("roll", "pitch", "yaw"))
 
 
+def select_g1_joints(qpos, source_names, target_names):
+    """Select 23 joints or preserve/reorder all 29; never invent wrist values."""
+    if len(target_names) == 23:
+        return project_joint_subset(qpos, source_names, target_names)
+    qpos = np.asarray(qpos)
+    if (len(source_names) != 29 or len(set(source_names)) != 29
+            or len(target_names) != 29 or set(target_names) != set(source_names)
+            or qpos.ndim != 2 or qpos.shape[1] != 36 or not np.isfinite(qpos).all()):
+        raise ValueError("Native G1-29 export requires all 29 real source joints")
+    return qpos[:, [*range(7), *(7 + source_names.index(n) for n in target_names)]].copy()
+
+
 def moving_joint_names(urdf):
     return [joint.get("name") for joint in ET.parse(urdf).getroot().findall("joint")
             if joint.get("type") in ("revolute", "continuous", "prismatic")]

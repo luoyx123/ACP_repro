@@ -91,6 +91,8 @@ def main():
     sp.add_argument('--output',type=Path,help='试运行应指定新目录，避免覆盖主批次清单')
     sp.add_argument('--workers',type=int,default=4)
     sp.add_argument('--fps',type=float,default=50.)
+    sp.add_argument('--dof',type=int,choices=(23,29),default=23,help='独立的 23/29DoF 数据版本，默认保留原 23DoF 行为')
+    sp.add_argument('--robot-resource',type=Path,help='29DoF：InstinctMJ unitree_g1 资源目录')
     sp.add_argument('--clips',nargs='+')
     sp.add_argument('--all-variants',action='store_true',help='PHP：处理全部地形变体')
     sp.add_argument('--audit-only',action='store_true',help='PHP：仅生成格式清单')
@@ -122,7 +124,15 @@ def main():
     if args.command=='run':
         if args.label_timeout<1:p.error('label-timeout 必须为正数')
         d=reg['datasets'][args.dataset]
-        run=(args.output.absolute() if args.output else run_path(d['run_id']))
+        run_id=d['run_id'] if args.dof==23 else args.dataset+'_instinct29'
+        run=(args.output.absolute() if args.output else run_path(run_id))
+        # Reject mixing both robots into one artifact tree before writing assets.
+        version=run/'dataset_version.json'
+        if version.is_file() and read_record(version)['dof']!=args.dof:
+            p.error('输出目录已有另一 DoF 版本，请使用独立目录')
+        provenance=run/'assets/provenance.json'
+        if provenance.is_file() and len(read_record(provenance).get('target_joint_names',[])) not in (0,args.dof):
+            p.error('输出目录机器人 DoF 不匹配，请使用独立目录')
         command=[str(cfg_path(cfg,'retarget_python')),str(PROJECT/d['script']),
                  '--dataset-root',str(cfg_path(cfg,d['source_key'])),'--output',str(run),
                  '--workers',str(args.workers),'--fps',str(args.fps)]
@@ -142,6 +152,19 @@ def main():
             if not args.dry_run:atomic_json(support,read_record(PROJECT/'configs/mixamo_test_scenes.json'))
             command+=['--extracted-root',str(PROJECT/'outputs/缓存/mixamo/fbx_skeletons_v1'),
                       '--support-scenes',str(support)]
+        if args.dof==29:
+            resource=(args.robot_resource or Path(cfg.get('instinct_g1_resource',
+                '/home/lyx/train/supermimic-extend/InstinctMJ/src/instinct_mj/assets/resources/unitree_g1'))).absolute()
+            if args.dataset=='mixamo':
+                command+=['--dof','29','--robot-resource',str(resource)]
+            else:
+                command=[str(cfg_path(cfg,'retarget_python')),'-m','acp.pipeline.datasets.g1_29',
+                    '--dataset',args.dataset,'--output',str(run),'--robot-resource',str(resource),
+                    '--dataset-root',str(cfg_path(cfg,d['source_key'])),
+                    '--workers',str(args.workers),'--fps',str(args.fps),
+                    '--label-python',str(PROJECT/'src/acp/pipeline/label_python_bounded.sh')]
+                if args.all_variants:command+=['--all-variants']
+                if args.audit_only:command+=['--audit-only']
         if args.clips:command+=['--clips',*args.clips]
     else:
         name=reg['datasets'].get(args.asset,{}).get('run_id',args.asset)
@@ -159,6 +182,7 @@ def main():
     print(shlex.join(command),flush=True)
     if args.dry_run:return
     env=os.environ.copy()
+    env['PYTHONPATH']=str(PROJECT/'src')+os.pathsep+env.get('PYTHONPATH','')
     for key in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'):env[key]='1'
     if not env.get('DISPLAY'):env.setdefault('MUJOCO_GL','egl')
     if args.command=='run':
@@ -172,6 +196,8 @@ def main():
             except (ValueError,ProcessLookupError):pass
             else:raise SystemExit(f'批次仍在运行：{pidfile.read_text().strip()}。请用 status 查看，或指定新的 --output。')
         stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+        atomic_json(version,dict(dataset=args.dataset,dof=args.dof,
+            root_body='torso_link' if args.dof==29 else 'pelvis'))
         record=dict(argv=command,cwd=str(PROJECT),configuration=cfg,started_at=stamp,
                     label_timeout_seconds=args.label_timeout,
                     launcher_sha256=__import__('hashlib').sha256(Path(__file__).read_bytes()).hexdigest(),
