@@ -32,10 +32,16 @@ def update_csi(phase, success, adjustment=.05):
 
 
 class TensorReference:
-    def __init__(self, motion, start, end, dt, device):
+    def __init__(self, motion, start, end, dt, device, contact_position_source='body_landmark'):
         if start < motion.times[0]-1e-6 or end > motion.times[-1]+1e-6 or end <= start:
             raise ValueError('Invalid task reference time window')
         self.start,self.end,self.dt = start,end,dt
+        fields = {'body_landmark':'body_landmarks_w','environment_surface':'contact_surface_positions_w'}
+        if contact_position_source not in fields:raise ValueError('Unknown oracle contact position source')
+        contact_field = fields[contact_position_source]
+        if contact_field not in motion.values:
+            raise ValueError(f'Oracle requires {contact_field}; refusing silent landmark fallback')
+        self.contact_position_source = contact_position_source
         times = start+np.arange(round((end-start)/dt)+1)*dt
         if abs(times[-1]-end) > 1e-6: raise ValueError('Reference window must align to control timestep')
         values = motion.sample(times)
@@ -49,7 +55,7 @@ class TensorReference:
         for b in range(9):
             indices = np.flatnonzero(starts[:,b])
             self.onsets.append((torch.as_tensor(motion.times[indices],device=device,dtype=torch.float32),
-                torch.as_tensor(motion.values['body_landmarks_w'][indices,b],device=device,dtype=torch.float32)))
+                torch.as_tensor(motion.values[contact_field][indices,b],device=device,dtype=torch.float32)))
 
     def sample(self, times):
         phase = (times.clamp(self.start,self.end)-self.start)/self.dt
@@ -57,7 +63,7 @@ class TensorReference:
         alpha = (phase-lo).clamp(0,1)
         result = {}
         for k,v in self.values.items():
-            if v.dtype==torch.bool or k=='target_positions_body_yaw':
+            if v.dtype==torch.bool or k in ('target_positions_body_yaw','contact_surface_positions_w'):
                 result[k] = v[phase.floor().long().clamp(0,len(v)-1)]
             elif k=='base_quaternion_wxyz':
                 a,b = v[lo],v[lo+1]

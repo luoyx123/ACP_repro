@@ -138,6 +138,7 @@ def worker(args):
         if not torch.equal(before_actor,after_actor) or torch.equal(before_critic,after_critic):
             raise ValueError('Reference kinematics leaked into actor, or critic lost privileged reference')
         atomic_json(args.output/'observation_contract.json',dict(actor_dimension=468,critic_dimension=353,
+            oracle_contact_position_source=config.get('oracle_contact_position_source','body_landmark'),
             actor_unchanged_when_reference_joints_perturbed=True,critic_changed_when_reference_joints_perturbed=True))
         evaluation = evaluate(task,model,args.output/'evaluation',start_iteration)
         atomic_json(args.output/'randomization_reset_invariance.json',task.randomization.verify_dynamics())

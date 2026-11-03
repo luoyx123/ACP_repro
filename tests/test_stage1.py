@@ -84,12 +84,22 @@ class Stage1MathTest(unittest.TestCase):
                 base_position_w=np.zeros((101,3)),base_quaternion_wxyz=np.tile([1,0,0,0],(101,1)),
                 base_linear_velocity_w=np.zeros((101,3)),base_angular_velocity_w=np.zeros((101,3)),
                 joint_positions=np.zeros((101,23)),joint_velocities=np.zeros((101,23)),body_landmarks_w=body,
-                contact_flags=flags,target_positions_body_yaw=body,target_occupancy=flags)
-            ref=TensorReference(ReferenceMotion(p,[str(i) for i in range(23)],[str(i) for i in range(9)]),.5,2.,.02,'cpu')
+                contact_flags=flags,target_positions_body_yaw=body,target_occupancy=flags,
+                contact_surface_positions_w=body+np.array([0.,0.,-.07]))
+            motion=ReferenceMotion(p,[str(i) for i in range(23)],[str(i) for i in range(9)])
+            ref=TensorReference(motion,.5,2.,.02,'cpu')
             q=torch.tensor([[2**-.5,0,0,2**-.5]])
             targets,occupied=ref.contacts(torch.tensor([.5]),torch.tensor([[1.,2.,0.]]),q)
             self.assertTrue(occupied[0,0])
             torch.testing.assert_close(targets[0,0],torch.tensor([.2,0.,0.]),atol=1e-6,rtol=0)
+            surface=TensorReference(motion,.5,2.,.02,'cpu',contact_position_source='environment_surface')
+            target_surface,mask_surface=surface.contacts(torch.tensor([.5]),torch.tensor([[1.,2.,0.]]),q)
+            torch.testing.assert_close(target_surface[0,0],torch.tensor([.2,0.,-.07]),atol=1e-6,rtol=0)
+            torch.testing.assert_close(occupied,mask_surface)
+            torch.testing.assert_close(ref.sample(torch.tensor([.5]))['body_landmarks_w'],surface.sample(torch.tensor([.5]))['body_landmarks_w'])
+            del motion.values['contact_surface_positions_w']
+            with self.assertRaisesRegex(ValueError,'refusing silent'):
+                TensorReference(motion,.5,2.,.02,'cpu',contact_position_source='environment_surface')
             # At 0.5s the contact at 0.4s is already ongoing. Its next onset
             # is 1.4s; moving beyond the footprint must mask it, not clamp it.
             _,occupied=ref.contacts(torch.tensor([.5]),torch.zeros((1,3)),q)

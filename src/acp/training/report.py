@@ -106,7 +106,11 @@ def inline(path,mime):return f'data:{mime};base64,'+base64.b64encode(path.read_b
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--run',type=Path,required=True)
-    p.add_argument('--output',type=Path,required=True);args=p.parse_args();run=args.run.resolve();out=args.output.resolve()
+    p.add_argument('--output',type=Path,required=True);p.add_argument('--contact-audit',action='store_true')
+    args=p.parse_args();run=args.run.resolve();out=args.output.resolve()
+    if args.contact_audit:
+        from acp.training.contact_audit import audit
+        audit(run,out);return
     out.mkdir(parents=True,exist_ok=True);os.environ.setdefault('MUJOCO_GL','egl')
     provenance=load_json(run/'provenance.json');config=provenance['config'];result=load_json(run/'result.json')
     rows=[json.loads(line) for line in (run/'metrics.jsonl').read_text().splitlines() if line.strip()]

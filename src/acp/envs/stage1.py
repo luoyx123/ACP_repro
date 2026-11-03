@@ -24,7 +24,8 @@ class Stage1Task:
         for name,source in zip(self.member_names,infos):
             spec = config['tasks'][name]
             motion = ReferenceMotion(source['motion'],self.env.joint_names,self.env.body_names)
-            references.append(TensorReference(motion,spec['start_seconds'],spec['end_seconds'],self.dt,self.device))
+            references.append(TensorReference(motion,spec['start_seconds'],spec['end_seconds'],self.dt,self.device,
+                contact_position_source=config.get('oracle_contact_position_source','body_landmark')))
         self.reference = ReferenceBank(references,self.assignment)
         self.duration = self.reference.end-self.reference.start
         self.phase = torch.full((num_envs,),config['curriculum']['initial_phase'],device=self.device)

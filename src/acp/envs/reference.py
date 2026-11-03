@@ -21,13 +21,15 @@ class ReferenceMotion:
                 'base_position_w', 'base_quaternion_wxyz', 'base_linear_velocity_w',
                 'base_angular_velocity_w', 'joint_positions', 'joint_velocities',
                 'body_landmarks_w', 'contact_flags', 'target_positions_body_yaw', 'target_occupancy')}
+            if 'contact_surface_positions_w' in z:
+                self.values['contact_surface_positions_w'] = z['contact_surface_positions_w'].copy()
         if len(self.times) < 2 or not np.all(np.diff(self.times) > 0):
             raise ValueError('Reference timestamps must be strictly increasing')
         for k, values in self.values.items():
             if len(values) != len(self.times) or not np.isfinite(values).all():
                 raise ValueError(f'Invalid reference field: {k}')
             if k.startswith('joint_'): self.values[k] = values[:, ji]
-            if k in ('body_landmarks_w', 'contact_flags', 'target_positions_body_yaw', 'target_occupancy'):
+            if k in ('body_landmarks_w', 'contact_surface_positions_w', 'contact_flags', 'target_positions_body_yaw', 'target_occupancy'):
                 self.values[k] = values[:, bi]
         quat = self.values['base_quaternion_wxyz']
         if not np.allclose(np.linalg.norm(quat, axis=-1), 1, atol=0.002):
@@ -44,7 +46,7 @@ class ReferenceMotion:
         for k, v in self.values.items():
             if k == 'base_quaternion_wxyz':
                 out[k] = self.rotations(query).as_quat()[:, [3, 0, 1, 2]]
-            elif v.dtype == bool or k == 'target_positions_body_yaw':
+            elif v.dtype == bool or k in ('target_positions_body_yaw','contact_surface_positions_w'):
                 # Future target positions are piecewise query labels, not continuous kinematics.
                 out[k] = v[np.searchsorted(self.times, query, side='right').clip(1, len(self.times))-1]
             else:

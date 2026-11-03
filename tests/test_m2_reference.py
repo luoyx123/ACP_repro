@@ -18,6 +18,7 @@ def test_named_motion_queries_preserve_rotation_and_discrete_labels(tmp_path):
         base_linear_velocity_w=np.ones((2, 3))*2, base_angular_velocity_w=np.zeros((2, 3)),
         joint_positions=q, joint_velocities=np.ones((2, 23))*2,
         body_landmarks_w=np.zeros((2, 9, 3)), contact_flags=labels,
+        contact_surface_positions_w=np.arange(54).reshape(2,9,3).astype(float),
         target_positions_body_yaw=np.stack([np.zeros((9, 3)), np.ones((9, 3))]), target_occupancy=labels)
     motion = ReferenceMotion(path, names[::-1], bodies[::-1])
     sample = motion.sample([.5, 1.])
@@ -25,6 +26,9 @@ def test_named_motion_queries_preserve_rotation_and_discrete_labels(tmp_path):
     np.testing.assert_allclose(sample['base_quaternion_wxyz'][0], [2**-.5, 0, 0, 2**-.5], atol=1e-12)
     assert not sample['contact_flags'][0].any() and sample['contact_flags'][1].all()
     assert not sample['target_positions_body_yaw'][0].any()
+    # Surface witnesses belong to discrete contact events. Do not interpolate
+    # between different surface patches or lose the named body reordering.
+    np.testing.assert_array_equal(sample['contact_surface_positions_w'][0],np.arange(27).reshape(9,3)[::-1])
     actions = target_to_action(sample['joint_positions'], np.zeros(23))
     np.testing.assert_allclose(action_to_target(actions, np.zeros(23)), sample['joint_positions'])
     with pytest.raises(ValueError): name_indices(['a', 'a'], ['a', 'b'])
