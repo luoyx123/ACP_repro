@@ -4,6 +4,8 @@
 `assets/resources/unitree_g1/xml/g1_29dof_torsobase_popsicle.xml`，保留原生胶囊碰撞体、惯量和 29 个活动关节。
 本机资源目录在 `configs/machine.local.json` 的 `instinct_g1_resource` 中配置；也可以用 `--robot-resource` 显式指定。
 
+**质量状态**：原生转换／标注完成不等于整条轨迹合格。四类数据的全量筛查结论、独立全身修复版、当前爬箱候选与尚未通过的walk见 [29DoF质量与全身接触审计](../05_实验记录/29DoF质量与全身接触审计_20261103.md)。原生 `instinct29_v1` 与修复输出分开保存。
+
 ## 数据位置与来源
 
 | 数据 | 稳定 ID | 目录 | 输入范围／方法 |

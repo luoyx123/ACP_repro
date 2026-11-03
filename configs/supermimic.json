@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "method": "ACP task with InstinctMJ-style SuperMimic world model and BPTT; not paper PPO",
+  "contact_contract": "acp-nine-body-environment-normal-fz-v2",
   "seed": 42,
   "buffer_steps": 1000,
   "utd": 0.4,
@@ -24,11 +25,17 @@
   "compile": true,
   "save_interval": 100,
   "acknowledge_engine_mapping": true,
+  "initialization_validation": {
+    "enabled": true,
+    "maximum_penetration_m": 0.03,
+    "maximum_resamples": 8,
+    "note": "Engineering initialization admission before replay, not ACP reward/termination or offline 3mm acceptance; never automatically relaxed"
+  },
   "engine_mapping": {
     "friction": "Robot priority 1 over terrain 0; dynamic friction is single Coulomb coefficient; static sample recorded only",
     "restitution": "Approximate e through solref damping ratio; not PhysX-equivalent",
     "imagined_torque": "PD at predicted post-control state approximates last physics substep",
-    "contacts": "Probabilities in imagination; real max abs normal-force z over 4 substeps > 1 N",
+    "contacts": "Probabilities in imagination; robot-environment normal forces only; real max abs z over 4 substeps > 1 N (ACP); 3D normal sums diagnostics only",
     "height_scan": "Top-down exact static triangles, 63/187 points in original ij ordering"
   }
 }

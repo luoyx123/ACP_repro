@@ -1,0 +1,674 @@
+{
+  "generated_at": "2026-11-03T09:27:18.393248+00:00",
+  "scope": "Independent InstinctMJ native29 datasets; no training admission implied",
+  "datasets": {
+    "omni": {
+      "artifact": "/home/lyx/train/ACP_repro/outputs/数据集/omni/instinct29_v1",
+      "summary": {
+        "scope": "robot-terrain only",
+        "expected_inputs": 145,
+        "results": 145,
+        "base_motion_groups": 29,
+        "has_human_joints": 112,
+        "missing_human_joints": 33,
+        "statuses": {
+          "needs_repair": 145
+        },
+        "reason_counts": {
+          "self_collision": 145,
+          "right_stance_gap": 128,
+          "environment_penetration": 121,
+          "left_stance_gap": 118,
+          "right_foot_sliding": 13,
+          "left_foot_sliding": 13
+        },
+        "routes": {
+          "omni_original29_to_instinct29": {
+            "inputs": 145,
+            "statuses": {
+              "needs_repair": 145
+            }
+          }
+        },
+        "evaluated_frames": 91095,
+        "evaluated_duration_s": 1819.0,
+        "frame_weighted_environment_invalid_fraction": 0.29248586640320545,
+        "frame_weighted_self_collision_fraction": 0.3341017618969208,
+        "frame_weighted_unexpected_self_collision_fraction": 0.3341017618969208,
+        "clips_with_nonlocal_self_collision": 145,
+        "frame_weighted_nonlocal_self_collision_fraction": 0.3341017618969208,
+        "frame_weighted_joint_velocity_invalid_fraction": 0.0,
+        "stage1_offline_candidates": 0,
+        "stage2_hindsight_admitted": 0,
+        "criteria": {
+          "version": "offline_kinematic_screen_v1",
+          "environment_penetration_tolerance_m": 0.003,
+          "self_penetration_tolerance_m": 0.003,
+          "maximum_invalid_environment_frames": 0,
+          "maximum_invalid_joint_position_frames": 0,
+          "maximum_invalid_joint_velocity_frames": 0,
+          "maximum_self_collision_frames": 0,
+          "minimum_stance_near_surface_fraction_per_foot": 0.9,
+          "maximum_contact_foot_planar_speed_p95_m_s": 0.15,
+          "maximum_mapped_keypoint_mean_error_m": 0.08,
+          "maximum_mapped_keypoint_p95_error_m": 0.15,
+          "minimum_native_drake_raw_flag_agreement": 0.999,
+          "note": "Engineering screening thresholds, not paper-specified acceptance criteria. Passing identifies a Stage-1 offline reference candidate. Successful tracker rollouts and force events are required separately for Stage-2 hindsight, not as a prerequisite for starting Stage-1 training. Stance uses source low foot velocity, and foot speed uses the target semantic sole frame."
+        },
+        "complete_inventory_handled": true,
+        "all_processing_successful": true,
+        "note": "All-input denominator includes failed processing. Acceptance thresholds are engineering choices. Split future train/validation sets by source motion groups, not individual augmentations or windows."
+      }
+    },
+    "lafan1": {
+      "artifact": "/home/lyx/train/ACP_repro/outputs/数据集/lafan1/instinct29_v1",
+      "summary": {
+        "scope": "LAFAN1 G1 on flat ground",
+        "expected_inputs": 40,
+        "results": 40,
+        "base_motion_groups": 15,
+        "has_human_joints": 0,
+        "missing_human_joints": 40,
+        "statuses": {
+          "needs_repair": 40
+        },
+        "reason_counts": {
+          "environment_penetration": 40,
+          "self_collision": 40,
+          "right_foot_sliding": 39,
+          "left_foot_sliding": 36,
+          "left_stance_gap": 11,
+          "right_stance_gap": 10
+        },
+        "routes": {
+          "lafan1_original29_to_instinct29": {
+            "inputs": 40,
+            "statuses": {
+              "needs_repair": 40
+            }
+          }
+        },
+        "evaluated_frames": 441140,
+        "evaluated_duration_s": 8822.000000000004,
+        "frame_weighted_environment_invalid_fraction": 0.18126445119463208,
+        "frame_weighted_self_collision_fraction": 0.21581130706805096,
+        "frame_weighted_unexpected_self_collision_fraction": 0.21581130706805096,
+        "clips_with_nonlocal_self_collision": 40,
+        "frame_weighted_nonlocal_self_collision_fraction": 0.21581130706805096,
+        "frame_weighted_joint_velocity_invalid_fraction": 0.0,
+        "stage1_offline_candidates": 0,
+        "stage2_hindsight_admitted": 0,
+        "criteria": {
+          "version": "offline_kinematic_screen_v1",
+          "environment_penetration_tolerance_m": 0.003,
+          "self_penetration_tolerance_m": 0.003,
+          "maximum_invalid_environment_frames": 0,
+          "maximum_invalid_joint_position_frames": 0,
+          "maximum_invalid_joint_velocity_frames": 0,
+          "maximum_self_collision_frames": 0,
+          "minimum_stance_near_surface_fraction_per_foot": 0.9,
+          "maximum_contact_foot_planar_speed_p95_m_s": 0.15,
+          "maximum_mapped_keypoint_mean_error_m": 0.08,
+          "maximum_mapped_keypoint_p95_error_m": 0.15,
+          "minimum_native_drake_raw_flag_agreement": 0.999,
+          "note": "Engineering screening thresholds, not paper-specified acceptance criteria. Passing identifies a Stage-1 offline reference candidate. Successful tracker rollouts and force events are required separately for Stage-2 hindsight, not as a prerequisite for starting Stage-1 training. Stance uses source low foot velocity, and foot speed uses the target semantic sole frame."
+        },
+        "complete_inventory_handled": true,
+        "all_processing_successful": true,
+        "note": "All-input denominator includes failed processing. Acceptance thresholds are engineering choices. Split future train/validation sets by source motion groups, not individual augmentations or windows."
+      }
+    },
+    "php": {
+      "artifact": "/home/lyx/train/ACP_repro/outputs/数据集/php/instinct29_v1",
+      "summary": {
+        "scope": "PHP robot-terrain training packages",
+        "expected_inputs": 140,
+        "results": 140,
+        "base_motion_groups": 140,
+        "has_human_joints": 0,
+        "missing_human_joints": 140,
+        "statuses": {
+          "needs_repair": 140
+        },
+        "reason_counts": {
+          "environment_penetration": 140,
+          "self_collision": 133,
+          "joint_position_limits": 130,
+          "right_foot_sliding": 128,
+          "left_foot_sliding": 127,
+          "left_stance_gap": 40,
+          "right_stance_gap": 40
+        },
+        "routes": {
+          "php_original29_to_instinct29": {
+            "inputs": 140,
+            "statuses": {
+              "needs_repair": 140
+            }
+          }
+        },
+        "evaluated_frames": 103856,
+        "evaluated_duration_s": 2074.3199999999997,
+        "frame_weighted_environment_invalid_fraction": 0.18309004775843477,
+        "frame_weighted_self_collision_fraction": 0.06806539824372208,
+        "frame_weighted_unexpected_self_collision_fraction": 0.06806539824372208,
+        "clips_with_nonlocal_self_collision": 133,
+        "frame_weighted_nonlocal_self_collision_fraction": 0.06806539824372208,
+        "frame_weighted_joint_velocity_invalid_fraction": 0.0,
+        "stage1_offline_candidates": 0,
+        "stage2_hindsight_admitted": 0,
+        "criteria": {
+          "version": "offline_kinematic_screen_v1",
+          "environment_penetration_tolerance_m": 0.003,
+          "self_penetration_tolerance_m": 0.003,
+          "maximum_invalid_environment_frames": 0,
+          "maximum_invalid_joint_position_frames": 0,
+          "maximum_invalid_joint_velocity_frames": 0,
+          "maximum_self_collision_frames": 0,
+          "minimum_stance_near_surface_fraction_per_foot": 0.9,
+          "maximum_contact_foot_planar_speed_p95_m_s": 0.15,
+          "maximum_mapped_keypoint_mean_error_m": 0.08,
+          "maximum_mapped_keypoint_p95_error_m": 0.15,
+          "minimum_native_drake_raw_flag_agreement": 0.999,
+          "note": "Engineering screening thresholds, not paper-specified acceptance criteria. Passing identifies a Stage-1 offline reference candidate. Successful tracker rollouts and force events are required separately for Stage-2 hindsight, not as a prerequisite for starting Stage-1 training. Stance uses source low foot velocity, and foot speed uses the target semantic sole frame."
+        },
+        "complete_inventory_handled": true,
+        "all_processing_successful": true,
+        "note": "All-input denominator includes failed processing. Acceptance thresholds are engineering choices. Split future train/validation sets by source motion groups, not individual augmentations or windows."
+      }
+    },
+    "mixamo": {
+      "artifact": "/home/lyx/train/ACP_repro/outputs/数据集/mixamo/instinct29_v1",
+      "summary": {
+        "expected_animations": 2453,
+        "extraction": {
+          "extracted": 2453
+        },
+        "extracted_source_frames": 520661,
+        "retargeting": {
+          "end_to_end_data_pipeline_completed_not_training_admitted": 1460,
+          "excluded_too_short": 104,
+          "running": 16,
+          "pending": 873
+        },
+        "failures": [],
+        "stage1_training_admitted": false,
+        "scope": "animation/*.fbx; exclude character assets and 2 static reference poses",
+        "note": "Counts include pending/failed inputs. Processing completion does not mean training acceptance.",
+        "evaluated_clips": 1460,
+        "evaluated_frames": 276556,
+        "quality_statuses": {
+          "offline_kinematic_candidate": 937,
+          "needs_repair": 523
+        },
+        "quality_reason_counts": {
+          "self_collision": 407,
+          "missing_seat_geometry": 82,
+          "joint_velocity_limits": 33,
+          "mapped_keypoint_error": 4,
+          "right_stance_gap": 2,
+          "unconfirmed_support_scene": 6,
+          "ladder_right_foot_contact_coverage": 1,
+          "environment_penetration": 56,
+          "native_drake_flags_disagree": 6,
+          "left_stance_gap": 4
+        }
+      }
+    }
+  },
+  "fullbody_reference": {
+    "worktree": "/home/lyx/train/supermimic-extend/InstinctMJ-fullbody",
+    "head": "7ca851e002980011f24a1664011305d0ba94aefc",
+    "dirty_files": [
+      " M src/instinct_mj/motion_reference/motion_files/amass_motion.py",
+      " M src/instinct_mj/rl/supermimic/runner.py",
+      " M src/instinct_mj/terrains/trimesh/mesh_terrains.py",
+      "?? src/instinct_mj/rl/supermimic/fullbody.py"
+    ],
+    "sha256": {
+      "src/instinct_mj/rl/supermimic/fullbody.py": "a8d3ef3e91357e6d292ae2c1f298f26a18a80c94fc2834a3df5be9b2d4ce7e50",
+      "src/instinct_mj/rl/supermimic/runner.py": "13546e6e000c0b5c6c0004b1fd2911072bdfd7b8073dd0f12b331f1bf59762df",
+      "src/instinct_mj/motion_reference/motion_files/amass_motion.py": "ef6d83990990ad66508662f6901cadb30c87d3d521392ee4c8dbfbc2f14bc400"
+    }
+  },
+  "native_transfer_audit": {
+    "kind": "full_native29_named_joint_fidelity_audit",
+    "datasets": {
+      "omni": {
+        "clips": 145,
+        "frames": 91095,
+        "all_source_qpos_exact": true,
+        "all_source_rate_joint_values_exact_with_waist_sign": true,
+        "maximum_resampled_joint_error_rad": 0.0,
+        "all_six_real_wrist_joints_verified": [
+          "left_wrist_roll_joint",
+          "left_wrist_pitch_joint",
+          "left_wrist_yaw_joint",
+          "right_wrist_roll_joint",
+          "right_wrist_pitch_joint",
+          "right_wrist_yaw_joint"
+        ]
+      },
+      "lafan1": {
+        "clips": 40,
+        "frames": 441140,
+        "all_source_qpos_exact": true,
+        "all_source_rate_joint_values_exact_with_waist_sign": true,
+        "maximum_resampled_joint_error_rad": 0.0,
+        "all_six_real_wrist_joints_verified": [
+          "left_wrist_roll_joint",
+          "left_wrist_pitch_joint",
+          "left_wrist_yaw_joint",
+          "right_wrist_roll_joint",
+          "right_wrist_pitch_joint",
+          "right_wrist_yaw_joint"
+        ]
+      },
+      "php": {
+        "clips": 140,
+        "frames": 103856,
+        "all_source_qpos_exact": true,
+        "all_source_rate_joint_values_exact_with_waist_sign": true,
+        "maximum_resampled_joint_error_rad": 0.0,
+        "all_six_real_wrist_joints_verified": [
+          "left_wrist_roll_joint",
+          "left_wrist_pitch_joint",
+          "left_wrist_yaw_joint",
+          "right_wrist_roll_joint",
+          "right_wrist_pitch_joint",
+          "right_wrist_yaw_joint"
+        ]
+      }
+    }
+  },
+  "repairs": {
+    "omni": {
+      "artifact": "outputs/数据集/omni/instinct29_geometry_v3",
+      "repair": {
+        "clip": "climb_00_z_scale_0.9",
+        "frames": 1006,
+        "full_clip": true,
+        "before_invalid_collision_frames": 807,
+        "after_invalid_collision_frames": 0,
+        "minimum_distance_before_m": -0.0689166313207888,
+        "minimum_distance_after_m": -0.002284308095111695,
+        "maximum_root_shift_m": 0.0458510869006503,
+        "maximum_joint_correction_rad": 0.6525467956089236,
+        "signature": {
+          "baseline": "f058271d55c8d2b37c2cbb03657dc3e7f9047d7a245326952d2e090e923a929c",
+          "scene": "c303189a2665929fb8a95304b0637a671e149f717b17575a849132343e60ca2b",
+          "code": "dd54013348468575e8a2468aea8eee34dbb08de13bff4e7757004c1c403a8e26",
+          "passes": 2,
+          "maximum_frames": null,
+          "target": "d0b113bc540fe3c049d4e3f82a8f3bad0e723184d4ae98cf33583b4e3e7d1881",
+          "processing": {
+            "src/acp/data/adapters/holosoma.py": "ee2ffb814f9fca5fd161bbed936452061251192317e4a617c03ca9e8d8e93108",
+            "src/acp/data/scene.py": "e7c2250327beb06570442b554f48ed2ddb84fd4c7f147429adc0c9aa53259d48",
+            "src/acp/quality/native.py": "fb952159a26a455023549ca4de817f47c539ec5784aff65e1543860cfd6f72a1",
+            "src/acp/quality/evaluate.py": "a60272efe7ec4cef58a21179400d303efecc93d3dbdb7b1fb3f866b9b11a3a1b",
+            "configs/data_quality.json": "394f3870ec309465ddc60c086f73bfb157ffaa54218944850dc56aa75c34a8be"
+          }
+        },
+        "duration_s": 90.18719174799844,
+        "note": "Geometry repair only; original offline thresholds and velocity/support gates remain active",
+        "quality_status": "offline_kinematic_candidate",
+        "quality_reasons": [],
+        "source_stance_contact_interior_speed_p95_m_s": {
+          "left": 0.1426180974439363,
+          "right": 0.12537860847428126
+        },
+        "quality_assessment_signature": {
+          "motion_sha256": "8eccb546292423f744082f523e2c671991e70394315add67d30cd97602156c01",
+          "evaluator_sha256": "31cb97ed49d1e34db955a3bb03f47382e0fdee9e5ccfd3c5021674f3b5b44fb7",
+          "manifest_sha256": "5b695083cac75254284271d9e55a7730cd8009b3572464c60cde666ff88f318e",
+          "native_geometry_sha256": "3b32a5d2b31b6a560e34c6d3e8d1218862867431ed8a458de92118febd8aa019",
+          "source_keypoints_sha256": "eee1bf6a11e9a29b299b31232c462ec2cd98549666e1f9c4fd2e951d86033f2b",
+          "criteria": {
+            "version": "offline_kinematic_screen_v1",
+            "environment_penetration_tolerance_m": 0.003,
+            "self_penetration_tolerance_m": 0.003,
+            "maximum_invalid_environment_frames": 0,
+            "maximum_invalid_joint_position_frames": 0,
+            "maximum_invalid_joint_velocity_frames": 0,
+            "maximum_self_collision_frames": 0,
+            "minimum_stance_near_surface_fraction_per_foot": 0.9,
+            "maximum_contact_foot_planar_speed_p95_m_s": 0.15,
+            "maximum_mapped_keypoint_mean_error_m": 0.08,
+            "maximum_mapped_keypoint_p95_error_m": 0.15,
+            "minimum_native_drake_raw_flag_agreement": 0.999,
+            "note": "Engineering screening thresholds, not paper-specified acceptance criteria. Passing identifies a Stage-1 offline reference candidate. Successful tracker rollouts and force events are required separately for Stage-2 hindsight, not as a prerequisite for starting Stage-1 training. Stance uses source low foot velocity, and foot speed uses the target semantic sole frame."
+          },
+          "mujoco_version": "3.15.0"
+        }
+      },
+      "quality": {
+        "clip": "climb_00_z_scale_0.9",
+        "scene_id": "climb_00",
+        "z_scale": 0.9,
+        "route": "native29_fullbody_geometry_repair",
+        "source_frames": 604,
+        "source_fps": 30.0,
+        "artifact_directory": "/home/lyx/train/ACP_repro/outputs/数据集/omni/instinct29_geometry_v3/clips/climb_00_z_scale_0.9",
+        "labeled_motion": "/home/lyx/train/ACP_repro/outputs/数据集/omni/instinct29_geometry_v3/clips/climb_00_z_scale_0.9/labeled/motion.npz",
+        "labeled_motion_relative": "clips/climb_00_z_scale_0.9/labeled/motion.npz",
+        "native_scene": "/home/lyx/train/ACP_repro/outputs/数据集/omni/instinct29_v1/clips/climb_00_z_scale_0.9/scene.xml",
+        "status": "offline_kinematic_candidate",
+        "reasons": [],
+        "stage1_offline_eligible": true,
+        "stage2_hindsight_eligible": false,
+        "frames": 1006,
+        "fps": 50.0,
+        "expected_frames": 1006,
+        "support_metrics": null,
+        "duration_s": 20.1,
+        "geometry_invalid_frames": 0,
+        "joint_position_invalid_frames": 0,
+        "joint_velocity_invalid_frames": 0,
+        "max_joint_velocity_limit_ratio": 0.7925453230647925,
+        "minimum_environment_distance_m": -0.0021843875922286232,
+        "self_collision_frames": 0,
+        "self_collision_fraction": 0.0,
+        "minimum_self_contact_distance_m": -0.002284308095111695,
+        "self_collision_pairs": {},
+        "unexpected_self_collision_frames": 0,
+        "unexpected_self_collision_pairs": {},
+        "structural_joint_housing_contact_count": 0,
+        "collision_policy": null,
+        "nonlocal_self_collision_frames": 0,
+        "nonlocal_self_collision_pairs": {},
+        "nonlocal_self_collision_definition": "MuJoCo self contact beyond 3 mm between bodies separated by more than two moving joints; supplementary diagnostic, not a calibrated allowed-collision matrix",
+        "mapped_keypoint_mean_error_m": 0.014576400386430655,
+        "mapped_keypoint_p95_error_m": 0.04333980106260637,
+        "keypoint_errors_by_name": {
+          "Spine1": 0.01420128452620596,
+          "LeftUpLeg": 0.014162901592476853,
+          "LeftLeg": 0.010097786478718201,
+          "LeftToeBase": 0.013038826187843758,
+          "RightUpLeg": 0.013647365098145531,
+          "RightLeg": 0.009799082759453837,
+          "RightToeBase": 0.013523561696484367,
+          "LeftArm": 0.013897496661134042,
+          "LeftForeArm": 0.01488571044479746,
+          "LeftHandMiddle3": 0.02750153139314553,
+          "RightArm": 0.013922272540534223,
+          "RightForeArm": 0.015178354880290967,
+          "RightHandMiddle3": 0.022256984032926634,
+          "LeftFoot": 0.010515735020967436,
+          "RightFoot": 0.012017112483335016
+        },
+        "foot_metrics": {
+          "left": {
+            "stance_steps": 863,
+            "stance_near_surface_fraction": 0.9687137891077636,
+            "stance_gap_p95_m": 0.005891433816431177,
+            "contact_interior_steps": 794,
+            "speed_landmark": "semantic_sole",
+            "speed_mask": "source stance and target contact, interior samples",
+            "contact_planar_speed_mean_m_s": 0.033121136513182776,
+            "contact_planar_speed_p95_m_s": 0.1426180974439363
+          },
+          "right": {
+            "stance_steps": 898,
+            "stance_near_surface_fraction": 0.9175946547884187,
+            "stance_gap_p95_m": 0.03219291045529436,
+            "contact_interior_steps": 782,
+            "speed_landmark": "semantic_sole",
+            "speed_mask": "source stance and target contact, interior samples",
+            "contact_planar_speed_mean_m_s": 0.03789960366507504,
+            "contact_planar_speed_p95_m_s": 0.12537860847428126
+          }
+        },
+        "native_drake_raw_flag_agreement": 1.0,
+        "contact_steps_by_body": {
+          "left_foot": 892,
+          "right_foot": 841,
+          "left_knee": 0,
+          "right_knee": 71,
+          "left_hand": 397,
+          "right_hand": 268,
+          "left_elbow": 0,
+          "right_elbow": 0,
+          "pelvis": 0
+        },
+        "signature": {
+          "motion_sha256": "8eccb546292423f744082f523e2c671991e70394315add67d30cd97602156c01",
+          "evaluator_sha256": "31cb97ed49d1e34db955a3bb03f47382e0fdee9e5ccfd3c5021674f3b5b44fb7",
+          "manifest_sha256": "5b695083cac75254284271d9e55a7730cd8009b3572464c60cde666ff88f318e",
+          "native_geometry_sha256": "3b32a5d2b31b6a560e34c6d3e8d1218862867431ed8a458de92118febd8aa019",
+          "source_keypoints_sha256": "eee1bf6a11e9a29b299b31232c462ec2cd98549666e1f9c4fd2e951d86033f2b",
+          "criteria": {
+            "version": "offline_kinematic_screen_v1",
+            "environment_penetration_tolerance_m": 0.003,
+            "self_penetration_tolerance_m": 0.003,
+            "maximum_invalid_environment_frames": 0,
+            "maximum_invalid_joint_position_frames": 0,
+            "maximum_invalid_joint_velocity_frames": 0,
+            "maximum_self_collision_frames": 0,
+            "minimum_stance_near_surface_fraction_per_foot": 0.9,
+            "maximum_contact_foot_planar_speed_p95_m_s": 0.15,
+            "maximum_mapped_keypoint_mean_error_m": 0.08,
+            "maximum_mapped_keypoint_p95_error_m": 0.15,
+            "minimum_native_drake_raw_flag_agreement": 0.999,
+            "note": "Engineering screening thresholds, not paper-specified acceptance criteria. Passing identifies a Stage-1 offline reference candidate. Successful tracker rollouts and force events are required separately for Stage-2 hindsight, not as a prerequisite for starting Stage-1 training. Stance uses source low foot velocity, and foot speed uses the target semantic sole frame."
+          },
+          "mujoco_version": "3.15.0"
+        },
+        "note": "Offline Stage-1 reference screening only. Stage-2 hindsight requires successful tracker rollouts and force events separately."
+      }
+    },
+    "lafan1": {
+      "artifact": "outputs/数据集/lafan1/instinct29_geometry_v2",
+      "repair": {
+        "clip": "walk4_subject1",
+        "frames": 8196,
+        "full_clip": true,
+        "before_invalid_collision_frames": 4980,
+        "after_invalid_collision_frames": 0,
+        "minimum_distance_before_m": -0.0980744622891796,
+        "minimum_distance_after_m": -0.0015964459407080134,
+        "maximum_root_shift_m": 0.009312286786232908,
+        "maximum_joint_correction_rad": 0.3251094592853756,
+        "signature": {
+          "baseline": "554a3c5bcaa228e39ff70ae3f1fc27fcbb85fd7a5d66e92cf1305fe0d9f47831",
+          "scene": "fde8b52fa1b7a22cd1f01c4ed527ffecad573f69dd1729fdf623df1f65565469",
+          "code": "dd54013348468575e8a2468aea8eee34dbb08de13bff4e7757004c1c403a8e26",
+          "passes": 2,
+          "maximum_frames": null,
+          "target": "d0b113bc540fe3c049d4e3f82a8f3bad0e723184d4ae98cf33583b4e3e7d1881",
+          "processing": {
+            "src/acp/data/adapters/holosoma.py": "ee2ffb814f9fca5fd161bbed936452061251192317e4a617c03ca9e8d8e93108",
+            "src/acp/data/scene.py": "e7c2250327beb06570442b554f48ed2ddb84fd4c7f147429adc0c9aa53259d48",
+            "src/acp/quality/native.py": "fb952159a26a455023549ca4de817f47c539ec5784aff65e1543860cfd6f72a1",
+            "src/acp/quality/evaluate.py": "a60272efe7ec4cef58a21179400d303efecc93d3dbdb7b1fb3f866b9b11a3a1b",
+            "configs/data_quality.json": "394f3870ec309465ddc60c086f73bfb157ffaa54218944850dc56aa75c34a8be"
+          }
+        },
+        "duration_s": 253.50702455099963,
+        "note": "Geometry repair only; original offline thresholds and velocity/support gates remain active",
+        "quality_status": "needs_repair",
+        "quality_reasons": [
+          "left_foot_sliding",
+          "right_foot_sliding"
+        ],
+        "source_stance_contact_interior_speed_p95_m_s": {
+          "left": 0.20545416027424587,
+          "right": 0.2272008557841976
+        },
+        "quality_assessment_signature": {
+          "motion_sha256": "540c65beb113dd94cada0026777278018b3c3a0e6c7fd7037204378645929ed2",
+          "evaluator_sha256": "31cb97ed49d1e34db955a3bb03f47382e0fdee9e5ccfd3c5021674f3b5b44fb7",
+          "manifest_sha256": "0652149cb2d09760253b52ea8d05b68b42c65ba19b075d399e95cfad8a332dc3",
+          "native_geometry_sha256": "9462e26a0642df899978dfa23b0d9165a312a269cc8a78b3dfa71261de1bf4e5",
+          "source_keypoints_sha256": "7fee215ad41a91344b91364d0538b0ba5925a8622f2a0eecc7b75cc988d0b78c",
+          "criteria": {
+            "version": "offline_kinematic_screen_v1",
+            "environment_penetration_tolerance_m": 0.003,
+            "self_penetration_tolerance_m": 0.003,
+            "maximum_invalid_environment_frames": 0,
+            "maximum_invalid_joint_position_frames": 0,
+            "maximum_invalid_joint_velocity_frames": 0,
+            "maximum_self_collision_frames": 0,
+            "minimum_stance_near_surface_fraction_per_foot": 0.9,
+            "maximum_contact_foot_planar_speed_p95_m_s": 0.15,
+            "maximum_mapped_keypoint_mean_error_m": 0.08,
+            "maximum_mapped_keypoint_p95_error_m": 0.15,
+            "minimum_native_drake_raw_flag_agreement": 0.999,
+            "note": "Engineering screening thresholds, not paper-specified acceptance criteria. Passing identifies a Stage-1 offline reference candidate. Successful tracker rollouts and force events are required separately for Stage-2 hindsight, not as a prerequisite for starting Stage-1 training. Stance uses source low foot velocity, and foot speed uses the target semantic sole frame."
+          },
+          "mujoco_version": "3.15.0"
+        }
+      },
+      "quality": {
+        "clip": "walk4_subject1",
+        "scene_id": "walk4",
+        "z_scale": null,
+        "route": "native29_fullbody_geometry_repair",
+        "source_frames": 4918,
+        "source_fps": 30.0,
+        "artifact_directory": "/home/lyx/train/ACP_repro/outputs/数据集/lafan1/instinct29_geometry_v2/clips/walk4_subject1",
+        "labeled_motion": "/home/lyx/train/ACP_repro/outputs/数据集/lafan1/instinct29_geometry_v2/clips/walk4_subject1/labeled/motion.npz",
+        "labeled_motion_relative": "clips/walk4_subject1/labeled/motion.npz",
+        "native_scene": "/home/lyx/train/ACP_repro/outputs/数据集/lafan1/instinct29_v1/clips/walk4_subject1/scene.xml",
+        "status": "needs_repair",
+        "reasons": [
+          "left_foot_sliding",
+          "right_foot_sliding"
+        ],
+        "stage1_offline_eligible": false,
+        "stage2_hindsight_eligible": false,
+        "frames": 8196,
+        "fps": 50.0,
+        "expected_frames": 8196,
+        "support_metrics": null,
+        "duration_s": 163.9,
+        "geometry_invalid_frames": 0,
+        "joint_position_invalid_frames": 0,
+        "joint_velocity_invalid_frames": 0,
+        "max_joint_velocity_limit_ratio": 0.7054248639651416,
+        "minimum_environment_distance_m": -0.0011090577176847572,
+        "self_collision_frames": 0,
+        "self_collision_fraction": 0.0,
+        "minimum_self_contact_distance_m": -0.0015964459407080134,
+        "self_collision_pairs": {},
+        "unexpected_self_collision_frames": 0,
+        "unexpected_self_collision_pairs": {},
+        "structural_joint_housing_contact_count": 0,
+        "collision_policy": null,
+        "nonlocal_self_collision_frames": 0,
+        "nonlocal_self_collision_pairs": {},
+        "nonlocal_self_collision_definition": "MuJoCo self contact beyond 3 mm between bodies separated by more than two moving joints; supplementary diagnostic, not a calibrated allowed-collision matrix",
+        "mapped_keypoint_mean_error_m": 0.0028994242557347115,
+        "mapped_keypoint_p95_error_m": 0.008858149884680373,
+        "keypoint_errors_by_name": {
+          "Spine1": 0.00218480592095503,
+          "LeftUpLeg": 0.002339790806962132,
+          "LeftLeg": 0.0019394034722237208,
+          "LeftToeBase": 0.0036029390253737303,
+          "RightUpLeg": 0.0024359105735232743,
+          "RightLeg": 0.0021947249029518005,
+          "RightToeBase": 0.005046910813570735,
+          "LeftArm": 0.0015528654368211154,
+          "LeftForeArm": 0.0023768168335404874,
+          "LeftHandMiddle3": 0.005656971636843097,
+          "RightArm": 0.001574939725611483,
+          "RightForeArm": 0.0010376998686772935,
+          "RightHandMiddle3": 0.005434958545902694,
+          "LeftFoot": 0.002826978558890953,
+          "RightFoot": 0.0032856477141731226
+        },
+        "foot_metrics": {
+          "left": {
+            "stance_steps": 6287,
+            "stance_near_surface_fraction": 1.0,
+            "stance_gap_p95_m": 0.0032914193150009236,
+            "contact_interior_steps": 6021,
+            "speed_landmark": "semantic_sole",
+            "speed_mask": "source stance and target contact, interior samples",
+            "contact_planar_speed_mean_m_s": 0.05929063023484034,
+            "contact_planar_speed_p95_m_s": 0.20545416027424587
+          },
+          "right": {
+            "stance_steps": 6290,
+            "stance_near_surface_fraction": 1.0,
+            "stance_gap_p95_m": 0.003624638715927197,
+            "contact_interior_steps": 6022,
+            "speed_landmark": "semantic_sole",
+            "speed_mask": "source stance and target contact, interior samples",
+            "contact_planar_speed_mean_m_s": 0.06525825746770889,
+            "contact_planar_speed_p95_m_s": 0.2272008557841976
+          }
+        },
+        "native_drake_raw_flag_agreement": 1.0,
+        "contact_steps_by_body": {
+          "left_foot": 7526,
+          "right_foot": 7297,
+          "left_knee": 0,
+          "right_knee": 0,
+          "left_hand": 0,
+          "right_hand": 0,
+          "left_elbow": 0,
+          "right_elbow": 0,
+          "pelvis": 0
+        },
+        "signature": {
+          "motion_sha256": "540c65beb113dd94cada0026777278018b3c3a0e6c7fd7037204378645929ed2",
+          "evaluator_sha256": "31cb97ed49d1e34db955a3bb03f47382e0fdee9e5ccfd3c5021674f3b5b44fb7",
+          "manifest_sha256": "0652149cb2d09760253b52ea8d05b68b42c65ba19b075d399e95cfad8a332dc3",
+          "native_geometry_sha256": "9462e26a0642df899978dfa23b0d9165a312a269cc8a78b3dfa71261de1bf4e5",
+          "source_keypoints_sha256": "7fee215ad41a91344b91364d0538b0ba5925a8622f2a0eecc7b75cc988d0b78c",
+          "criteria": {
+            "version": "offline_kinematic_screen_v1",
+            "environment_penetration_tolerance_m": 0.003,
+            "self_penetration_tolerance_m": 0.003,
+            "maximum_invalid_environment_frames": 0,
+            "maximum_invalid_joint_position_frames": 0,
+            "maximum_invalid_joint_velocity_frames": 0,
+            "maximum_self_collision_frames": 0,
+            "minimum_stance_near_surface_fraction_per_foot": 0.9,
+            "maximum_contact_foot_planar_speed_p95_m_s": 0.15,
+            "maximum_mapped_keypoint_mean_error_m": 0.08,
+            "maximum_mapped_keypoint_p95_error_m": 0.15,
+            "minimum_native_drake_raw_flag_agreement": 0.999,
+            "note": "Engineering screening thresholds, not paper-specified acceptance criteria. Passing identifies a Stage-1 offline reference candidate. Successful tracker rollouts and force events are required separately for Stage-2 hindsight, not as a prerequisite for starting Stage-1 training. Stance uses source low foot velocity, and foot speed uses the target semantic sole frame."
+          },
+          "mujoco_version": "3.15.0"
+        },
+        "note": "Offline Stage-1 reference screening only. Stage-2 hindsight requires successful tracker rollouts and force events separately."
+      }
+    }
+  },
+  "cpu_smoke": {
+    "passed": true,
+    "optimizer_steps": 0,
+    "observation_contract": [
+      {
+        "task": "walk",
+        "actor": 468,
+        "critic": 353,
+        "reference_joint_leak": false
+      },
+      {
+        "task": "box",
+        "actor": 468,
+        "critic": 353,
+        "reference_joint_leak": false
+      }
+    ],
+    "wm_gradient": 1.860199213027954,
+    "policy_gradient": 13.078510284423828,
+    "device": "cpu",
+    "limitation": "CPU does not validate CUDA, throughput, or convergence",
+    "body_links_monitored": {
+      "walk": 47,
+      "box": 47
+    },
+    "artifact": "outputs/实验归档/stage1/supermimic/fullbody_audit_cpu_v2"
+  },
+  "test_results": {
+    "retarget_env_targeted": "19 passed",
+    "drake_env_suite": "38 passed, 19 skipped (missing optional dependencies/environment)",
+    "cuda_tested": false,
+    "optimizer_steps": 0
+  },
+  "paper_reward_source_sha256": "bfb14994563cb8d311ed825a36912e1067ab7c8bbe57954e03c2a4ea35620256"
+}

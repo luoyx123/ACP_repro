@@ -23,6 +23,7 @@ from .env import Simulator
 from .model import WorldModel, pack, unpack
 from .rotations import mat_to_quat
 from .task import MDP
+from .fullbody import contact_metrics
 
 
 class Replay:
@@ -69,6 +70,8 @@ class Collection:
         self.body_velocity = torch.zeros((count, 9, 3), device=device)
         self.training_noise = cfg['observation_noise']
         self.evaluating = False
+        self.initialization = package.get('supermimic_initialization', {})
+        self.reset_rejections = 0
         self.reset()
 
     @torch.no_grad()
@@ -92,6 +95,30 @@ class Collection:
             perturbed['base_position_w'][:, 2] += uniform((len(ids),), reset_cfg['base_height'])
             self.sim.reset(perturbed, ids)
             self.sim.previous_action[ids] = initial_command
+        # Admission happens before observation/replay insertion. It is not a
+        # rollout termination, a policy failure, or an adaptive-sampling signal.
+        gate = self.initialization
+        if gate.get('enabled', False):
+            tolerance = gate['maximum_penetration_m']
+            pending = ids
+            for attempt in range(gate['maximum_resamples'] + 1):
+                env_depth, self_depth = self.sim.geometry_depths()
+                finite = torch.isfinite(pack(self.sim.state())).all(-1)
+                bad = pending[(torch.maximum(env_depth, self_depth)[pending] > tolerance) | ~finite[pending]]
+                if not len(bad):
+                    break
+                self.reset_rejections += len(bad)
+                if attempt == gate['maximum_resamples']:
+                    raise ValueError(f'{self.name}: {len(bad)} invalid initializations after {attempt} resamples; '
+                                     'repair reference/reset configuration; threshold is never relaxed automatically')
+                values = ref.sample(self.times[bad])
+                if self.sim.randomized and not self.evaluating:
+                    values['joint_positions'] = (values['joint_positions'] + uniform((len(bad), 23), reset_cfg['joint_position'])).clamp(bounds[:, 0], bounds[:, 1])
+                    values['base_position_w'][:, 2] += uniform((len(bad),), reset_cfg['base_height'])
+                initial_command = self.sim.previous_action[bad].clone()
+                self.sim.reset(values, bad)
+                self.sim.previous_action[bad] = initial_command
+                pending = bad
         S = self.sim.state()
         self.age[ids] = 0
         self.episode[ids] += 1
@@ -127,10 +154,18 @@ class Collection:
         S1 = self.sim.step(a)
         self.age += 1
         self.times += self.mdp.dt
-        contacts = (self.sim.force_history[..., 2].abs().amax(1)>1).float()
+        if not torch.isfinite(pack(S1)).all():
+            raise FloatingPointError(f'{self.name}: non-finite state before replay insertion')
+        contacts = self.sim.measured_contacts()
         result = self.mdp.transition(S0, S1, self.times, a, previous, self.action_prev2, self.body_velocity,
                                      contacts, self.sim.applied_torque, self.sim.computed_torque, self.age)
         values.update(s1=pack(S1), contacts=contacts, done=result['done'], reward=result['reward'])
+        diagnostics = contact_metrics(self.sim, self.sim.robot_cfg['body_names'])
+        diagnostics['reset/rejected_candidates_total'] = self.reset_rejections
+        diagnostics['end/reference_complete_fraction'] = float(result['success'].float().mean())
+        diagnostics['end/failure_fraction'] = float((result['done'] & ~result['success']).float().mean())
+        for name, term in result['terms'].items():
+            diagnostics['reward_terms/' + name] = float(term.mean())
         replay.append(values)
         self.action_prev2.copy_(previous)
         self.body_velocity.copy_(result['body_velocity'])
@@ -141,13 +176,16 @@ class Collection:
         ids = done.nonzero(as_tuple=True)[0]
         if len(ids):
             self.reset(ids)
-        return {k:float(v.float().mean()) for k, v in dict(reward=result['reward'], root_error=result['metrics']['root_error'],
-                                                         done=done, success=success, phase=self.phase).items()}
+        return {**diagnostics, **{k:float(v.float().mean()) for k, v in dict(reward=result['reward'], root_error=result['metrics']['root_error'],
+                                                         done=done, success=success, phase=self.phase).items()}}
 
 
 class Runner:
     def __init__(self, package, cfg, n=1024, device='cuda:0'):
         self.root, self.cfg, self.device = Path(package), cfg, device
+        gate = cfg.get('initialization_validation', {})
+        if gate.get('enabled') and (gate['maximum_penetration_m'] <= 0 or gate['maximum_resamples'] < 0):
+            raise ValueError('Invalid initialization admission settings')
         counts = ['buffer_steps', 'warmup_steps', 'wm_window', 'wm_batches', 'wm_batch', 'horizon',
                   'pi_batch', 'critic_epochs', 'critic_minibatches', 'save_interval', 'lr_decay_iters']
         if any(cfg[k]<1 for k in counts) or cfg['utd']<=0 or cfg['lr']<=0:
@@ -157,6 +195,7 @@ class Runner:
         if cfg['amp'] not in ('bf16', 'none'):
             raise ValueError('amp must be bf16 or none')
         self.package = verify(self.root)
+        self.package = {**self.package, 'supermimic_initialization': gate}
         if n<len(self.package['clips']):
             raise ValueError('At least one environment per selected clip')
         torch.manual_seed(cfg['seed'])
@@ -181,7 +220,13 @@ class Runner:
         rows = {}
         for _ in range(steps):
             for group, buffer in zip(self.groups, self.buffers):
-                rows[group.name] = group.collect(self.policy, buffer, self.cfg['action_noise'])
+                row = group.collect(self.policy, buffer, self.cfg['action_noise'])
+                totals = rows.setdefault(group.name, {})
+                for key, value in row.items():
+                    if key.endswith(('_max_m', '_total')):
+                        totals[key] = max(totals.get(key, value), value)
+                    else:
+                        totals[key] = totals.get(key, 0.) + value / steps
             self.sim_steps += sum(g.n for g in self.groups)
         return rows
 
@@ -341,7 +386,7 @@ class Runner:
                 success = torch.zeros_like(alive)
                 lengths = torch.zeros(g.n, device=self.device)
                 error = torch.zeros_like(lengths)
-                frames, references, quaternions, forces = [], [], [], []
+                frames, references, quaternions, forces, normal_forces, link_forces = [], [], [], [], [], []
                 max_steps = math.ceil((g.mdp.reference.end-g.mdp.reference.start)*(1-phase)/g.mdp.dt)+2
                 for _ in range(max_steps):
                     actor, _ = g.observations()
@@ -351,7 +396,7 @@ class Runner:
                     S1 = g.sim.step(torch.where(alive[:, None], action, 0.))
                     g.age += 1
                     g.times += g.mdp.dt
-                    contacts = (g.sim.force_history[..., 2].abs().amax(1)>1).float()
+                    contacts = g.sim.measured_contacts()
                     result = g.mdp.transition(S0, S1, g.times, action, previous, g.action_prev2, g.body_velocity,
                                               contacts, g.sim.applied_torque, g.sim.computed_torque, g.age)
                     lengths += alive
@@ -363,6 +408,8 @@ class Runner:
                         references.append(torch.cat((ref['base_position_w'], ref['joint_positions']), -1)[0].cpu().numpy())
                         quaternions.append(ref['base_quaternion_wxyz'][0].cpu().numpy())
                         forces.append(g.sim.force_history[0].cpu().numpy())
+                        normal_forces.append(g.sim.normal_force_history[0].cpu().numpy())
+                        link_forces.append(g.sim.link_force_history[0].cpu().numpy())
                     alive &= ~result['done']
                     if not alive.any():
                         break
@@ -374,6 +421,10 @@ class Runner:
                 np.savez_compressed(output/f'{g.name}_{label}.npz', states=np.asarray(frames),
                                     reference=np.asarray(references), reference_quaternion=np.asarray(quaternions),
                                     contact_force_history=np.asarray(forces), dt=g.mdp.dt,
+                                    contact_normal_force_sum_history=np.asarray(normal_forces),
+                                    all_link_normal_force_sum_history=np.asarray(link_forces),
+                                    all_link_names=g.sim.link_names,
+                                    contact_definition='environment-only normal vectors; reward uses max abs Fz > 1N',
                                     joint_names=g.sim.robot_cfg['joint_names'], body_names=g.sim.robot_cfg['body_names'],
                                     physics_engine='mujoco', initial_phase=phase)
                 rows.append(dict(task=g.name, initial_phase=phase, success_rate=float(success.float().mean()),
@@ -451,7 +502,7 @@ def main():
             assert a.shape==(g.n, 468) and v.shape==(g.n, 353)
             assert torch.equal(a, a1) and not torch.equal(v, v1)
             contract.append(dict(task=g.name, actor=468, critic=353, reference_joint_leak=False))
-        runner.collect(max(6, min(args.steps, 16)))
+        collection_metrics = runner.collect(max(6, min(args.steps, 16)))
         wm_grad = runner.backward(runner.wm_loss(), runner.wm_optimizer, runner.wm.parameters(), apply=False)
         for q in [*runner.wm.parameters(), *runner.policy.critic.parameters()]:
             q.requires_grad_(False)
@@ -460,6 +511,7 @@ def main():
         for key, value in original.items():
             torch.testing.assert_close(runner.policy.state_dict()[key], value, rtol=0, atol=0)
         result = dict(passed=True, optimizer_steps=runner.optimizer_steps, observation_contract=contract,
+                      collection_metrics=collection_metrics,
                       wm_gradient=wm_grad, policy_gradient=pi_grad, device=args.device,
                       limitation='CPU does not validate CUDA, throughput, or convergence' if args.device=='cpu' else 'No convergence test')
     elif args.mode=='benchmark':

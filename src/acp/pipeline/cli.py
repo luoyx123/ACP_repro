@@ -112,8 +112,12 @@ def main():
         if args.config:os.environ['ACP_MACHINE_CONFIG']=str(args.config.absolute())
         cfg=machine()
         python=sys.executable if args.command in ('check','migrate','structure','materialize','sim-check','calibrate','train','diagnose','supermimic') else str(cfg_path(cfg,'retarget_python'))
+        env={**os.environ,'PYTHONPATH':str(PROJECT/'src')+os.pathsep+os.environ.get('PYTHONPATH','')}
+        # Set before NumPy/SciPy import in the child, not after BLAS has started.
+        if args.command in ('repair','finalize','compare'):
+            env.update({k:'1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS')})
         raise SystemExit(subprocess.call([python,'-m',operations[args.command],*extra],cwd=PROJECT,
-            env={**os.environ,'PYTHONPATH':str(PROJECT/'src')+os.pathsep+os.environ.get('PYTHONPATH','')}))
+            env=env))
     if args.config:os.environ['ACP_MACHINE_CONFIG']=str(args.config.absolute())
     cfg=machine();reg=registry()
     if args.command=='list':

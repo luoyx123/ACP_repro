@@ -383,6 +383,20 @@
       "dataset": "php",
       "role": "dataset",
       "label": "php InstinctMJ原生29DoF"
+    },
+    "omni_instinct29_geometry": {
+      "path": "outputs/数据集/omni/instinct29_geometry_v3",
+      "dataset": "omni",
+      "role": "archive",
+      "label": "omni 29DoF全身几何修复试验（完整单片段，详见质量报告）",
+      "training_admitted": false
+    },
+    "lafan1_instinct29_geometry": {
+      "path": "outputs/数据集/lafan1/instinct29_geometry_v2",
+      "dataset": "lafan1",
+      "role": "archive",
+      "label": "lafan1 29DoF全身几何修复试验（完整单片段，详见质量报告）",
+      "training_admitted": false
     }
   },
   "datasets": {

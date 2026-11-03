@@ -334,9 +334,11 @@ def repair(clip_name, baseline, output, passes=2, maximum_frames=None, smooth_we
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--method', choices=('arms', 'fullbody'), default='arms',
+                        help='arms: 原 23DoF 肩肘修复；fullbody: 原生 29DoF 几何约束修复并重标注')
     parser.add_argument("--baseline", type=Path, default=run_path("omni_asap23"))
     parser.add_argument("--output", type=Path, default=run_path("omni_asap23_arm_repair"))
-    parser.add_argument("--clips", nargs="+", required=True)
+    parser.add_argument("--clips", nargs="+", help='fullbody 不传时处理清单全部片段')
     parser.add_argument("--workers", type=int, default=3)
     parser.add_argument("--passes", type=int, default=2)
     parser.add_argument("--maximum-frames", type=int)
@@ -346,6 +348,11 @@ def main():
         parser.error("workers/passes positive; maximum-frames at least two")
     if args.output.resolve() == args.baseline.resolve():
         parser.error("Output must differ from the preserved baseline")
+    if args.method == 'fullbody':
+        from acp.quality.fullbody import run
+        return run(args)
+    if not args.clips:
+        parser.error('arms requires --clips')
     if not np.isfinite(args.smooth_weight) or args.smooth_weight < 0:
         parser.error("smooth-weight must be finite and nonnegative")
     for name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):

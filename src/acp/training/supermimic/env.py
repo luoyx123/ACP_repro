@@ -6,6 +6,7 @@ import torch
 
 from .assets import compile_model
 from .rotations import mv, quat_to_mat
+from .fullbody import reduce_contacts, geometry_depths
 
 
 class Simulator:
@@ -42,6 +43,11 @@ class Simulator:
             elif self.model.body_jntnum[b] == 0:
                 group[b] = group[self.model.body_parentid[b]]
         self.geom_group = torch.tensor(group[self.model.geom_bodyid], device=device)
+        self.robot_geom = torch.tensor(self.model.geom_group == 1, device=device)
+        link_ids = sorted(set(self.model.geom_bodyid[self.model.geom_group == 1].tolist()))
+        self.link_names = [self.model.body(b).name for b in link_ids]
+        self.geom_link_group = torch.tensor([link_ids.index(int(b)) if int(b) in link_ids else -1
+                                             for b in self.model.geom_bodyid], device=device)
         if self.cpu:
             self.models = [deepcopy(self.model) for _ in range(n)]
             self.data = [mujoco.MjData(m) for m in self.models]
@@ -74,13 +80,15 @@ class Simulator:
                                                rtol=1e-5, atol=1e-6, msg='Physics readback: '+key)
         self.previous_action = torch.zeros((n, 23), device=device)
         self.force_history = torch.zeros((n, self.decimation, 9, 3), device=device)
+        self.normal_force_history = torch.zeros((n, self.decimation, 9), device=device)
+        self.link_force_history = torch.zeros((n, self.decimation, len(link_ids)), device=device)
         self.computed_torque = torch.zeros((n, 23), device=device)
         self.applied_torque = torch.zeros_like(self.computed_torque)
         self.report = dict(engine='mujoco-cpu-fixture' if self.cpu else 'mujoco-warp', randomized=self.randomized,
                            physical_readback_fields=list(self.physical),
                            friction='robot priority 1 over terrain 0; sampled dynamic coefficient is single Coulomb coefficient; static sample recorded only',
                            restitution='e -> damping ratio -ln(e)/sqrt(pi^2+ln(e)^2), e=0 -> 1; solver approximation',
-                           contacts='world-frame normal component only, summed by 9 body groups, max abs z over 4 substeps')
+                           contacts='robot-environment only; world normal vectors by 9 groups; paper max abs z > 1N; scalar normal sums are diagnostics only')
 
     def _sample_dynamics(self):
         def sample(name, shape, bounds):
@@ -148,6 +156,8 @@ class Simulator:
         self.qvel[ids[:, None], self.vids] = values['joint_velocities']
         self.previous_action[ids] = (values['joint_positions']-self.default)/self.robot_cfg['action_scale']
         self.force_history[ids] = 0
+        self.normal_force_history[ids] = 0
+        self.link_force_history[ids] = 0
         if self.cpu:
             for i in ids.tolist():
                 mujoco.mj_resetData(self.models[i], self.data[i])
@@ -160,36 +170,61 @@ class Simulator:
             with self.wp.ScopedDevice(self.device):
                 self.mw.forward(self.wmodel, self.wdata)
 
+    def packed_contacts(self):
+        """The same shape/validity contract for CPU and Warp packed buffers."""
+        if not self.cpu:
+            wp, data = self.wp, self.wdata
+            count = wp.to_torch(data.nacon).reshape(-1)[0]
+            torch._assert_async(count <= data.naconmax,
+                                'Contact buffer overflow: contact diagnostics are unreliable')
+            geom = wp.to_torch(data.contact.geom).long()
+            world = wp.to_torch(data.contact.worldid).long()
+            active = torch.arange(len(geom), device=self.device) < count
+            return geom, world, wp.to_torch(data.contact.dist), active
+        geom, world, dist = [], [], []
+        for i, data in enumerate(self.data):
+            for contact in data.contact:
+                geom.append((int(contact.geom1), int(contact.geom2)))
+                world.append(i)
+                dist.append(float(contact.dist))
+        return (torch.tensor(geom, dtype=torch.long).reshape(-1, 2),
+                torch.tensor(world, dtype=torch.long), torch.tensor(dist, dtype=torch.float32),
+                torch.ones(len(dist), dtype=torch.bool))
+
+    def geometry_depths(self):
+        return geometry_depths(*self.packed_contacts(), self.robot_geom, self.n)
+
+    def measured_contacts(self):
+        """ACP Table 3: preserve vertical force > 1 N, including all nine bodies."""
+        return (self.force_history[..., 2].abs().amax(1) > 1.).float()
+
     def forces(self):
-        """Normal-only force matches the old IsaacLab 2.2 contact sensor semantics."""
+        """Existing normal-only sensor mapping; self collisions cannot supply support."""
         import mujoco
-        result = torch.zeros((self.n, 9, 3), device=self.device)
+        geom, world, _, active = self.packed_contacts()
         if self.cpu:
+            frames, forces = [], []
             for i, (m, d) in enumerate(zip(self.models, self.data)):
                 for c in range(d.ncon):
                     contact = d.contact[c]
                     f = np.zeros(6)
                     mujoco.mj_contactForce(m, d, c, f)
-                    normal = torch.tensor(contact.frame.reshape(3, 3)[0]*f[0], dtype=torch.float32)
-                    for g, sign in [(contact.geom1, -1), (contact.geom2, 1)]:
-                        group = int(self.geom_group[g])
-                        if group>=0:
-                            result[i, group] += sign*normal
-            return result
+                    frames.append(contact.frame.reshape(3, 3)[0].copy())
+                    forces.append(f[0])
+            frame = torch.tensor(np.asarray(frames).reshape(-1, 3), dtype=torch.float32)
+            force = torch.tensor(forces, dtype=torch.float32)
+            vectors, scalar = reduce_contacts(geom, world, force, frame, active, self.robot_geom, self.geom_group, self.n)
+            _, links = reduce_contacts(geom, world, force, frame, active, self.robot_geom, self.geom_link_group, self.n, len(self.link_names))
+            return vectors, scalar, links
         wp, mw, data = self.wp, self.mw, self.wdata
         self.contact_force.zero_()
         with wp.ScopedDevice(self.device):
             mw.contact_force(self.wmodel, data, self.contact_ids, False, self.contact_force)
-        force = wp.to_torch(self.contact_force)[:, :1]*wp.to_torch(data.contact.frame)[:, 0]
-        gids = wp.to_torch(data.contact.geom).long().clamp(min=0, max=self.model.ngeom-1)
-        worlds = wp.to_torch(data.contact.worldid).long().clamp(min=0, max=self.n-1)
-        valid = torch.arange(data.naconmax, device=self.device)<wp.to_torch(data.nacon)[0]
-        for col, sign in [(0, -1), (1, 1)]:
-            group = self.geom_group[gids[:, col]]
-            mask = valid & (group>=0)
-            # Fixed-sized masked scatter avoids dynamic GPU->CPU contact-count reads.
-            result.view(-1, 3).index_add_(0, worlds*9+group.clamp(min=0), sign*force*mask[:, None])
-        return result
+        force = wp.to_torch(self.contact_force)[:, 0]
+        frame = wp.to_torch(data.contact.frame)[:, 0]
+        vectors, scalar = reduce_contacts(geom, world, force, frame, active, self.robot_geom, self.geom_group, self.n)
+        _, links = reduce_contacts(geom, world, force, frame, active, self.robot_geom, self.geom_link_group, self.n, len(self.link_names))
+        return vectors, scalar, links
 
     def step(self, action):
         import mujoco
@@ -212,7 +247,7 @@ class Simulator:
                 self.qfrc[:, self.vids] = applied
                 with self.wp.ScopedDevice(self.device):
                     self.mw.step(self.wmodel, self.wdata)
-            self.force_history[:, tick] = self.forces()
+            self.force_history[:, tick], self.normal_force_history[:, tick], self.link_force_history[:, tick] = self.forces()
         self.previous_action.copy_(action)
         return self.state()
 

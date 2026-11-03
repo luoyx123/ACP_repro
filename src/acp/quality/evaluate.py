@@ -39,6 +39,18 @@ def scene_from_manifest(manifest):
     raise ValueError("No native scene recorded in manifest")
 
 
+def contact_speed_mask(contacts, source_stance=None):
+    """Near-surface swing is not stance; omit onset/offset samples as well."""
+    selected = contacts.copy()
+    if source_stance is not None:
+        selected &= source_stance
+    interior = selected.copy()
+    interior[1:] &= selected[:-1]
+    interior[:-1] &= selected[1:]
+    interior[0] = interior[-1] = False
+    return interior
+
+
 def assess(row, root, criteria):
     clip = Path(root) / "clips" / row["clip"]
     manifest_path = clip / "manifest.json"
@@ -212,18 +224,13 @@ def assess(row, root, criteria):
     for index, side in enumerate(("left", "right")):
         # Exclude contact transitions: a sole frame can move during heel strike
         # or toe off. This remains a sole-landmark diagnostic, not contact velocity.
-        interior = flags[:, index].copy()
-        if use_toe_stance:
-            interior &= source_stance[:, index]
-        selected = interior.copy()
-        interior[1:] &= selected[:-1]
-        interior[:-1] &= selected[1:]
-        interior[0] = interior[-1] = False
+        interior = contact_speed_mask(flags[:, index],
+                                      source_stance[:, index] if source_stance is not None else None)
         speeds = (toe_speed if use_toe_stance else planar_speed)[interior, index]
         stance = native["source_stance_diagnostics"].get(side, {})
         foot_metrics[side] = {**stance, "contact_interior_steps": int(interior.sum()),
             'speed_landmark':mapping[side.title()+'ToeBase'] if use_toe_stance else 'semantic_sole',
-            'speed_mask':'source stance and target contact, interior samples' if use_toe_stance else 'target contact interior samples',
+            'speed_mask':'source stance and target contact, interior samples' if source_stance is not None else 'target contact interior samples',
             "contact_planar_speed_mean_m_s": float(speeds.mean()) if len(speeds) else None,
             "contact_planar_speed_p95_m_s": float(np.percentile(speeds, 95)) if len(speeds) else None}
     expected = int(np.floor((row["source_frames"] - 1) / row["source_fps"] * fps + 1e-9)) + 1
