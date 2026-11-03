@@ -22,6 +22,7 @@ PURPOSE={
  'task':'GPU 参考库、实际 yaw 下的 oracle 接触、CSI 更新及 Table 3 奖励公式',
  'ppo':'非对称 actor/critic、运行归一化、显式超时 bootstrap 的 GAE 与 PPO',
  'contact_audit':'Stage 1 几何／法向力接触时序、失稳姿态与冲击审计、点源偏移及成对oracle配置',
+ 'diagnostics':'Stage 1 冻结checkpoint的物理／延迟对照、200Hz PD力矩记录、离线诊断与HTML',
  'report':'Stage 1 训练离线评估、实际物理轨迹与参考对照视频、单文件HTML报告',
  'runner':'Stage 1 单卡启动、训练／评估、TensorBoard、checkpoint 与断点续训',
  'reference':'仿真无关的按名称动作加载、SLERP 查询与动作／关节目标转换',
@@ -83,6 +84,7 @@ def update(stage=None):
 | IsaacLab 单卡环境预检 | `sim-check --gpu <空闲物理编号或UUID> --steps 1000` |
 | M2 机器人与仿真验收 | `calibrate --gpu 0 --num-envs 1 16 64 --policy-steps 500 --render` |
 | Stage 1 结果报告与视频 | `training-report --run <训练目录> --output <报告目录>` |
+| Stage 1 控制与物理诊断 | `diagnose offline/rollout/suite/report --run <训练目录> --output <诊断目录> ...` |
 | Stage 1 共享 Tracker 训练 | `train --task walk_box --gpu 0 --num-envs 2048 --iterations 10000 --background` |
 | 历史目录迁移 | `migrate`，只用于目录管理 |
 

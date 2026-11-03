@@ -13,15 +13,17 @@ from acp.data.assets import PROJECT,atomic_json,machine,run_path,registry
 from acp.management.simulation import select_gpu
 
 
-def evaluate(task,model,folder,iteration):
+def evaluate(task,model,folder,iteration,*,phases=(0.,.9),diagnostics=False,controller='policy',reset_after=True):
     import numpy as np
     import torch
     folder = folder/f'iteration_{iteration:06d}';folder.mkdir(parents=True,exist_ok=True)
     task.evaluating = True;results = []
+    task.env.diagnostics_enabled = diagnostics
     # The simulator retains mutable history tensors after evaluation; no_grad
     # keeps them writable when normal training resumes.
     with torch.no_grad():
-        for phase,label in ((0.,'from_start'),(.9,'from_tail')):
+        for phase in phases:
+            label = 'from_start' if phase==0 else 'from_tail' if phase==.9 else f'phase_{round(phase*10000):04d}'
             task.reset(phase=phase)
             alive = torch.ones(task.n,device=task.device,dtype=torch.bool)
             successes = torch.zeros_like(alive);lengths = torch.zeros_like(task.time)
@@ -29,10 +31,24 @@ def evaluate(task,model,folder,iteration):
             returns = torch.zeros_like(task.time)
             representatives = {name:int((task.assignment==i).nonzero()[0]) for i,name in enumerate(task.member_names)}
             records = {name:dict(states=[],contacts=[],reference=[]) for name in representatives}
+            if diagnostics:
+                clipped_count = torch.zeros((task.n,23),device=task.device)
+                active_substeps = torch.zeros(task.n,device=task.device)
+                for record in records.values():record['diagnostics'] = {}
             for _ in range(int(float(task.duration.max())/task.dt)+2):
                 actor,_ = task.observations()
-                action = model.actor(model.actor_norm(actor))
-                reward,terminated,done,success,_,metrics = task.step(action)
+                normalized_actor = model.actor_norm(actor) if controller=='policy' or diagnostics else None
+                if controller=='policy':action = model.actor(normalized_actor)
+                elif controller=='reference_pd':
+                    desired=task.reference.sample(task.time+task.dt)['joint_positions']
+                    action=(desired-task.env.default)/task.env.cfg['action_scale']
+                else:raise ValueError('Unknown evaluation controller')
+                time_before=task.time.clone() if diagnostics else None
+                reward,terminated,done,success,terms,metrics = task.step(action)
+                if diagnostics:
+                    trace=task.env.diagnostic_trace
+                    clipped_count += ((trace['computed_torque']-trace['applied_torque']).abs()>1e-4).sum(1)*alive[:,None]
+                    active_substeps += task.env.decimation*alive
                 for name,index in representatives.items():
                     if alive[index]:
                         env = task.env;record = records[name]
@@ -41,6 +57,17 @@ def evaluate(task,model,folder,iteration):
                         record['contacts'].append(env.force_history[index].cpu().numpy())
                         ref = task.reference.sample(task.time[index:index+1],env_ids=torch.tensor([index],device=task.device))
                         record['reference'].append(torch.cat((ref['base_position_w'][0],ref['joint_positions'][0])).cpu().numpy())
+                        if diagnostics:
+                            values=dict(action=action[index],actor_observation=actor[index],normalized_actor_observation=normalized_actor[index],time_before=time_before[index],
+                                time_after=task.time[index],reference_quaternion=ref['base_quaternion_wxyz'][0],
+                                reference_joint_velocity=ref['joint_velocities'][0],
+                                joint_velocity=env.robot.data.joint_vel[index,env.joint_ids],
+                                body_positions=env.body_positions()[index]-env.origins[index],
+                                reference_body_positions=ref['body_landmarks_w'][0],
+                                root_error=metrics['root_error'][index],orientation_error=metrics['orientation_error'][index],
+                                **{'substep_'+key:value[index] for key,value in trace.items()},
+                                **{'reward_'+key:value[index] for key,value in terms.items()})
+                            for key,value in values.items():record['diagnostics'].setdefault(key,[]).append(value.cpu().numpy().copy())
                 lengths += alive;error += metrics['root_error']*alive;joint_error += metrics['joint_rmse']*alive
                 returns += reward*alive;successes |= success & alive;alive &= ~done
                 if not alive.any(): break
@@ -50,24 +77,39 @@ def evaluate(task,model,folder,iteration):
             result['per_task'] = {name:dict(success_rate=float(successes[task.assignment==i].float().mean()),
                 episodes=int((task.assignment==i).sum()),mean_root_error_m=float((error/lengths.clamp(min=1))[task.assignment==i].mean()))
                 for i,name in enumerate(task.member_names)}
+            if diagnostics:
+                for i,name in enumerate(task.member_names):
+                    mask=task.assignment==i
+                    result['per_task'][name]['torque_clipped_fraction_by_joint']=(clipped_count[mask].sum(0)/active_substeps[mask].sum().clamp(min=1)).cpu().tolist()
             results.append(result)
             for name,record in records.items():
+                extra = {key:np.asarray(value) for key,value in record.get('diagnostics',{}).items()}
+                if diagnostics:
+                    index=representatives[name];pd=task.env.robot.actuators['pd'];j=task.env.joint_ids
+                    extra.update(kp=pd.stiffness[index,j].cpu().numpy(),kd=pd.damping[index,j].cpu().numpy(),
+                        effort_limits=pd.effort_limit[index,j].cpu().numpy(),environment_index=index,
+                        action_delay_ticks=int(task.env.action_delay_ticks[index]),
+                        joint_zero_bias=task.env.joint_zero_bias[index].cpu().numpy(),physics_dt=task.env.dt)
                 np.savez_compressed(folder/(name+'_'+label+'.npz'),states=np.asarray(record['states']),
                     contact_force_history=np.asarray(record['contacts']),reference=np.asarray(record['reference']),
-                    dt=task.dt,joint_names=task.env.joint_names,body_names=task.env.body_names)
-    task.evaluating = False;task.reset()
+                    dt=task.dt,joint_names=task.env.joint_names,body_names=task.env.body_names,**extra)
+    task.evaluating = False;task.env.diagnostics_enabled = False
+    if reset_after:task.reset()
     atomic_json(folder/'report.json',dict(iteration=iteration,task=task.name,results=results,
         scene=str(task.env.info['scene']),motion=str(task.env.info['motion']),joint_names=task.env.joint_names,
         scenes={name:str(info['scene']) for name,info in zip(task.member_names,task.infos)},
         observation_noise=False,reset_perturbations=False,
         randomized_startup_dynamics=task.cfg['dynamics_randomization'],
-        action_delay=task.cfg['dynamics_randomization'],
-        note='Deterministic actions; fixed startup dynamics retained; reference kinematics withheld from actor.'))
-    metrics = dict(evaluation_full_success=results[0]['success_rate'],evaluation_tail_success=results[1]['success_rate'],
+        action_delay=bool(task.env.action_delay_ticks.any()) if diagnostics else task.cfg['dynamics_randomization'],
+        actual_action_delay_ticks=task.env.action_delay_ticks.cpu().tolist() if diagnostics else None,
+        controller=controller,diagnostics=diagnostics,
+        trace_timing='200Hz pre-physics target/q/qd/torques; 50Hz post-physics states and reference' if diagnostics else None,
+        note='Deterministic actions; configured startup dynamics retained; reference kinematics withheld from actor.'))
+    metrics = dict(evaluation_full_success=results[0]['success_rate'],evaluation_tail_success=results[-1]['success_rate'],
                 evaluation_root_error_m=results[0]['mean_root_error_m'],evaluation_joint_rmse_rad=results[0]['mean_joint_rmse_rad'])
     for name in task.member_names:
         metrics['evaluation_'+name+'_full_success'] = results[0]['per_task'][name]['success_rate']
-        metrics['evaluation_'+name+'_tail_success'] = results[1]['per_task'][name]['success_rate']
+        metrics['evaluation_'+name+'_tail_success'] = results[-1]['per_task'][name]['success_rate']
     return metrics
 
 

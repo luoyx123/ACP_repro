@@ -171,6 +171,8 @@ class G1ReferenceEnv:
         self.executed_action = torch.zeros_like(self.previous_action)
         self.history = torch.zeros((num_envs, 5, 75), device=self.device)
         self.force_history = torch.zeros((num_envs, 4, 9, 3), device=self.device)
+        self.diagnostics_enabled = False
+        self.diagnostic_trace = None
         self.offsets = torch.tensor(config['landmark_offsets'], device=self.device, dtype=torch.float32)
         # Collision vertices in link frames, for a geometric floor penetration audit.
         self.clouds = []
@@ -235,18 +237,28 @@ class G1ReferenceEnv:
         if action.shape != (self.num_envs, 23) or not torch.isfinite(action).all(): raise ValueError('Invalid action')
         action = action.clamp(-100, 100)
         targets = torch.zeros_like(self.robot.data.joint_pos)
+        trace = {key:[] for key in ('target','position','velocity','computed_torque','applied_torque')} if self.diagnostics_enabled else None
         for i in range(self.decimation):
             # Delay acts on the physical command at 200Hz, while observations
             # and action-rate rewards retain the policy's 50Hz command.
             delayed = torch.where((i>=self.action_delay_ticks)[:,None],action,self.executed_action)
             targets[:, self.joint_ids] = self.default+self.joint_zero_bias+self.cfg['action_scale']*delayed
             self.robot.set_joint_position_target(targets)
-            self.robot.write_data_to_sim();self.sim.step(render=False)
+            self.robot.write_data_to_sim()
+            if trace is not None:
+                # The explicit actuator has computed/applied its command, but
+                # physics has not advanced. These samples share the same time.
+                d=self.robot.data;j=self.joint_ids
+                for key,value in dict(target=targets[:,j],position=d.joint_pos[:,j],velocity=d.joint_vel[:,j],
+                                      computed_torque=d.computed_torque[:,j],applied_torque=d.applied_torque[:,j]).items():
+                    trace[key].append(value.clone())
+            self.sim.step(render=False)
             self.robot.update(self.dt);self.sensor.update(self.dt, force_recompute=True);self.probe.update(self.dt)
             self.force_history[:, i] = self.contact_forces()
         self.executed_action.copy_(action)
         self.previous_action[:] = action
         self.history = torch.cat((self.history[:, 1:], self.proprio()[:, None, :]), dim=1)
+        if trace is not None:self.diagnostic_trace = {key:torch.stack(value,dim=1) for key,value in trace.items()}
         return self.proprio()
 
     def height_scan(self, planner=False, root=None, quaternion=None):

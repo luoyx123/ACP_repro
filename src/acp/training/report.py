@@ -34,6 +34,7 @@ def render(path, scene, destination, title, start_seconds):
     from PIL import Image,ImageDraw,ImageFont
     with np.load(path) as z:
         states=z['states'];refs=z['reference'];dt=float(z['dt']);names=z['joint_names'].tolist()
+        recorded_quaternions=z['reference_quaternion'] if 'reference_quaternion' in z else None
     model=mujoco.MjModel.from_xml_path(str(scene));data=mujoco.MjData(model)
     model.vis.global_.offwidth=640;model.vis.global_.offheight=480
     addresses=[model.jnt_qposadr[model.joint(n).id] for n in names]
@@ -48,9 +49,9 @@ def render(path, scene, destination, title, start_seconds):
                 state=states[i];ref=refs[i];camera.lookat[:]=ref[:3]
                 data.qpos[:7]=state[:7];data.qpos[addresses]=state[13:]
                 mujoco.mj_forward(model,data);renderer.update_scene(data,camera=camera);actual=renderer.render().copy()
-                # NPZ stores reference position/joints, but not reference quaternion.
-                # Resolve it from original motion at the recorded clip time.
-                q=render.reference.sample(np.array([start_seconds+(i+1)*dt]))['base_quaternion_wxyz'][0]
+                # New diagnostic captures preserve the exact reference quaternion;
+                # older training NPZs resolve it from the original motion.
+                q=recorded_quaternions[i] if recorded_quaternions is not None else render.reference.sample(np.array([start_seconds+(i+1)*dt]))['base_quaternion_wxyz'][0]
                 data.qpos[:3]=ref[:3];data.qpos[3:7]=q;data.qpos[addresses]=ref[3:]
                 mujoco.mj_forward(model,data);renderer.update_scene(data,camera=camera);reference=renderer.render().copy()
                 frame=Image.fromarray(np.concatenate((actual,reference),axis=1));draw=ImageDraw.Draw(frame)
