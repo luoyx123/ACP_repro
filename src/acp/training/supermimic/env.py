@@ -85,6 +85,7 @@ class Simulator:
         self.computed_torque = torch.zeros((n, 23), device=device)
         self.applied_torque = torch.zeros_like(self.computed_torque)
         self.report = dict(engine='mujoco-cpu-fixture' if self.cpu else 'mujoco-warp', randomized=self.randomized,
+                           multiccd=False, contact_margin_m=robot_cfg.get('contact_offset', .002),
                            physical_readback_fields=list(self.physical),
                            friction='robot priority 1 over terrain 0; sampled dynamic coefficient is single Coulomb coefficient; static sample recorded only',
                            restitution='e -> damping ratio -ln(e)/sqrt(pi^2+ln(e)^2), e=0 -> 1; solver approximation',

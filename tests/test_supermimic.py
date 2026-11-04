@@ -37,6 +37,32 @@ def test_replay_ring_masks_resets_and_keeps_terminal_transition():
     assert window['mask'][0].tolist()==[True, False, False, False]
 
 
+def test_multiscene_compiled_world_model_backward_uses_frozen_statistics(package):
+    root,_=package
+    cfg=json.loads((PROJECT/'configs/supermimic.json').read_text())
+    cfg.update(world_model_hidden=[16,16],horizon=2,wm_window=3,wm_batch=4,
+               pi_batch=4,buffer_steps=8,warmup_steps=4,compile=False)
+    runner=Runner(root,cfg,n=4,device='cpu')
+    runner.wm_step=torch.compile(runner.wm.step,backend='aot_eager')
+    runner.collect(4)
+    loss=runner.wm_loss()
+    loss.backward()
+    assert torch.isfinite(loss)
+    assert all(torch.isfinite(p.grad).all() for p in runner.wm.parameters() if p.grad is not None)
+
+
+def test_warp_mesh_margin_contract_disables_multiccd_but_keeps_contact_offset(package):
+    root, manifest = package
+    cfg=manifest['robot_config']
+    model=compile_model(root/manifest['clips'][1]['scene'],cfg)
+    if hasattr(mujoco.mjtDisableBit,'mjDSBL_MULTICCD'):
+        assert model.opt.disableflags & int(mujoco.mjtDisableBit.mjDSBL_MULTICCD)
+    else:
+        assert not model.opt.enableflags & int(mujoco.mjtEnableBit.mjENBL_MULTICCD)
+    active=(model.geom_contype!=0)|(model.geom_conaffinity!=0)
+    np.testing.assert_allclose(model.geom_margin[active],cfg.get('contact_offset',.002))
+
+
 def test_residual_dynamics_identity_and_zero_rotation_gradients():
     S = (torch.randn(3, 3), so3_exp(torch.randn(3, 3)*.1), torch.zeros(3, 3), torch.zeros(3, 3),
          torch.randn(3, 23)*.1, torch.zeros(3, 23))

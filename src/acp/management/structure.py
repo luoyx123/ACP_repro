@@ -20,11 +20,11 @@ GROUPS={
 PURPOSE={
  'robot/instinct':'InstinctMJ 原生躯干基座 G1-29、精确碰撞 URDF 导出、骨盆基座转换与关节名称映射',
  'pipeline/datasets/g1_29':'Omni／LAFAN1／PHP 原始 29DoF 独立转换、重新标注及全量质量评估；不依赖 23DoF 轨迹',
- 'training/supermimic/assets':'自包含 walk／box 训练包、网格依赖复制、SHA256 与显式 MuJoCo 配置',
+ 'training/supermimic/assets':'按自定义任务配置打包23DoF多场景轨迹、网格依赖和SHA256；显式MuJoCo/Warp接触margin与MULTICCD兼容配置',
  'training/supermimic/env':'MuJoCo-Warp GPU 批量 PD、随机化回读、九部位法向力及 CPU 核验夹具',
  'training/supermimic/model':'23DoF 可微残差世界模型、含固定球手的 FK 与真实地形三角形高程查询',
  'training/supermimic/task':'真实／想象过程共用的 ACP 468／353 观测、14 项奖励与终止接口',
- 'training/supermimic/runner':'统一 prepare／check／smoke／benchmark／train／evaluate、回放库、BPTT、保存续训',
+ 'training/supermimic/runner':'统一 prepare／check／smoke／benchmark／train／evaluate、自定义Stage1任务包、回放库、BPTT、TensorBoard及保存续训',
  'training/supermimic/rotations':'沿用 InstinctMJ 的可微旋转计算；来源与许可证见 third_party/instinctmj',
  'stage1':'Stage 1 物理任务：按场景分配环境、468/353 观测、论文奖励及 CSI',
  'randomization':'Table S2：固定启动动力学及 PhysX 回读、动作延迟、里程计和观测／重置扰动',

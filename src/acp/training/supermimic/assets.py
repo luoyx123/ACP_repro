@@ -91,6 +91,12 @@ def compile_model(scene, cfg):
     model.opt.solver = mujoco.mjtSolver.mjSOL_NEWTON
     model.opt.iterations = 10
     model.opt.ls_iterations = 10
+    # Warp 3.11 rejects mesh pairs with positive margins under MULTICCD.
+    # Keep the configured contact offset; use its supported single-contact CCD.
+    if hasattr(mujoco.mjtDisableBit, 'mjDSBL_MULTICCD'):
+        model.opt.disableflags |= int(mujoco.mjtDisableBit.mjDSBL_MULTICCD)
+    else:  # MuJoCo releases where MULTICCD was an opt-in enable bit.
+        model.opt.enableflags &= ~int(mujoco.mjtEnableBit.mjENBL_MULTICCD)
     model.opt.cone = mujoco.mjtCone.mjCONE_PYRAMIDAL
     model.dof_damping[:] = 0
     model.dof_frictionloss[:] = 0

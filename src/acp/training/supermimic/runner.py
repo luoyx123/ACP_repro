@@ -231,10 +231,11 @@ class Runner:
         return rows
 
     def wm_loss(self, batch=None):
-        total = []
+        total, windows = [], []
         for g, replay in zip(self.groups, self.buffers):
             count = math.ceil((batch or self.cfg['wm_batch'])/len(self.groups))
             w = replay.sample(count, self.cfg['wm_window'])
+            windows.append((g,w))
             K = w['mask'].shape[1]
             truth0, truth1 = unpack(w['s'].flatten(0, 1)), unpack(w['s1'].flatten(0, 1))
             context = torch.cat((w['context'], w['a_prev']), -1).flatten(0, 1)
@@ -242,6 +243,10 @@ class Runner:
                 valid = w['mask'].flatten()
                 self.wm.input_norm.update(self.wm.inputs(truth0, w['a'].flatten(0, 1), context, g.mdp.terrain.scan(truth0))[valid])
                 self.wm.output_norm.update(self.wm.delta(truth0, truth1)[valid])
+        # Freeze normalization buffers for every scene's differentiable rollout.
+        # Compiled backward saves these buffers; later in-place updates invalidate it.
+        for g,w in windows:
+            K = w['mask'].shape[1]
             S, losses = unpack(w['s'][:, 0]), []
             for k in range(K):
                 ctx = torch.cat((w['context'][:, k], w['a_prev'][:, k]), -1)
@@ -443,6 +448,8 @@ def main():
     p.add_argument('mode', choices=['prepare', 'check', 'smoke', 'benchmark', 'train', 'evaluate'])
     p.add_argument('--package', type=Path, default=PROJECT/'outputs/数据集/supermimic/walk_box_v1')
     p.add_argument('--config', type=Path, default=PROJECT/'configs/supermimic.json')
+    p.add_argument('--stage1-config', type=Path, default=PROJECT/'configs/stage1.json',
+                   help='prepare: ACP task configuration, including selected motion groups')
     p.add_argument('--task', choices=['walk', 'box', 'walk_box'], default='walk_box')
     p.add_argument('--num-envs', type=int)
     p.add_argument('--device', choices=['cpu', 'cuda:0'], default='cpu')
@@ -457,7 +464,7 @@ def main():
     if min(args.steps, args.iterations, args.num_envs or 1)<1:
         p.error('Counts must be positive')
     if args.mode=='prepare':
-        print(json.dumps(prepare(args.package, task=args.task), ensure_ascii=False, indent=2))
+        print(json.dumps(prepare(args.package, config_path=args.stage1_config, task=args.task), ensure_ascii=False, indent=2))
         return
     package = verify(args.package)
     if args.mode=='check':
@@ -528,6 +535,8 @@ def main():
     elif args.mode=='evaluate':
         result = dict(passed=True, optimizer_steps=0, results=runner.evaluate(output/'evaluation'))
     else:
+        from torch.utils.tensorboard import SummaryWriter
+        writer = SummaryWriter(log_dir=str(output/'tensorboard'), flush_secs=15)
         runner.collect(max(cfg['warmup_steps'], cfg['wm_window']))
         start = time.monotonic()
         for _ in range(args.iterations):
@@ -540,6 +549,13 @@ def main():
             real = runner.collect(n_collect)
             row = dict(iteration=iteration+1, **runner.update(), real=real, elapsed_seconds=time.monotonic()-start,
                        sim_steps=runner.sim_steps, optimizer_steps=runner.optimizer_steps)
+            def log_scalars(values, prefix=''):
+                for key,value in values.items():
+                    tag=f'{prefix}/{key}' if prefix else key
+                    if isinstance(value,dict):log_scalars(value,tag)
+                    elif isinstance(value,(int,float)):writer.add_scalar(tag,value,iteration+1)
+            log_scalars(row)
+            writer.add_scalar('learning_rate',lr,iteration+1)
             with (output/'metrics.jsonl').open('a') as stream:
                 stream.write(json.dumps(row, allow_nan=False)+'\n')
             if (iteration+1)%cfg['save_interval']==0 or iteration+1==args.iterations:
@@ -548,6 +564,7 @@ def main():
                 print(json.dumps(row), flush=True)
             atomic_json(output/'progress.json', row)
         runner.save(output)
+        writer.close()
         result = dict(passed=True, iterations=runner.iteration, optimizer_steps=runner.optimizer_steps,
                       note='Completion is not convergence; full-start physical evaluation required')
     atomic_json(output/'result.json', result)
